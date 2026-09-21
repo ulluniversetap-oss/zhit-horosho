@@ -8,6 +8,54 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
+  :root {
+    --space-2_4: 0.15rem;
+    --space-3_2: 0.2rem;
+    --space-4: 0.25rem;
+    --space-4_8: 0.3rem;
+    --space-5_6: 0.35rem;
+    --space-6_4: 0.4rem;
+    --space-8: 0.5rem;
+    --space-9_6: 0.6rem;
+    --space-11_2: 0.7rem;
+    --space-12: 0.75rem;
+    --space-12_8: 0.8rem;
+    --space-13_6: 0.85rem;
+    --space-14_4: 0.9rem;
+    --space-15_2: 0.95rem;
+    --space-16: 1rem;
+    --space-16_8: 1.05rem;
+    --space-17_6: 1.1rem;
+    --space-18_4: 1.15rem;
+    --space-19_2: 1.2rem;
+    --space-20: 1.25rem;
+    --space-20_8: 1.3rem;
+    --space-22_4: 1.4rem;
+    --space-24: 1.5rem;
+    --space-25_6: 1.6rem;
+    --space-26: 1.625rem;
+    --space-27_2: 1.7rem;
+    --space-28: 1.75rem;
+    --space-28_8: 1.8rem;
+    --space-30_4: 1.9rem;
+    --space-32: 2rem;
+    --space-35_2: 2.2rem;
+    --space-36: 2.25rem;
+    --space-36_8: 2.3rem;
+    --space-38: 2.375rem;
+    --space-38_4: 2.4rem;
+    --space-40: 2.5rem;
+    --space-41_6: 2.6rem;
+    --space-48: 3rem;
+    --space-54_4: 3.4rem;
+    --space-56: 3.5rem;
+    --space-57_6: 3.6rem;
+    --space-64: 4rem;
+    --space-72: 4.5rem;
+    --space-80: 5rem;
+    --space-94: 5.875rem;
+  }
+
   @font-face {
     font-family: 'RoadRadio';
     src: url(assets/fonts/RoadRadio-Bold.ttf) format('truetype');
@@ -70,7 +118,7 @@
     z-index: 2;
     height: 100%;
     min-height: inherit;
-    padding: 1.8rem 3.6rem 3.4rem;
+    padding: var(--space-28_8) var(--space-57_6) var(--space-54_4);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -81,7 +129,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1.5rem;
+    gap: var(--space-24);
   }
 
   .logo-svg { display: block; height: 4.3rem; width: auto; }
@@ -91,10 +139,10 @@
     list-style: none;
     display: flex;
     align-items: center;
-    gap: 1.6rem;
+    gap: var(--space-25_6);
     height: 4.22rem;
     margin: 0;
-    padding: 0 2.6rem;
+    padding: 0 var(--space-41_6);
     border-radius: 999px;
     background: var(--glass-bg);
     backdrop-filter: blur(var(--glass-blur-sm));
@@ -104,7 +152,7 @@
   .nav a {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: var(--space-6_4);
     color: #fff;
     font-weight: 500;
     font-size: 0.844rem;
@@ -113,13 +161,13 @@
   }
   .nav a:hover { opacity: 0.8; }
 
-  .contacts { display: flex; align-items: center; gap: 2rem; }
+  .contacts { display: flex; align-items: center; gap: var(--space-32); }
 
   .phone-block {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 0.25rem;
+    gap: var(--space-4);
   }
 
   .phone { color: #fff; font-weight: 500; font-size: 1.4rem; text-decoration: none; }
@@ -130,8 +178,8 @@
     position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 1.4rem;
-    padding: 0.5rem 0.5rem 0.5rem 2.3rem;
+    gap: var(--space-22_4);
+    padding: var(--space-8) var(--space-8) var(--space-8) var(--space-36_8);
     border-radius: 999px;
     background: var(--glass-bg);
     border: 0.95px solid rgba(255, 255, 255, 0.3);
@@ -230,18 +278,18 @@
   .content {
     display: flex;
     flex-direction: column;
-    gap: 1.3rem;
+    gap: var(--space-20_8);
     max-width: 62%;
   }
 
-  .badges { display: flex; flex-wrap: wrap; gap: 0.7rem; }
+  .badges { display: flex; flex-wrap: wrap; gap: var(--space-11_2); }
 
   .badge {
     position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
-    padding: 0.7rem 1.2rem;
+    gap: var(--space-9_6);
+    padding: var(--space-11_2) var(--space-19_2);
     border-radius: 999px;
     background: var(--glass-bg);
     backdrop-filter: blur(var(--glass-blur-lg));
@@ -280,7 +328,7 @@
     bottom: clamp(2.3rem, 2.83vw, 3.4rem);
     display: inline-flex;
     align-items: center;
-    gap: 1.6rem;
+    gap: var(--space-25_6);
     padding: clamp(0.4rem, 0.5vw, 0.5rem) clamp(0.4rem, 0.5vw, 0.5rem) clamp(0.4rem, 0.5vw, 0.5rem) 2.2rem;
     background: var(--accent);
     border: none;
@@ -302,12 +350,12 @@
      кнопка физически не помещаются на фиксированных отступах/шрифтах —
      компактная версия тех же элементов, ничего не скрываем. */
   @media (max-width: 1600px) {
-    .nav ul { gap: 1.05rem; padding: 0 1.7rem; }
+    .nav ul { gap: var(--space-16_8); padding: 0 var(--space-27_2); }
     .nav a { font-size: 0.78rem; }
-    .contacts { gap: 1.1rem; }
+    .contacts { gap: var(--space-17_6); }
     .phone { font-size: 1.15rem; }
     .max-link { font-size: 0.92rem; }
-    .contact-btn { gap: 1rem; padding: 0.5rem 0.5rem 0.5rem 1.6rem; font-size: 0.75rem; }
+    .contact-btn { gap: var(--space-16); padding: var(--space-8) var(--space-8) var(--space-8) var(--space-25_6); font-size: 0.75rem; }
     .contact-btn .icon-circle { width: 3.75rem; height: 3.75rem; font-size: 1.15rem; }
   }
 
@@ -345,7 +393,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 3rem 2rem;
+    padding: var(--space-48) var(--space-32);
   }
 
   .col + .col { border-left: 1px solid #dcdcd8; }
@@ -357,12 +405,12 @@
 
   /* image sits in the LAST column (right side of layout) → gap on the
      outer right edge, flush against the divider on the left */
-  .row > .col-media:last-child { padding: 0 2.25rem 0 0; }
+  .row > .col-media:last-child { padding: 0 var(--space-36) 0 0; }
   .row > .col-media:last-child .media-frame { border-radius: 0; }
 
   /* image sits in the FIRST column (left side of layout) → gap on the
      outer left edge, flush against the divider on the right */
-  .row > .col-media:first-child { padding: 0 0 0 2.25rem; }
+  .row > .col-media:first-child { padding: 0 0 0 var(--space-36); }
   .row > .col-media:first-child .media-frame { border-radius: 0; }
 
   .media-frame {
@@ -381,7 +429,7 @@
     color: #8a8a83;
     font-size: 0.9rem;
     text-align: center;
-    padding: 1rem;
+    padding: var(--space-16);
 
   }
 
@@ -394,7 +442,7 @@
 
   .col-text {
     align-items: flex-start;
-    padding: 0 2rem;
+    padding: 0 var(--space-32);
   }
 
   .text-inner {
@@ -404,9 +452,9 @@
     top: 0;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: var(--space-24);
     text-align: center;
-    padding: 0 2rem;
+    padding: 0 var(--space-32);
     opacity: 0;
     will-change: transform, opacity;
   }
@@ -443,8 +491,8 @@
     top: 0;
     z-index: 1;
     background: url('assets/images/scenarios-bg.jpg') center / cover no-repeat;
-    padding: 5rem 0;
-    margin: 0 2.25rem;
+    padding: var(--space-80) 0;
+    margin: 0 var(--space-36);
     border-radius: 1.2rem;
     overflow: hidden;
   }
@@ -452,11 +500,11 @@
   .scenarios-inner {
     max-width: 1920px;
     margin: 0 auto;
-    padding: 0 5.875rem;
+    padding: 0 var(--space-94);
   }
 
   .scenarios-heading {
-    margin: 0 0 2.5rem;
+    margin: 0 0 var(--space-40);
     max-width: 45rem;
     font-family: 'RoadRadio', 'Onest', sans-serif;
     font-weight: 700;
@@ -471,10 +519,10 @@
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
-    gap: 1.5rem;
+    gap: var(--space-24);
     max-width: 47.6rem; /* 68rem − 30% */
-    padding: 1.5rem 1.8rem 0.9rem;
-    margin-bottom: 1.2rem;
+    padding: var(--space-24) var(--space-28_8) var(--space-14_4);
+    margin-bottom: var(--space-19_2);
     background: rgba(48, 38, 32, 0.55);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
@@ -493,7 +541,7 @@
     background: rgba(255, 255, 255, 0.92);
     border-radius: 0.5rem;
     overflow: hidden;
-    padding: 0.3rem;
+    padding: var(--space-4_8);
   }
 
   .scenario-icon img {
@@ -508,7 +556,7 @@
   }
 
   .scenario-body h3 {
-    margin: 0 0 0.5rem;
+    margin: 0 0 var(--space-8);
     font-family: 'Onest', sans-serif;
     font-weight: 700;
     font-size: 1.25rem;
@@ -526,8 +574,8 @@
     flex-basis: 100%;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem 3rem;
-    padding-top: 0.9rem;
+    gap: var(--space-8) var(--space-48);
+    padding-top: var(--space-14_4);
     border-top: 1px solid rgba(255, 255, 255, 0.22);
     font-size: 0.8rem;
     color: rgba(255, 255, 255, 0.85);
@@ -539,7 +587,7 @@
   }
 
   @media (max-width: 900px) {
-    .scenarios-inner { padding: 0 1.5rem; }
+    .scenarios-inner { padding: 0 var(--space-24); }
     .scenario-card { flex-direction: column; }
   }
 
@@ -552,7 +600,7 @@
     position: sticky;
     top: 0;
     z-index: 2;
-    margin: 0 2.25rem;
+    margin: 0 var(--space-36);
     background: #F7F9FB;
     border-radius: 1.2rem;
   }
@@ -560,10 +608,10 @@
   .trust-inner {
     display: grid;
     grid-template-columns: 1.35fr 1fr;
-    gap: 1.5rem;
+    gap: var(--space-24);
     background: #ffffff;
     border-radius: 1.2rem;
-    padding: 1.5rem;
+    padding: var(--space-24);
   }
 
   .trust-photo {
@@ -594,12 +642,12 @@
     left: 0;
     right: 0;
     bottom: 0;
-    padding: 2.2rem;
+    padding: var(--space-35_2);
     color: #ffffff;
   }
 
   .trust-photo-text h2 {
-    margin: 0 0 0.9rem;
+    margin: 0 0 var(--space-14_4);
     font-family: 'RoadRadio', 'Onest', sans-serif;
     font-weight: 700;
     font-size: 2.8125rem;
@@ -619,7 +667,7 @@
   .trust-cards {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: var(--space-16);
   }
 
   .trust-card {
@@ -628,7 +676,7 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 2.2rem;
+    padding: var(--space-35_2);
     border-radius: 0.9rem;
     background: #eef1f5;
   }
@@ -640,7 +688,7 @@
   }
 
   .trust-card h3 {
-    margin: 0 0 0.6rem;
+    margin: 0 0 var(--space-9_6);
     max-width: 80%;
     font-family: 'Onest', sans-serif;
     font-weight: 700;
@@ -702,7 +750,7 @@
        блок 5. Sticky здесь убран намеренно — см. .sticky-stack ниже. */
     position: relative;
     z-index: 4;
-    margin: 0 2.25rem 3rem;
+    margin: 0 var(--space-36) var(--space-48);
   }
 
   .offers-panel {
@@ -710,17 +758,17 @@
     border-radius: 1.2rem;
     /* Вертикальный ритм как у блоков 3 и 5 (5rem). Раньше было
        8rem/10.5rem из Figma — выбивалось из общего ритма страницы. */
-    padding: 5rem 0;
+    padding: var(--space-80) 0;
   }
 
   .offers-inner {
     max-width: 1920px;
     margin: 0 auto;
-    padding: 0 5.875rem;
+    padding: 0 var(--space-94);
   }
 
   .offers-heading {
-    margin: 0 0 2.4rem;
+    margin: 0 0 var(--space-38_4);
     max-width: 45.3rem;
     font-family: 'RoadRadio', 'Onest', sans-serif;
     font-weight: 700;
@@ -739,13 +787,13 @@
   .offers-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1.625rem;
+    gap: var(--space-26);
   }
 
   .offers-card {
     position: relative;
     height: 29.6875rem;
-    padding: 2.375rem 1.5rem 0 2.25rem;
+    padding: var(--space-38) var(--space-24) 0 var(--space-36);
     border-radius: 0.9rem;
     background: #f2f3f2;
     overflow: hidden;
@@ -785,7 +833,7 @@
   }
 
   .offers-card .offers-note {
-    margin: 0.9rem 0 0;
+    margin: var(--space-14_4) 0 0;
     max-width: 19rem;
     font-size: 0.85rem;
     line-height: 1.4;
@@ -843,7 +891,7 @@
   }
 
   @media (max-width: 1200px) {
-    .offers-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .offers-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-16); }
   }
 
   /* ===== Блок «Горячая вода — всегда» =====
@@ -854,14 +902,14 @@
     display: none; /* временно скрыт по просьбе — не увидели особого смысла в блоке; разметка сохранена */
     position: relative;
     z-index: 5;
-    margin: 0 2.25rem 3rem;
+    margin: 0 var(--space-36) var(--space-48);
     border-radius: 1.2rem;
     overflow: hidden;
     background: #1b1c22;
-    padding: 5rem 3rem;
+    padding: var(--space-80) var(--space-48);
     grid-template-columns: 1.1fr 0.9fr;
     align-items: center;
-    gap: 4rem;
+    gap: var(--space-64);
   }
 
   .heat::before {
@@ -876,7 +924,7 @@
   .heat-content { position: relative; z-index: 2; }
 
   .heat-content h2 {
-    margin: 0 0 1.3rem;
+    margin: 0 0 var(--space-20_8);
     max-width: 30rem;
     font-family: 'RoadRadio', 'Onest', sans-serif;
     font-weight: 700;
@@ -893,7 +941,7 @@
   }
 
   .heat-lead {
-    margin: 0 0 2.2rem;
+    margin: 0 0 var(--space-35_2);
     max-width: 30rem;
     font-size: 0.98rem;
     line-height: 1.55;
@@ -903,7 +951,7 @@
   .heat-list {
     display: flex;
     flex-direction: column;
-    gap: 0.7rem;
+    gap: var(--space-11_2);
     max-width: 34rem;
   }
 
@@ -912,8 +960,8 @@
   .heat-item {
     display: flex;
     align-items: flex-start;
-    gap: 1.1rem;
-    padding: 1.05rem 1.4rem;
+    gap: var(--space-17_6);
+    padding: var(--space-16_8) var(--space-22_4);
     border-radius: 0.6rem;
     border-left: 2px solid rgba(242, 114, 57, 0.55);
     background: rgba(255, 255, 255, 0.05);
@@ -927,7 +975,7 @@
 
   .heat-num {
     flex: none;
-    padding-top: 0.15rem;
+    padding-top: var(--space-2_4);
     font-size: 0.7rem;
     letter-spacing: 0.06em;
     color: var(--accent, #f27239);
@@ -948,7 +996,7 @@
     border-radius: 0.9rem;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.07);
-    padding: 2rem;
+    padding: var(--space-32);
     display: flex;
     flex-direction: column;
   }
@@ -971,17 +1019,17 @@
   .heat-scheme-foot {
     display: flex;
     align-items: center;
-    gap: 1.4rem;
+    gap: var(--space-22_4);
     flex-wrap: wrap;
-    margin-top: 1.4rem;
-    padding-top: 1.2rem;
+    margin-top: var(--space-22_4);
+    padding-top: var(--space-19_2);
     border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .heat-legend {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--space-8);
     font-size: 0.78rem;
     color: rgba(255, 255, 255, 0.55);
   }
@@ -996,7 +1044,7 @@
   .heat-legend.is-return i { background: rgba(255, 255, 255, 0.35); }
 
   @media (max-width: 1100px) {
-    .heat { grid-template-columns: 1fr; padding: 2.4rem; gap: 2rem; }
+    .heat { grid-template-columns: 1fr; padding: var(--space-38_4); gap: var(--space-32); }
     .heat-scheme { min-height: 0; }
   }
 
@@ -1007,27 +1055,27 @@
   .layouts {
     position: relative;
     z-index: 5;
-    margin: 0 2.25rem 3rem;
+    margin: 0 var(--space-36) var(--space-48);
   }
 
   .layouts-panel {
     background: #ffffff;
     border-radius: 1.2rem;
-    padding: 5rem 0;
+    padding: var(--space-80) 0;
   }
 
   .layouts-inner {
     max-width: 1920px;
     margin: 0 auto;
-    padding: 0 5.875rem;
+    padding: 0 var(--space-94);
   }
 
   .layouts-head {
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: start;
-    gap: 3rem;
-    margin: 0 0 2.4rem;
+    gap: var(--space-48);
+    margin: 0 0 var(--space-38_4);
   }
 
   .layouts-heading {
@@ -1046,7 +1094,7 @@
 
   .layouts-note {
     align-self: end;
-    margin: 0.4rem 0 0;
+    margin: var(--space-6_4) 0 0;
     max-width: none;
     white-space: nowrap;
     font-size: 0.85rem;
@@ -1059,7 +1107,7 @@
   .layouts-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1.625rem;
+    gap: var(--space-26);
   }
 
   .layouts-card {
@@ -1067,7 +1115,7 @@
     flex-direction: column;
     background: #F7F9FB;
     border-radius: 0.9rem;
-    padding: 0.9rem;
+    padding: var(--space-14_4);
     text-decoration: none;
     transition: transform 0.35s ease, box-shadow 0.35s ease, background-color 0.35s ease;
   }
@@ -1139,7 +1187,7 @@
     letter-spacing: 0.05em;
     color: #a9a49a;
     text-align: center;
-    padding: 1rem;
+    padding: var(--space-16);
   }
 
   .layouts-photo--plan {
@@ -1148,19 +1196,19 @@
 
   .layouts-photo--plan img {
     object-fit: contain;
-    padding: 0.6rem;
+    padding: var(--space-9_6);
   }
 
   .layouts-meta {
-    padding: 1.3rem 0.5rem 0.2rem;
+    padding: var(--space-20_8) var(--space-8) var(--space-3_2);
   }
 
   .layouts-row {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    gap: 1rem;
-    padding: 0.7rem 0;
+    gap: var(--space-16);
+    padding: var(--space-11_2) 0;
     border-bottom: 1px solid rgba(28, 28, 26, 0.08);
     transition: border-color 0.35s ease;
   }
@@ -1204,8 +1252,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0.6rem 0 0;
-    padding: 1.1rem 0.6rem;
+    margin: var(--space-9_6) 0 0;
+    padding: var(--space-17_6) var(--space-9_6);
     background: #ffffff;
     border-radius: 999px;
     font-weight: 700;
@@ -1218,12 +1266,12 @@
     /* На средних ширинах белый nowrap-текст у .layouts-note забирал
        себе всю "auto"-колонку и сжимал заголовок до переноса в
        лишние строки — переносим note под заголовок. */
-    .layouts-head { grid-template-columns: 1fr; gap: 1rem; }
+    .layouts-head { grid-template-columns: 1fr; gap: var(--space-16); }
     .layouts-note { text-align: left; white-space: normal; align-self: auto; }
   }
 
   @media (max-width: 640px) {
-    .layouts-inner { padding: 0 1.5rem; }
+    .layouts-inner { padding: 0 var(--space-24); }
     .layouts-grid { grid-template-columns: 1fr; }
   }
 
@@ -1287,27 +1335,27 @@
   .walk {
     position: relative;
     z-index: 5;
-    margin: 0 2.25rem 3rem;
+    margin: 0 var(--space-36) var(--space-48);
   }
 
   /* Без белой подложки: блок лежит прямо на фоне страницы,
      а несущим светлым слоем работают сами карточки. */
   .walk-panel {
-    padding: 5rem 0;
+    padding: var(--space-80) 0;
   }
 
   .walk-inner {
     max-width: 1920px;
     margin: 0 auto;
-    padding: 0 5.875rem;
+    padding: 0 var(--space-94);
   }
 
   .walk-head {
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: start;
-    gap: 3rem;
-    margin: 0 0 2.4rem;
+    gap: var(--space-48);
+    margin: 0 0 var(--space-38_4);
   }
 
   .walk-heading {
@@ -1350,7 +1398,7 @@
   .walk-grid {
     display: grid;
     grid-template-columns: 1.05fr 1fr;
-    gap: 1.625rem;
+    gap: var(--space-26);
     align-items: start;
   }
 
@@ -1398,8 +1446,8 @@
     bottom: 1.25rem;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.85rem 1.15rem;
+    gap: var(--space-12);
+    padding: var(--space-13_6) var(--space-18_4);
     border-radius: 0.65rem;
     background: #ffffff;
     box-shadow: 0 0.5rem 1.5rem rgba(20, 22, 26, 0.14);
@@ -1430,7 +1478,7 @@
   }
 
   .walk-pin-addr {
-    margin: 0.15rem 0 0;
+    margin: var(--space-2_4) 0 0;
     font-size: 0.8rem;
     line-height: 1.2;
     color: #1c1c1a;
@@ -1441,20 +1489,20 @@
   .walk-lists {
     display: flex;
     flex-direction: column;
-    gap: 1.625rem;
+    gap: var(--space-26);
   }
 
   .walk-card {
     background: #ffffff;
     border-radius: 0.9rem;
-    padding: 1.9rem 2rem 0.6rem;
+    padding: var(--space-30_4) var(--space-32) var(--space-9_6);
   }
 
   .walk-card-head {
     display: flex;
     align-items: center;
-    gap: 0.7rem;
-    padding-bottom: 1.1rem;
+    gap: var(--space-11_2);
+    padding-bottom: var(--space-17_6);
     border-bottom: 1px solid rgba(28, 28, 26, 0.1);
   }
 
@@ -1479,8 +1527,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1.5rem;
-    padding: 0.95rem 0;
+    gap: var(--space-24);
+    padding: var(--space-15_2) 0;
     border-bottom: 1px solid rgba(28, 28, 26, 0.08);
   }
 
@@ -1497,8 +1545,8 @@
     flex: none;
     display: inline-flex;
     align-items: baseline;
-    gap: 0.25rem;
-    padding: 0.35rem 0.75rem;
+    gap: var(--space-4);
+    padding: var(--space-5_6) var(--space-12);
     border-radius: 999px;
     background: #f2f3f2;
     font-family: 'Onest', sans-serif;
@@ -1526,24 +1574,24 @@
        рядом с note в общем гриде — переносим note под заголовок и
        возвращаем перенос по словам, чтобы не было горизонтального
        переполнения. */
-    .walk-head { grid-template-columns: 1fr; gap: 1rem; }
+    .walk-head { grid-template-columns: 1fr; gap: var(--space-16); }
     .walk-note { text-align: left; max-width: none; }
     .walk-heading--oneline { white-space: normal; }
   }
 
   @media (max-width: 640px) {
-    .walk-inner { padding: 0 1.5rem; }
-    .walk-head { grid-template-columns: 1fr; gap: 1rem; }
+    .walk-inner { padding: 0 var(--space-24); }
+    .walk-head { grid-template-columns: 1fr; gap: var(--space-16); }
     .walk-note { text-align: left; max-width: none; }
-    .walk-card { padding: 1.4rem 1.25rem 0.4rem; }
+    .walk-card { padding: var(--space-22_4) var(--space-20) var(--space-6_4); }
     .walk-heading--oneline { white-space: normal; }
   }
 
 
   @media (max-width: 640px) {
-    .offers-inner { padding: 0 1.5rem; }
+    .offers-inner { padding: 0 var(--space-24); }
     .offers-grid { grid-template-columns: 1fr; }
-    .offers-card { height: auto; min-height: 15.5rem; padding-bottom: 4.5rem; }
+    .offers-card { height: auto; min-height: 15.5rem; padding-bottom: var(--space-72); }
   }
 
   /* Небольшой нейтральный зазор между наезжающими sticky-блоками
@@ -1582,13 +1630,13 @@
        при наезде; высоту теперь задаёт содержимое. */
     position: relative;
     z-index: 6;
-    margin: 0 2.25rem 3rem;
+    margin: 0 var(--space-36) var(--space-48);
     border-radius: 1.2rem;
     overflow: hidden;
     background: #1b1c22;
     /* Отступы как у блока акций: вертикальные — 5rem (.offers-panel),
        боковые — 5.875rem (.offers-inner). */
-    padding: 5rem 5.875rem;
+    padding: var(--space-80) var(--space-94);
     /* Свободная композиция вместо колонок: контент во всю ширину,
        мокап позиционируется поверх правой части и уходит за край.
        Пропорция блока ~3:1 — форма разворачивается в одну строку. */
@@ -1608,7 +1656,7 @@
   .leadgen-content { position: relative; z-index: 2; width: 74%; }
 
   .leadgen-content h2 {
-    margin: 0 0 1.3rem;
+    margin: 0 0 var(--space-20_8);
     font-family: 'RoadRadio', 'Onest', sans-serif;
     font-weight: 700;
     font-size: 2.8125rem;
@@ -1619,7 +1667,7 @@
   }
 
   .leadgen-content > p {
-    margin: 0 0 1.9rem;
+    margin: 0 0 var(--space-30_4);
     max-width: 38rem;
     font-size: 0.95rem;
     line-height: 1.5;
@@ -1630,7 +1678,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 1.1rem;
+    gap: var(--space-17_6);
   }
 
   .leadgen-input {
@@ -1643,7 +1691,7 @@
     border-radius: 999px;
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
-    padding: 0 1.6rem;
+    padding: 0 var(--space-25_6);
     color: #fff;
     font-family: inherit;
     font-size: 0.95rem;
@@ -1655,10 +1703,10 @@
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1.6rem;
+    gap: var(--space-25_6);
     flex: none;
     box-sizing: border-box;
-    padding: 0.5rem 0.5rem 0.5rem 2.2rem;
+    padding: var(--space-8) var(--space-8) var(--space-8) var(--space-35_2);
     background: var(--accent, #f27239);
     border: none;
     border-radius: 999px;
@@ -1675,7 +1723,7 @@
   /* Селектор через > : иначе правило .leadgen-content > p (специфичнее)
      перебивает отступы и вешает дисклеймеру лишние 1.9rem снизу. */
   .leadgen-content > .leadgen-disclaimer {
-    margin: 1.1rem 0 0;
+    margin: var(--space-17_6) 0 0;
     font-size: 0.78rem;
     line-height: 1.45;
     text-align: left;
@@ -1714,7 +1762,7 @@
   .pdf-badge img { display: block; width: 100%; height: 100%; }
 
   @media (max-width: 1100px) {
-    .leadgen { grid-template-columns: 1fr; padding: 2.4rem; }
+    .leadgen { grid-template-columns: 1fr; padding: var(--space-38_4); }
     .leadgen-mockup { display: none; } /* десктоп-версия: на мобильном верстка не продумывалась */
   }
 
@@ -1726,7 +1774,7 @@
     position: sticky;
     top: 0;
     z-index: 3;
-    margin: 0 2.25rem 3rem;
+    margin: 0 var(--space-36) var(--space-48);
     border-radius: 1.2rem;
     overflow: hidden;
     min-height: 56rem;
@@ -1745,7 +1793,7 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 2rem;
+    padding: var(--space-32);
     background: linear-gradient(160deg, #1c2534 0%, #0c1119 100%);
     color: rgba(255, 255, 255, 0.4);
     font-size: 0.85rem;
@@ -1771,12 +1819,12 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 5rem 2.6rem;
+    padding: var(--space-80) var(--space-41_6);
     color: #ffffff;
   }
 
   .nearby-heading {
-    margin: 0 0 0.9rem;
+    margin: 0 0 var(--space-14_4);
     font-family: 'RoadRadio', 'Onest', sans-serif;
     font-weight: 700;
     font-size: 2.8125rem;
@@ -1795,12 +1843,12 @@
 
   .nearby-cards {
     display: flex;
-    gap: 1.2rem;
+    gap: var(--space-19_2);
   }
 
   .nearby-card {
     flex: 1;
-    padding: 1.8rem 1.7rem 1.9rem;
+    padding: var(--space-28_8) var(--space-27_2) var(--space-30_4);
     background: rgba(30, 32, 38, 0.55);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
@@ -1809,8 +1857,8 @@
 
   .nearby-dots {
     display: flex;
-    gap: 0.4rem;
-    margin-bottom: 1.6rem;
+    gap: var(--space-6_4);
+    margin-bottom: var(--space-25_6);
   }
 
   .nearby-dots span {
@@ -1823,7 +1871,7 @@
   .nearby-dots span.on { background: var(--accent, #f27239); }
 
   .nearby-card h3 {
-    margin: 0 0 0.4rem;
+    margin: 0 0 var(--space-6_4);
     font-family: 'Onest', sans-serif;
     font-weight: 700;
     font-size: 1.1rem;
@@ -1856,7 +1904,7 @@
   .expert-lead {
     position: relative;
     z-index: 7;
-    margin: 0 2.25rem 3rem;
+    margin: 0 var(--space-36) var(--space-48);
     border-radius: 1.2rem;
     overflow: hidden;
     min-height: clamp(28rem, 34vw, 34rem);
@@ -1879,14 +1927,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 3.5rem;
-    padding: 3.6rem 5.875rem;
+    gap: var(--space-56);
+    padding: var(--space-57_6) var(--space-94);
   }
 
   .expert-lead__content { max-width: 34rem; flex-shrink: 0; }
 
   .expert-lead__heading {
-    margin: 0 0 1.1rem;
+    margin: 0 0 var(--space-17_6);
     font-family: 'RoadRadio', 'Onest', sans-serif;
     font-weight: 700;
     font-size: 2.8125rem;
@@ -1897,7 +1945,7 @@
   }
 
   .expert-lead__text {
-    margin: 0 0 1.6rem;
+    margin: 0 0 var(--space-25_6);
     font-size: 0.9rem;
     line-height: 1.5;
     color: rgba(255, 255, 255, 0.75);
@@ -1918,7 +1966,7 @@
     z-index: 2;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: var(--space-16);
     width: min(29rem, 38%);
     flex-shrink: 0;
   }
@@ -1939,7 +1987,7 @@
     /* Высота не должна меняться от того, что иконка ушла в absolute —
        фиксируем те же 5.5rem/88px, что у всех кнопок сайта. */
     height: 5.5rem;
-    padding: 0 5rem 0 1.5rem;
+    padding: 0 var(--space-80) 0 var(--space-24);
   }
 
   .expert-lead__form .leadgen-submit .icon-circle {
@@ -1960,7 +2008,7 @@
   .expert-lead__disclaimer a { color: rgba(255, 255, 255, 0.75); text-decoration: underline; }
 
   @media (max-width: 1150px) {
-    .expert-lead__inner { flex-direction: column; align-items: stretch; padding: 2.4rem; }
+    .expert-lead__inner { flex-direction: column; align-items: stretch; padding: var(--space-38_4); }
     .expert-lead__content { max-width: none; }
     .expert-lead__form { width: 100%; }
   }
@@ -1972,27 +2020,27 @@
   .finish {
     position: relative;
     z-index: 5;
-    margin: 0 2.25rem 3rem;
+    margin: 0 var(--space-36) var(--space-48);
   }
 
   .finish-panel {
     background: #ffffff;
     border-radius: 1.2rem;
-    padding: 5rem 0;
+    padding: var(--space-80) 0;
   }
 
   .finish-inner {
     max-width: 1920px;
     margin: 0 auto;
-    padding: 0 5.875rem;
+    padding: 0 var(--space-94);
   }
 
   .finish-head {
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: start;
-    gap: 3rem;
-    margin: 0 0 2.4rem;
+    gap: var(--space-48);
+    margin: 0 0 var(--space-38_4);
   }
 
   .finish-heading {
@@ -2020,7 +2068,7 @@
     text-align: right;
   }
 
-  .finish-tour { margin: 0 0 1.625rem; }
+  .finish-tour { margin: 0 0 var(--space-26); }
 
   .iframe-full {
     position: relative;
@@ -2043,13 +2091,13 @@
   .finish-features {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 1rem;
+    gap: var(--space-16);
   }
 
   .finish-feature {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: var(--space-16);
     background: #ffffff;
     border: 1px solid rgba(28, 28, 26, 0.08);
     border-radius: 0.7rem;
@@ -2075,7 +2123,7 @@
 
   .finish-feature-icon svg { width: 1.7rem; height: 1.7rem; }
 
-  .finish-feature-text { padding: 0.4rem 1rem 0.4rem 0; min-width: 0; }
+  .finish-feature-text { padding: var(--space-6_4) var(--space-16) var(--space-6_4) 0; min-width: 0; }
 
   .finish-feature-text strong {
     display: block;
@@ -2086,7 +2134,7 @@
 
   .finish-feature-text span {
     display: block;
-    margin-top: 0.15rem;
+    margin-top: var(--space-2_4);
     font-size: 0.76rem;
     line-height: 1.3;
     color: #1c1c1a;
@@ -2095,12 +2143,12 @@
 
   @media (max-width: 1200px) {
     .finish-features { grid-template-columns: repeat(3, 1fr); }
-    .finish-head { grid-template-columns: 1fr; gap: 1rem; }
+    .finish-head { grid-template-columns: 1fr; gap: var(--space-16); }
     .finish-note { text-align: left; align-self: auto; }
   }
 
   @media (max-width: 640px) {
-    .finish-inner { padding: 0 1.5rem; }
+    .finish-inner { padding: 0 var(--space-24); }
     .finish-note { max-width: none; }
     .finish-features { grid-template-columns: 1fr; }
     .iframe-full { padding-bottom: 75%; }
@@ -2117,27 +2165,27 @@
     --mcalc-accent: var(--accent, #f27239);
     position: relative;
     z-index: 4;
-    margin: 0 2.25rem 3rem;
+    margin: 0 var(--space-36) var(--space-48);
   }
 
   .mcalc-panel {
     background: #ffffff;
     border-radius: 1.2rem;
-    padding: 5rem 0;
+    padding: var(--space-80) 0;
   }
 
   .mcalc-inner {
     max-width: 1920px;
     margin: 0 auto;
-    padding: 0 5.875rem;
+    padding: 0 var(--space-94);
   }
 
   .mcalc-head {
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: start;
-    gap: 3rem;
-    margin: 0 0 2.6rem;
+    gap: var(--space-48);
+    margin: 0 0 var(--space-41_6);
   }
 
   .mcalc-heading {
@@ -2168,7 +2216,7 @@
   .mcalc-body {
     display: grid;
     grid-template-columns: minmax(19rem, 25rem) 1fr;
-    gap: 1.625rem;
+    gap: var(--space-26);
     align-items: start;
   }
 
@@ -2176,15 +2224,15 @@
   .mcalc-sliders {
     display: flex;
     flex-direction: column;
-    gap: 1.6rem;
+    gap: var(--space-25_6);
     background: #F7F9FB;
     border-radius: 0.9rem;
-    padding: 1.75rem;
+    padding: var(--space-28);
   }
 
   .mcalc-field label {
     display: block;
-    margin: 0 0 0.8rem;
+    margin: 0 0 var(--space-12_8);
     font-size: 0.85rem;
     color: #1c1c1a;
     opacity: 0.55;
@@ -2195,11 +2243,11 @@
   .mcalc-readout {
     display: flex;
     align-items: baseline;
-    gap: 0.3rem;
+    gap: var(--space-4_8);
     background: #ffffff;
     border-radius: 0.7rem;
-    padding: 0.9rem 1.1rem;
-    margin: 0 0 1rem;
+    padding: var(--space-14_4) var(--space-17_6);
+    margin: 0 0 var(--space-16);
     font-family: 'Onest', sans-serif;
     font-weight: 700;
     font-size: 1.4rem;
@@ -2270,7 +2318,7 @@
     /* Верхний паддинг = паддингу .mcalc-sliders (1.75rem), чтобы
        «БАНК» в шапке таблицы стоял вровень с «Стоимость квартиры, ₽»
        слева. */
-    padding: 1.25rem 2.4rem 0.5rem 1.5rem;
+    padding: var(--space-20) var(--space-38_4) var(--space-8) var(--space-24);
     overflow-y: scroll;
     scrollbar-width: none;
   }
@@ -2308,13 +2356,13 @@
     display: grid;
     grid-template-columns: 2.6fr 1fr 1.3fr 0.9fr;
     align-items: center;
-    gap: 1rem;
-    padding: 1.1rem 0;
+    gap: var(--space-16);
+    padding: var(--space-17_6) 0;
     border-bottom: 1px solid rgba(28, 28, 26, 0.08);
   }
 
   .mcalc-row.is-head {
-    padding: 0 0 0.9rem;
+    padding: 0 0 var(--space-14_4);
     font-size: 0.78rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -2328,7 +2376,7 @@
   .mcalc-bank {
     display: flex;
     align-items: center;
-    gap: 0.9rem;
+    gap: var(--space-14_4);
     font-family: 'Onest', sans-serif;
     font-weight: 700;
     font-size: 0.95rem;
@@ -2365,7 +2413,7 @@
   }
 
   .mcalc-foot {
-    margin: 1.4rem 0 0;
+    margin: var(--space-22_4) 0 0;
     font-size: 0.78rem;
     line-height: 1.5;
     color: #1c1c1a;
@@ -2375,7 +2423,7 @@
   @media (max-width: 1200px) {
     .mcalc-body { grid-template-columns: 1fr; }
     .mcalc-sliders { grid-template-columns: repeat(3, 1fr); display: grid; }
-    .mcalc-head { grid-template-columns: 1fr; gap: 1rem; }
+    .mcalc-head { grid-template-columns: 1fr; gap: var(--space-16); }
     .mcalc-note { text-align: left; align-self: auto; }
   }
 
@@ -2387,7 +2435,7 @@
   }
 
   @media (max-width: 640px) {
-    .mcalc-inner { padding: 0 1.5rem; }
+    .mcalc-inner { padding: 0 var(--space-24); }
   }
 
 </style>
