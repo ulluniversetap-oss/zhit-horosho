@@ -174,12 +174,20 @@
   .max-link { color: var(--accent-secondary); font-weight: 500; font-size: 1.05rem; text-decoration: none; }
   .max-link:hover { text-decoration: underline; }
 
+  /* Высота кнопки зафиксирована и равна высоте .nav ul (4.22rem) —
+     раньше высота считалась от паддинга + 4.5rem-иконки (общий
+     .icon-circle для всех pill-кнопок сайта) и получалась ~5.5rem,
+     заметно выше пилюли меню и телефона рядом в той же строке шапки.
+     Здесь кнопка компактнее, т.к. живёт в тонкой строке шапки, а не
+     одна на пустом месте как .cta/.leadgen-submit. */
   .contact-btn {
     position: relative;
     display: inline-flex;
     align-items: center;
+    box-sizing: border-box;
+    height: 4.22rem;
     gap: var(--space-22_4);
-    padding: var(--space-8) var(--space-8) var(--space-8) var(--space-36_8);
+    padding: 0 var(--space-8) 0 var(--space-36_8);
     border-radius: 999px;
     background: var(--glass-bg);
     border: 0.95px solid rgba(255, 255, 255, 0.3);
@@ -193,6 +201,11 @@
   }
 
   .contact-btn:hover { background: rgba(255, 255, 255, 0.14); }
+
+  /* Своя (меньше общей 4.5rem) иконка-круг — рассчитана так, чтобы
+     вместе с вертикальным паддингом кнопки (0, высота задана самой
+     кнопкой) вписаться ровно в те же 4.22rem, что и .nav ul. */
+  .contact-btn .icon-circle { width: 3.22rem; height: 3.22rem; font-size: 1.05rem; }
 
   /* Единая высота круглой иконки для всех pill-кнопок сайта
      (contact-btn / cta / leadgen-submit) — на ~20% больше прежней
@@ -355,8 +368,7 @@
     .contacts { gap: var(--space-17_6); }
     .phone { font-size: 1.15rem; }
     .max-link { font-size: 0.92rem; }
-    .contact-btn { gap: var(--space-16); padding: var(--space-8) var(--space-8) var(--space-8) var(--space-25_6); font-size: 0.75rem; }
-    .contact-btn .icon-circle { width: 3.75rem; height: 3.75rem; font-size: 1.15rem; }
+    .contact-btn { gap: var(--space-16); padding: 0 var(--space-8) 0 var(--space-25_6); font-size: 0.75rem; }
   }
 
   @media (max-width: 900px) {
