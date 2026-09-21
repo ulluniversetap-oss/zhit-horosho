@@ -2857,18 +2857,19 @@
 
     <div class="walk-head">
       <h2 class="walk-heading walk-heading--oneline">Всё нужное <span>— в пешей доступности</span></h2>
-      <p class="walk-note">Время пешком указано ориентировочно и требует финальной сверки по фактическим маршрутам.</p>
+      <p class="walk-note">Время пешком рассчитано по пешеходным маршрутам (OpenStreetMap) от условной точки дома — адрес Новосибирская, 37 пока не присвоен официально, поэтому расчёт ориентировочный. * — расстояние до детского сада уточняется отдельно.</p>
     </div>
 
     <div class="walk-grid">
 
-      <!-- Карта. Координаты вынесены в один src — ПОДТВЕРДИТЬ точку ЖК
-           перед публикацией (адрес Новосибирская, 37 пока не зарегистрирован). -->
+      <!-- Карта. Точка — приблизительный центр ул. Новосибирская (Советский р-н),
+           определён по геокодированию OSM/Nominatim, т.к. дом 37 ещё не внесён
+           в реестр адресов. ПОДТВЕРДИТЬ точную точку ЖК, когда адрес будет присвоен. -->
       <div class="walk-map">
         <div class="walk-map-fallback">Карта</div>
         <iframe
           class="walk-map-frame"
-          src="https://yandex.ru/map-widget/v1/?ll=44.408500%2C48.657500&amp;z=16&amp;pt=44.408500,48.657500,pm2rdm"
+          src="https://yandex.ru/map-widget/v1/?ll=44.452650%2C48.679260&amp;z=16&amp;pt=44.452650,48.679260,pm2rdm"
           loading="lazy"
           title="ЖК «Жить хорошо» на карте"
           allowfullscreen></iframe>
@@ -2896,11 +2897,11 @@
             </svg>
             <h3>Образование</h3>
           </div>
-          <div class="walk-row"><span>Аграрный университет</span><span class="walk-time"><b>—</b> мин</span></div>
-          <div class="walk-row"><span>Волгоградский кооперативный институт</span><span class="walk-time"><b>—</b> мин</span></div>
-          <div class="walk-row"><span>Медицинский колледж</span><span class="walk-time"><b>—</b> мин</span></div>
-          <div class="walk-row"><span>Школа № 54</span><span class="walk-time"><b>—</b> мин</span></div>
-          <div class="walk-row"><span>Детский сад</span><span class="walk-time"><b>—</b> мин</span></div>
+          <div class="walk-row"><span>Аграрный университет</span><span class="walk-time"><b>14</b> мин</span></div>
+          <div class="walk-row"><span>Волгоградский кооперативный институт</span><span class="walk-time"><b>10</b> мин</span></div>
+          <div class="walk-row"><span>Медицинский колледж</span><span class="walk-time"><b>6</b> мин</span></div>
+          <div class="walk-row"><span>Школа № 54</span><span class="walk-time"><b>8</b> мин</span></div>
+          <div class="walk-row"><span>Детский сад</span><span class="walk-time"><b>—</b> мин *</span></div>
         </div>
 
         <div class="walk-card">
@@ -2912,8 +2913,8 @@
             </svg>
             <h3>Здоровье</h3>
           </div>
-          <div class="walk-row"><span>Больница № 7</span><span class="walk-time"><b>—</b> мин</span></div>
-          <div class="walk-row"><span>Аптеки</span><span class="walk-time"><b>—</b> мин</span></div>
+          <div class="walk-row"><span>Больница № 7</span><span class="walk-time"><b>5</b> мин</span></div>
+          <div class="walk-row"><span>Аптеки</span><span class="walk-time"><b>5</b> мин</span></div>
         </div>
 
         <div class="walk-card">
@@ -2927,9 +2928,9 @@
             </svg>
             <h3>Транспорт</h3>
           </div>
-          <div class="walk-row"><span>Остановки общественного транспорта</span><span class="walk-time"><b>—</b> мин</span></div>
-          <div class="walk-row"><span>Трамвайная остановка</span><span class="walk-time"><b>—</b> мин</span></div>
-          <div class="walk-row"><span>До центра города</span><span class="walk-time"><b>—</b> мин на авто</span></div>
+          <div class="walk-row"><span>Остановки общественного транспорта</span><span class="walk-time"><b>5</b> мин</span></div>
+          <div class="walk-row"><span>Трамвайная остановка</span><span class="walk-time"><b>11</b> мин</span></div>
+          <div class="walk-row"><span>До центра города</span><span class="walk-time"><b>12</b> мин на авто</span></div>
         </div>
 
         <div class="walk-card">
@@ -2940,9 +2941,9 @@
             </svg>
             <h3>На каждый день</h3>
           </div>
-          <div class="walk-row"><span>Продуктовые магазины</span><span class="walk-time"><b>—</b> мин</span></div>
-          <div class="walk-row"><span>Торговый центр</span><span class="walk-time"><b>—</b> мин</span></div>
-          <div class="walk-row"><span>Парк / зона прогулок</span><span class="walk-time"><b>—</b> мин</span></div>
+          <div class="walk-row"><span>Продуктовые магазины</span><span class="walk-time"><b>11</b> мин</span></div>
+          <div class="walk-row"><span>Торговый центр</span><span class="walk-time"><b>26</b> мин</span></div>
+          <div class="walk-row"><span>Парк / зона прогулок</span><span class="walk-time"><b>14</b> мин</span></div>
         </div>
 
       </div>
