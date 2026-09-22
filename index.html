@@ -3369,7 +3369,10 @@
 
       function render() {
         var price = Number(elPrice.value);
-        elDown.max = price;
+        // max у ползунка взноса НЕ подгоняем под цену — иначе при
+        // сохранении процента (см. downPercent ниже) отношение
+        // value/max остаётся постоянным, и бегунок визуально стоит
+        // на месте, хотя число меняется. Ограничиваем только значение.
         if (Number(elDown.value) > price) elDown.value = price;
         var down = Number(elDown.value);
         var term = Number(elTerm.value);
