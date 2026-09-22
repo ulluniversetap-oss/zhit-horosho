@@ -2444,11 +2444,12 @@
   }
 
   /* ===== Блок «Дополнительные услуги» =====
-     Слайдер: слева цветная карточка с оффером и кнопкой, справа фото
-     во всю оставшуюся ширину, листается стрелками (в шапке блока и
-     поверх фото) и точками. Три карточки чередуют уже используемые на
-     сайте фоны — фирменный оранжевый (.trust-card--accent, .leadgen-
-     submit), нейтральный светлый (.trust-card) и тёмный (.leadgen) —
+     Раньше был слайдером (одна карточка+фото видны за раз, листались
+     стрелками и точками) — по просьбе убрали галерею: все три пары
+     карточка+фото показаны сразу, друг под другом, без JS-логики
+     переключения (скрипт слайдера и связанные с ним кнопки/точки
+     удалены). Сами карточки не менялись — три уже используемых на
+     сайте фона (фирменный оранжевый, нейтральный светлый, тёмный)
      вместо произвольных цветов из чужого макета. */
   .addl {
     position: relative;
@@ -2462,11 +2463,6 @@
   }
 
   .addl-head {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-16);
     margin: 0 0 var(--space-38_4);
   }
 
@@ -2483,47 +2479,18 @@
 
   .addl-heading span { color: var(--accent, #f27239); }
 
-  .addl-nav {
+  .addl-list {
     display: flex;
-    align-items: center;
-    flex-shrink: 0;
-    border-radius: 999px;
-    background: #eef1f5;
-    overflow: hidden;
-  }
-
-  .addl-nav-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 3.4rem;
-    height: 3.4rem;
-    border: none;
-    background: transparent;
-    color: #1c1c1a;
-    cursor: pointer;
-    transition: background-color 0.25s ease, color 0.25s ease;
-  }
-
-  .addl-nav-btn:first-child { border-right: 1px solid rgba(28, 28, 26, 0.1); }
-  .addl-nav-btn:hover { background: var(--accent, #f27239); color: #ffffff; }
-  .addl-nav-btn svg { width: 1.1rem; height: 1.1rem; }
-
-  .addl-viewport {
-    overflow: hidden;
-    border-radius: 1.2rem;
-  }
-
-  .addl-track {
-    display: flex;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-direction: column;
+    gap: var(--space-19_2);
   }
 
   .addl-slide {
-    flex: 0 0 100%;
     display: grid;
     grid-template-columns: minmax(20rem, 38%) 1fr;
     gap: var(--space-16);
+    border-radius: 1.2rem;
+    overflow: hidden;
   }
 
   .addl-card {
@@ -2605,46 +2572,6 @@
     object-fit: cover;
     object-position: center 30%;
   }
-
-  .addl-photo-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 2.6rem;
-    height: 2.6rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.85);
-    color: #1c1c1a;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-
-  .addl-photo-arrow:hover { background: #ffffff; }
-  .addl-photo-arrow--prev { left: var(--space-16); }
-  .addl-photo-arrow--next { right: var(--space-16); }
-  .addl-photo-arrow svg { width: 0.9rem; height: 0.9rem; }
-
-  .addl-dots {
-    display: flex;
-    justify-content: center;
-    gap: var(--space-6_4);
-    margin-top: var(--space-19_2);
-  }
-
-  .addl-dots span {
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 50%;
-    background: rgba(28, 28, 26, 0.15);
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-  }
-
-  .addl-dots span.on { background: var(--accent, #f27239); transform: scale(1.2); }
 
   @media (max-width: 1024px) {
     .addl-slide { grid-template-columns: 1fr; }
@@ -3813,81 +3740,49 @@
   <div class="addl-inner">
     <div class="addl-head">
       <h2 class="addl-heading">Дополнительные <span>услуги</span></h2>
-      <div class="addl-nav">
-        <button class="addl-nav-btn" type="button" data-addl-prev aria-label="Предыдущий слайд">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 5L8 12L15 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <button class="addl-nav-btn" type="button" data-addl-next aria-label="Следующий слайд">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-      </div>
     </div>
 
-    <div class="addl-viewport">
-      <div class="addl-track" id="addlTrack">
+    <div class="addl-list">
 
-        <article class="addl-slide">
-          <div class="addl-card addl-card--accent">
-            <div>
-              <h3>Коммерческая недвижимость</h3>
-              <p>Помещения свободного назначения на первых этажах — под магазин, аптеку, салон или офис, с отдельным входом с улицы.</p>
-            </div>
-            <a href="#leadgen" class="addl-btn">Смотреть подробнее<span class="icon-circle">→</span></a>
+      <article class="addl-slide">
+        <div class="addl-card addl-card--accent">
+          <div>
+            <h3>Коммерческая недвижимость</h3>
+            <p>Помещения свободного назначения на первых этажах — под магазин, аптеку, салон или офис, с отдельным входом с улицы.</p>
           </div>
-          <div class="addl-photo">
-            <img src="assets/images/aerial-view.jpg" alt="Коммерческая недвижимость" loading="lazy" />
-            <button class="addl-photo-arrow addl-photo-arrow--prev" type="button" data-addl-prev aria-label="Предыдущее фото">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 5L8 12L15 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-            <button class="addl-photo-arrow addl-photo-arrow--next" type="button" data-addl-next aria-label="Следующее фото">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-          </div>
-        </article>
+          <a href="#leadgen" class="addl-btn">Смотреть подробнее<span class="icon-circle">→</span></a>
+        </div>
+        <div class="addl-photo">
+          <img src="assets/images/aerial-view.jpg" alt="Коммерческая недвижимость" loading="lazy" />
+        </div>
+      </article>
 
-        <article class="addl-slide">
-          <div class="addl-card addl-card--neutral">
-            <div>
-              <h3>Дизайн-проект интерьера</h3>
-              <p>Подбираем готовую концепцию отделки и меблировки под планировку вашей квартиры — с 3D-визуализацией перед началом работ.</p>
-            </div>
-            <a href="#leadgen" class="addl-btn">Смотреть подробнее<span class="icon-circle">→</span></a>
+      <article class="addl-slide">
+        <div class="addl-card addl-card--neutral">
+          <div>
+            <h3>Дизайн-проект интерьера</h3>
+            <p>Подбираем готовую концепцию отделки и меблировки под планировку вашей квартиры — с 3D-визуализацией перед началом работ.</p>
           </div>
-          <div class="addl-photo">
-            <img src="assets/images/trust-photo.jpg" alt="Дизайн-проект интерьера" loading="lazy" />
-            <button class="addl-photo-arrow addl-photo-arrow--prev" type="button" data-addl-prev aria-label="Предыдущее фото">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 5L8 12L15 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-            <button class="addl-photo-arrow addl-photo-arrow--next" type="button" data-addl-next aria-label="Следующее фото">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-          </div>
-        </article>
+          <a href="#leadgen" class="addl-btn">Смотреть подробнее<span class="icon-circle">→</span></a>
+        </div>
+        <div class="addl-photo">
+          <img src="assets/images/trust-photo.jpg" alt="Дизайн-проект интерьера" loading="lazy" />
+        </div>
+      </article>
 
-        <article class="addl-slide">
-          <div class="addl-card addl-card--dark">
-            <div>
-              <h3>Вторичная продажа</h3>
-              <p>Поможем продать имеющуюся квартиру и оформить сделку так, чтобы деньги вовремя вышли на покупку новой.</p>
-            </div>
-            <a href="#leadgen" class="addl-btn">Смотреть подробнее<span class="icon-circle">→</span></a>
+      <article class="addl-slide">
+        <div class="addl-card addl-card--dark">
+          <div>
+            <h3>Вторичная продажа</h3>
+            <p>Поможем продать имеющуюся квартиру и оформить сделку так, чтобы деньги вовремя вышли на покупку новой.</p>
           </div>
-          <div class="addl-photo">
-            <img src="assets/images/family-house.jpg" alt="Вторичная продажа" loading="lazy" />
-            <button class="addl-photo-arrow addl-photo-arrow--prev" type="button" data-addl-prev aria-label="Предыдущее фото">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 5L8 12L15 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-            <button class="addl-photo-arrow addl-photo-arrow--next" type="button" data-addl-next aria-label="Следующее фото">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-          </div>
-        </article>
+          <a href="#leadgen" class="addl-btn">Смотреть подробнее<span class="icon-circle">→</span></a>
+        </div>
+        <div class="addl-photo">
+          <img src="assets/images/family-house.jpg" alt="Вторичная продажа" loading="lazy" />
+        </div>
+      </article>
 
-      </div>
-    </div>
-
-    <div class="addl-dots" id="addlDots">
-      <span class="on"></span><span></span><span></span>
     </div>
   </div>
 </section>
@@ -4340,40 +4235,6 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
   updateAll();
-</script>
-
-<script>
-  // Слайдер «Дополнительные услуги»: одна карточка+фото видны за раз,
-  // листается кнопками в шапке блока, стрелками поверх фото и точками —
-  // все три управляющих элемента синхронизированы через общий индекс.
-  (function () {
-    const track = document.getElementById('addlTrack');
-    if (!track) return;
-
-    const slides = Array.from(track.children);
-    const dotsWrap = document.getElementById('addlDots');
-    const dots = dotsWrap ? Array.from(dotsWrap.children) : [];
-    const prevBtns = document.querySelectorAll('[data-addl-prev]');
-    const nextBtns = document.querySelectorAll('[data-addl-next]');
-
-    let index = 0;
-
-    function render() {
-      track.style.transform = `translateX(${-100 * index}%)`;
-      dots.forEach((dot, i) => dot.classList.toggle('on', i === index));
-    }
-
-    function goTo(i) {
-      index = (i + slides.length) % slides.length;
-      render();
-    }
-
-    prevBtns.forEach((btn) => btn.addEventListener('click', () => goTo(index - 1)));
-    nextBtns.forEach((btn) => btn.addEventListener('click', () => goTo(index + 1)));
-    dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
-
-    render();
-  })();
 </script>
 
 </body>
