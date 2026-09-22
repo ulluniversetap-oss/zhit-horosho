@@ -2700,14 +2700,6 @@
     text-decoration: none;
   }
 
-  .offices-address {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 500;
-    line-height: 1.4;
-    color: rgba(255, 255, 255, 0.85);
-  }
-
   .offices-desc {
     margin: 0;
     font-size: 0.85rem;
@@ -2787,86 +2779,27 @@
     border: 0;
   }
 
-  .offices-list {
+  .offices-mini-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
     display: flex;
     flex-direction: column;
     gap: var(--space-12, 0.75rem);
   }
 
-  .offices-card {
-    position: relative;
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-12, 0.75rem);
-    box-sizing: border-box;
-    padding: var(--space-16) var(--space-19_2);
-    border-radius: 0.9rem;
-    background: #f2f3f2;
-    color: inherit;
-    text-decoration: none;
-    transition: background-color 0.35s ease, color 0.35s ease;
+  .offices-mini-list li {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.6);
   }
 
-  .offices-card:hover { background: var(--accent, #f27239); color: #ffffff; }
-
-  .offices-card-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    width: 2.2rem;
-    height: 2.2rem;
-    border-radius: 0.5rem;
-    background: var(--accent, #f27239);
+  .offices-mini-list li strong {
+    display: block;
+    margin-bottom: 0.15rem;
+    font-weight: 600;
     color: #ffffff;
-    transition: background-color 0.35s ease, color 0.35s ease;
   }
-
-  .offices-card:hover .offices-card-icon { background: rgba(255, 255, 255, 0.2); }
-  .offices-card-icon svg { width: 0.95rem; height: 0.95rem; }
-
-  .offices-card-text { min-width: 0; }
-
-  .offices-card-kicker {
-    margin: 0 0 var(--space-4);
-    font-size: 0.66rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--accent, #f27239);
-    transition: color 0.35s ease;
-  }
-
-  .offices-card:hover .offices-card-kicker { color: rgba(255, 255, 255, 0.85); }
-
-  .offices-card h3 {
-    margin: 0 0 var(--space-4);
-    font-family: 'Onest', sans-serif;
-    font-weight: 700;
-    font-size: 0.9rem;
-    line-height: 1.3;
-    color: inherit;
-  }
-
-  .offices-card-addr {
-    margin: 0 0 var(--space-4);
-    font-size: 0.78rem;
-    line-height: 1.4;
-    color: inherit;
-    opacity: 0.65;
-    transition: opacity 0.35s ease;
-  }
-
-  .offices-card:hover .offices-card-addr { opacity: 0.9; }
-
-  .offices-card-hours {
-    margin: 0;
-    font-size: 0.72rem;
-    color: inherit;
-    opacity: 0.55;
-  }
-
-  .offices-card:hover .offices-card-hours { opacity: 0.85; }
 
   @media (max-width: 1024px) {
     .offices-grid { grid-template-columns: 1fr; }
@@ -3970,8 +3903,13 @@
               <a href="tel:+78442204413" class="offices-phone">+7 (844) 220-44-13</a>
             </div>
             <div>
-              <p class="offices-label">Адрес главного офиса</p>
-              <p class="offices-address">г. Волгоград, ул. Советская, д. 28</p>
+              <p class="offices-label">Наши офисы</p>
+              <ul class="offices-mini-list">
+                <li><strong>Главный офис</strong>г. Волгоград, ул. Советская, д. 28</li>
+                <li><strong>ЖК «Берег Волги»</strong>ул. Степана Разина, д. 6</li>
+                <li><strong>ЖК «Новый»</strong>ул. Тракторостроителей, 27/1</li>
+                <li><strong>У ЖК «Герои Поколений»</strong>справа от автосалона «Автопрестиж»</li>
+              </ul>
             </div>
             <p class="offices-desc">Ответим на вопросы по планировкам, ипотеке и срокам.<br />Перезвоним в течение 15 минут в рабочее время.</p>
             <div class="offices-actions">
@@ -3982,45 +3920,6 @@
                 <a href="#" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.568 8.16c-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.2-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212-.07-.062-.174-.041-.249-.024-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472z"/></svg></a>
               </div>
             </div>
-          </div>
-
-          <div class="offices-list">
-            <a href="#leadgen" class="offices-card">
-              <span class="offices-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.3" /></svg></span>
-              <div class="offices-card-text">
-                <p class="offices-card-kicker">Главный офис</p>
-                <h3>Офис на ул. Советская, д. 28</h3>
-                <p class="offices-card-addr">Центральный офис А-Бутик недвижимости</p>
-                <p class="offices-card-hours">Ежедневно 8:00–20:00</p>
-              </div>
-            </a>
-            <a href="#leadgen" class="offices-card">
-              <span class="offices-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.3" /></svg></span>
-              <div class="offices-card-text">
-                <p class="offices-card-kicker">Офис продаж</p>
-                <h3>ЖК «Берег Волги»</h3>
-                <p class="offices-card-addr">ул. Степана Разина, д. 6</p>
-                <p class="offices-card-hours">Ежедневно 9:00–19:00</p>
-              </div>
-            </a>
-            <a href="#leadgen" class="offices-card">
-              <span class="offices-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.3" /></svg></span>
-              <div class="offices-card-text">
-                <p class="offices-card-kicker">Офис продаж</p>
-                <h3>ЖК «Новый»</h3>
-                <p class="offices-card-addr">ул. Тракторостроителей, 27/1</p>
-                <p class="offices-card-hours">Ежедневно 9:00–19:00</p>
-              </div>
-            </a>
-            <a href="#leadgen" class="offices-card">
-              <span class="offices-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.3" /></svg></span>
-              <div class="offices-card-text">
-                <p class="offices-card-kicker">Офис продаж</p>
-                <h3>У ЖК «Герои Поколений»</h3>
-                <p class="offices-card-addr">Справа от автосалона «Автопрестиж»</p>
-                <p class="offices-card-hours">Ежедневно 9:00–19:00</p>
-              </div>
-            </a>
           </div>
         </div>
 
