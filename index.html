@@ -2765,17 +2765,33 @@
     color: #ffffff;
   }
 
+  .offices-map {
+    position: relative;
+    border-radius: 1.2rem;
+    overflow: hidden;
+    background: #e9e9e9;
+  }
+
+  .offices-map iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 20rem;
+    border: 0;
+  }
+
   .offices-list {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
     gap: var(--space-19_2);
+    margin-top: var(--space-19_2);
   }
 
   .offices-card {
     position: relative;
     display: block;
     box-sizing: border-box;
-    padding: var(--space-27_2) var(--space-27_2) var(--space-56);
+    padding: var(--space-19_2) var(--space-19_2) var(--space-48);
     border-radius: 0.9rem;
     background: #f2f3f2;
     color: inherit;
@@ -2789,9 +2805,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2.6rem;
-    height: 2.6rem;
-    margin: 0 0 var(--space-16);
+    width: 2.2rem;
+    height: 2.2rem;
+    margin: 0 0 var(--space-12, 0.75rem);
     border-radius: 0.5rem;
     background: var(--accent, #f27239);
     color: #ffffff;
@@ -2799,11 +2815,11 @@
   }
 
   .offices-card:hover .offices-card-icon { background: rgba(255, 255, 255, 0.2); }
-  .offices-card-icon svg { width: 1.1rem; height: 1.1rem; }
+  .offices-card-icon svg { width: 0.95rem; height: 0.95rem; }
 
   .offices-card-kicker {
     margin: 0 0 var(--space-4);
-    font-size: 0.72rem;
+    font-size: 0.66rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -2817,14 +2833,14 @@
     margin: 0 0 var(--space-4);
     font-family: 'Onest', sans-serif;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 0.9rem;
     line-height: 1.3;
     color: inherit;
   }
 
   .offices-card-addr {
     margin: 0;
-    font-size: 0.85rem;
+    font-size: 0.78rem;
     line-height: 1.4;
     color: inherit;
     opacity: 0.65;
@@ -2835,10 +2851,10 @@
 
   .offices-card-hours {
     position: absolute;
-    left: var(--space-27_2);
-    bottom: var(--space-24);
+    left: var(--space-19_2);
+    bottom: var(--space-19_2);
     margin: 0;
-    font-size: 0.78rem;
+    font-size: 0.72rem;
     color: inherit;
     opacity: 0.55;
   }
@@ -2846,7 +2862,7 @@
   .offices-card:hover .offices-card-hours { opacity: 0.85; }
 
   @media (max-width: 1200px) {
-    .offices-list { grid-template-columns: 1fr; }
+    .offices-list { grid-template-columns: 1fr 1fr; }
   }
 
   @media (max-width: 1024px) {
@@ -2854,9 +2870,11 @@
     .offices-head { grid-template-columns: 1fr; }
     .offices-note { text-align: left; align-self: auto; }
     .offices-contact { flex-direction: row; flex-wrap: wrap; align-items: center; }
+    .offices-map iframe { min-height: 16rem; }
   }
 
   @media (max-width: 640px) {
+    .offices-list { grid-template-columns: 1fr; }
     .offices-inner { padding: 0 var(--space-24); }
     .offices-heading { font-size: 2rem; }
     .offices-contact { flex-direction: column; align-items: stretch; }
@@ -3810,36 +3828,47 @@
           </div>
         </div>
 
-        <div class="offices-list">
-          <a href="#leadgen" class="offices-card">
-            <span class="offices-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.3" /></svg></span>
-            <p class="offices-card-kicker">Главный офис</p>
-            <h3>Офис на ул. Советская, д. 28</h3>
-            <p class="offices-card-addr">Центральный офис А-Бутик недвижимости</p>
-            <p class="offices-card-hours">Ежедневно 8:00–20:00</p>
-          </a>
-          <a href="#leadgen" class="offices-card">
-            <span class="offices-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.3" /></svg></span>
-            <p class="offices-card-kicker">Офис продаж</p>
-            <h3>ЖК «Берег Волги»</h3>
-            <p class="offices-card-addr">ул. Степана Разина, д. 6</p>
-            <p class="offices-card-hours">Ежедневно 9:00–19:00</p>
-          </a>
-          <a href="#leadgen" class="offices-card">
-            <span class="offices-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.3" /></svg></span>
-            <p class="offices-card-kicker">Офис продаж</p>
-            <h3>ЖК «Новый»</h3>
-            <p class="offices-card-addr">ул. Тракторостроителей, 27/1</p>
-            <p class="offices-card-hours">Ежедневно 9:00–19:00</p>
-          </a>
-          <a href="#leadgen" class="offices-card">
-            <span class="offices-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.3" /></svg></span>
-            <p class="offices-card-kicker">Офис продаж</p>
-            <h3>У ЖК «Герои Поколений»</h3>
-            <p class="offices-card-addr">Справа от автосалона «Автопрестиж»</p>
-            <p class="offices-card-hours">Ежедневно 9:00–19:00</p>
-          </a>
+        <div class="offices-map">
+          <iframe
+            src="https://yandex.ru/map-widget/v1/?ll=44.516975%2C48.707067&z=13&l=map&pt=44.516975,48.707067,pm2rdm"
+            width="100%"
+            height="100%"
+            frameborder="0"
+            loading="lazy"
+            title="Карта офисов продаж"
+          ></iframe>
         </div>
+      </div>
+
+      <div class="offices-list">
+        <a href="#leadgen" class="offices-card">
+          <span class="offices-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.3" /></svg></span>
+          <p class="offices-card-kicker">Главный офис</p>
+          <h3>Офис на ул. Советская, д. 28</h3>
+          <p class="offices-card-addr">Центральный офис А-Бутик недвижимости</p>
+          <p class="offices-card-hours">Ежедневно 8:00–20:00</p>
+        </a>
+        <a href="#leadgen" class="offices-card">
+          <span class="offices-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.3" /></svg></span>
+          <p class="offices-card-kicker">Офис продаж</p>
+          <h3>ЖК «Берег Волги»</h3>
+          <p class="offices-card-addr">ул. Степана Разина, д. 6</p>
+          <p class="offices-card-hours">Ежедневно 9:00–19:00</p>
+        </a>
+        <a href="#leadgen" class="offices-card">
+          <span class="offices-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.3" /></svg></span>
+          <p class="offices-card-kicker">Офис продаж</p>
+          <h3>ЖК «Новый»</h3>
+          <p class="offices-card-addr">ул. Тракторостроителей, 27/1</p>
+          <p class="offices-card-hours">Ежедневно 9:00–19:00</p>
+        </a>
+        <a href="#leadgen" class="offices-card">
+          <span class="offices-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.3" /></svg></span>
+          <p class="offices-card-kicker">Офис продаж</p>
+          <h3>У ЖК «Герои Поколений»</h3>
+          <p class="offices-card-addr">Справа от автосалона «Автопрестиж»</p>
+          <p class="offices-card-hours">Ежедневно 9:00–19:00</p>
+        </a>
       </div>
 
     </div>
