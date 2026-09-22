@@ -2444,13 +2444,17 @@
   }
 
   /* ===== Блок «Дополнительные услуги» =====
-     Раньше был слайдером (одна карточка+фото видны за раз, листались
-     стрелками и точками) — по просьбе убрали галерею: все три пары
-     карточка+фото показаны сразу, друг под другом, без JS-логики
-     переключения (скрипт слайдера и связанные с ним кнопки/точки
-     удалены). Сами карточки не менялись — три уже используемых на
-     сайте фона (фирменный оранжевый, нейтральный светлый, тёмный)
-     вместо произвольных цветов из чужого макета. */
+     Раньше был слайдером (карточка+фото отдельно, одна пара видна за
+     раз, листались стрелками/точками), потом — вертикальным списком из
+     трёх пар карточка+фото друг под другом. По просьбе переделано в
+     три полностью видимые горизонтальные карточки в ряд, вообще без
+     какой-либо галереи/переключения: фото и текст объединены в одну
+     карточку (фото на весь фон + градиент снизу + заголовок/текст/
+     кнопка поверх) — тот же приём, что уже есть на сайте у
+     .trust-photo/.trust-photo-overlay/.trust-photo-text (блок «Жить —
+     спокойно»), просто адаптирован под три равные колонки вместо одной
+     широкой фотографии. Кнопка — стандартная акцентная пилюля
+     .leadgen-submit/.icon-circle, единая для всех трёх карточек. */
   .addl {
     position: relative;
     margin: 0 var(--space-36) var(--space-48);
@@ -2480,91 +2484,19 @@
   .addl-heading span { color: var(--accent, #f27239); }
 
   .addl-list {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--space-19_2);
   }
 
-  .addl-slide {
-    display: grid;
-    grid-template-columns: minmax(20rem, 38%) 1fr;
-    gap: var(--space-16);
-    border-radius: 1.2rem;
-    overflow: hidden;
-  }
-
   .addl-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: var(--space-38_4) var(--space-27_2);
-    border-radius: 1.2rem;
-    min-height: 34rem;
-    box-sizing: border-box;
-  }
-
-  .addl-card h3 {
-    margin: 0 0 var(--space-14_4);
-    font-family: 'RoadRadio', 'Onest', sans-serif;
-    font-weight: 700;
-    font-size: 1.7rem;
-    line-height: 1.15;
-    text-transform: uppercase;
-    color: inherit;
-  }
-
-  .addl-card p {
-    margin: 0;
-    max-width: 22rem;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    color: inherit;
-    opacity: 0.85;
-  }
-
-  .addl-card--accent { background: var(--accent, #f27239); color: #ffffff; }
-  .addl-card--neutral { background: #eef1f5; color: #272727; }
-  .addl-card--neutral p { opacity: 1; color: #3c3c3a; }
-  .addl-card--dark { background: #1b1c22; color: #ffffff; }
-
-  .addl-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: space-between;
-    align-self: flex-start;
-    gap: var(--space-25_6);
-    box-sizing: border-box;
-    padding: var(--space-8) var(--space-8) var(--space-8) var(--space-35_2);
-    background: var(--accent, #f27239);
-    border: none;
-    border-radius: 999px;
-    color: #ffffff;
-    font-family: inherit;
-    font-weight: 700;
-    font-size: 0.9rem;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background-color 0.25s ease;
-  }
-
-  .addl-btn:hover { background: #d95f28; }
-  .addl-btn .icon-circle { width: 2.6rem; height: 2.6rem; background: #ffffff; color: var(--accent, #f27239); font-size: 1rem; }
-
-  /* На оранжевой карточке белая кнопка на белой заливке не читалась бы —
-     инвертируем (та же логика, что у .leadgen-submit наоборот). */
-  .addl-card--accent .addl-btn { background: #ffffff; color: var(--accent, #f27239); }
-  .addl-card--accent .addl-btn:hover { background: #f4f4f4; }
-  .addl-card--accent .addl-btn .icon-circle { background: var(--accent, #f27239); color: #ffffff; }
-
-  .addl-photo {
     position: relative;
-    min-height: 34rem;
+    min-height: 28rem;
     border-radius: 1.2rem;
     overflow: hidden;
-    background: #ece9e4;
   }
 
-  .addl-photo img {
+  .addl-card img {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -2573,16 +2505,73 @@
     object-position: center 30%;
   }
 
+  .addl-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(10, 14, 25, 0) 35%, rgba(10, 14, 25, 0.85) 100%);
+  }
+
+  .addl-card-body {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    padding: var(--space-27_2);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-14_4);
+  }
+
+  .addl-card-body h3 {
+    margin: 0;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 1.35rem;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: #ffffff;
+  }
+
+  .addl-card-body p {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .addl-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    align-self: flex-start;
+    gap: var(--space-16);
+    box-sizing: border-box;
+    padding: var(--space-8) var(--space-8) var(--space-8) var(--space-24);
+    background: var(--accent, #f27239);
+    border: none;
+    border-radius: 999px;
+    color: #ffffff;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+  }
+
+  .addl-btn:hover { background: #d95f28; }
+  .addl-btn .icon-circle { width: 2.2rem; height: 2.2rem; background: #ffffff; color: var(--accent, #f27239); font-size: 0.9rem; }
+
   @media (max-width: 1024px) {
-    .addl-slide { grid-template-columns: 1fr; }
-    .addl-card { min-height: 0; }
-    .addl-photo { min-height: 20rem; }
+    .addl-list { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 640px) {
     .addl-inner { padding: 0 var(--space-24); }
     .addl-heading { font-size: 2rem; }
-    .addl-card { padding: var(--space-27_2) var(--space-19_2); }
+    .addl-card { min-height: 20rem; }
   }
 
   /* ===== Блок «Приезжайте — покажем на месте» (офисы продаж) =====
@@ -3744,42 +3733,33 @@
 
     <div class="addl-list">
 
-      <article class="addl-slide">
-        <div class="addl-card addl-card--accent">
-          <div>
-            <h3>Коммерческая недвижимость</h3>
-            <p>Помещения свободного назначения на первых этажах — под магазин, аптеку, салон или офис, с отдельным входом с улицы.</p>
-          </div>
+      <article class="addl-card">
+        <img src="assets/images/aerial-view.jpg" alt="Коммерческая недвижимость" loading="lazy" />
+        <div class="addl-card-overlay"></div>
+        <div class="addl-card-body">
+          <h3>Коммерческая недвижимость</h3>
+          <p>Помещения свободного назначения на первых этажах — под магазин, аптеку, салон или офис, с отдельным входом с улицы.</p>
           <a href="#leadgen" class="addl-btn">Смотреть подробнее<span class="icon-circle">→</span></a>
-        </div>
-        <div class="addl-photo">
-          <img src="assets/images/aerial-view.jpg" alt="Коммерческая недвижимость" loading="lazy" />
         </div>
       </article>
 
-      <article class="addl-slide">
-        <div class="addl-card addl-card--neutral">
-          <div>
-            <h3>Дизайн-проект интерьера</h3>
-            <p>Подбираем готовую концепцию отделки и меблировки под планировку вашей квартиры — с 3D-визуализацией перед началом работ.</p>
-          </div>
+      <article class="addl-card">
+        <img src="assets/images/trust-photo.jpg" alt="Дизайн-проект интерьера" loading="lazy" />
+        <div class="addl-card-overlay"></div>
+        <div class="addl-card-body">
+          <h3>Дизайн-проект интерьера</h3>
+          <p>Подбираем готовую концепцию отделки и меблировки под планировку вашей квартиры — с 3D-визуализацией перед началом работ.</p>
           <a href="#leadgen" class="addl-btn">Смотреть подробнее<span class="icon-circle">→</span></a>
-        </div>
-        <div class="addl-photo">
-          <img src="assets/images/trust-photo.jpg" alt="Дизайн-проект интерьера" loading="lazy" />
         </div>
       </article>
 
-      <article class="addl-slide">
-        <div class="addl-card addl-card--dark">
-          <div>
-            <h3>Вторичная продажа</h3>
-            <p>Поможем продать имеющуюся квартиру и оформить сделку так, чтобы деньги вовремя вышли на покупку новой.</p>
-          </div>
+      <article class="addl-card">
+        <img src="assets/images/family-house.jpg" alt="Вторичная продажа" loading="lazy" />
+        <div class="addl-card-overlay"></div>
+        <div class="addl-card-body">
+          <h3>Вторичная продажа</h3>
+          <p>Поможем продать имеющуюся квартиру и оформить сделку так, чтобы деньги вовремя вышли на покупку новой.</p>
           <a href="#leadgen" class="addl-btn">Смотреть подробнее<span class="icon-circle">→</span></a>
-        </div>
-        <div class="addl-photo">
-          <img src="assets/images/family-house.jpg" alt="Вторичная продажа" loading="lazy" />
         </div>
       </article>
 
