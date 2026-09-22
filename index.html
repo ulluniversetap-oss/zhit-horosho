@@ -2968,6 +2968,182 @@
     .news-heading { font-size: 2rem; }
   }
 
+  /* ===== Подвал (footer) =====
+     Раньше на странице не было — добавлен с нуля. Оформление на паттернах
+     сайта: нейтральный серый фон, как у .offices-card/.news-card, RoadRadio
+     для логотипа, та же типографика ярлычков (uppercase, letter-spacing),
+     что у .offices-label/.news-note. */
+  .site-footer {
+    position: relative;
+    background: #f2f3f2;
+    padding: var(--space-80) var(--space-36) var(--space-48);
+  }
+
+  .footer-inner {
+    max-width: 1920px;
+    margin: 0 auto;
+    padding: 0 var(--space-27_2);
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: var(--space-48);
+    padding-bottom: var(--space-48);
+    border-bottom: 1px solid rgba(28, 28, 26, 0.1);
+  }
+
+  .footer-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-12);
+    margin: 0 0 var(--space-16);
+    text-decoration: none;
+    color: #1c1c1a;
+  }
+
+  .footer-logo-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    border: 1px solid rgba(28, 28, 26, 0.2);
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+  }
+
+  .footer-logo-text {
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+  }
+
+  .footer-desc {
+    margin: 0;
+    max-width: 20rem;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: #1c1c1a;
+    opacity: 0.6;
+  }
+
+  .footer-col-title {
+    margin: 0 0 var(--space-19_2);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(28, 28, 26, 0.45);
+  }
+
+  .footer-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+  }
+
+  .footer-list a {
+    font-size: 0.88rem;
+    color: #1c1c1a;
+    text-decoration: none;
+    opacity: 0.75;
+    transition: opacity 0.2s ease, color 0.2s ease;
+  }
+
+  .footer-list a:hover { opacity: 1; color: var(--accent, #f27239); }
+
+  .footer-phone {
+    display: block;
+    margin: 0 0 var(--space-8);
+    font-family: 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #1c1c1a;
+    text-decoration: none;
+  }
+
+  .footer-phone:hover { color: var(--accent, #f27239); }
+
+  .footer-address {
+    margin: 0 0 var(--space-16);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: #1c1c1a;
+    opacity: 0.65;
+  }
+
+  .footer-tbd {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-4) var(--space-12);
+    border: 1px dashed rgba(28, 28, 26, 0.3);
+    border-radius: 999px;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(28, 28, 26, 0.5);
+    text-decoration: none;
+  }
+
+  .footer-bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-24);
+    padding-top: var(--space-24);
+  }
+
+  .footer-legal {
+    margin: 0;
+    max-width: 48rem;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: #1c1c1a;
+    opacity: 0.5;
+  }
+
+  .footer-legal a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .footer-legal .footer-tbd {
+    padding: 0 var(--space-8);
+    font-size: 0.68rem;
+    vertical-align: middle;
+  }
+
+  .footer-copy {
+    margin: 0;
+    flex-shrink: 0;
+    font-size: 0.78rem;
+    color: #1c1c1a;
+    opacity: 0.45;
+  }
+
+  @media (max-width: 1024px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; row-gap: var(--space-36); }
+    .footer-brand { grid-column: 1 / -1; }
+  }
+
+  @media (max-width: 640px) {
+    .site-footer { padding: var(--space-56) var(--space-24) var(--space-36); }
+    .footer-inner { padding: 0; }
+    .footer-grid { grid-template-columns: 1fr; gap: var(--space-27_2); }
+    .footer-bottom { flex-direction: column; align-items: flex-start; gap: var(--space-12); }
+  }
+
 </style>
 
 <body>
@@ -3986,6 +4162,58 @@
     </div>
   </div>
 </section>
+
+<div class="block-gap"></div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="footer-logo">
+          <span class="footer-logo-mark">ЖХ</span>
+          <span class="footer-logo-text">Жить хорошо</span>
+        </a>
+        <p class="footer-desc">Жилой комплекс в Советском районе Волгограда. Новосибирская, 37 — строительный адрес.</p>
+      </div>
+
+      <div class="footer-col">
+        <p class="footer-col-title">Разделы</p>
+        <ul class="footer-list">
+          <li><a href="/about-project">О проекте</a></li>
+          <li><a href="/offers">Предложения</a></li>
+          <li><a href="/who-its-for">Кому подойдёт</a></li>
+          <li><a href="/location">Локация</a></li>
+          <li><a href="/layouts">Планировки</a></li>
+          <li><a href="/purchase">Покупка</a></li>
+          <li><a href="/contacts">Контакты</a></li>
+          <li><a href="/about">О нас</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <p class="footer-col-title">Контакты</p>
+        <a href="tel:+78442204413" class="footer-phone">+7 (844) 220-44-13</a>
+        <p class="footer-address">ул. Советская, 28<br />ежедневно 8:00–20:00</p>
+        <a href="#" class="footer-tbd">E-mail</a>
+      </div>
+
+      <div class="footer-col">
+        <p class="footer-col-title">Документы</p>
+        <ul class="footer-list">
+          <li><a href="https://наш.дом.рф" target="_blank" rel="noopener">Ход строительства</a></li>
+          <li><a href="https://наш.дом.рф" target="_blank" rel="noopener">Проектная декларация</a></li>
+          <li><a href="https://наш.дом.рф" target="_blank" rel="noopener">Разрешение на строительство</a></li>
+          <li><a href="#">Политика конфиденциальности</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-legal">Не является публичной офертой. Изображения, планировки и характеристики носят информационный характер. Застройщик — <span class="footer-tbd">данные</span>. Проектная декларация на <a href="https://наш.дом.рф" target="_blank" rel="noopener">наш.дом.рф</a>.</p>
+      <p class="footer-copy">© 2026</p>
+    </div>
+  </div>
+</footer>
 
 <div class="layouts-lightbox" id="layoutsLightbox" onclick="closeLayoutZoom(event)">
   <button type="button" class="layouts-lightbox-close" aria-label="Закрыть" onclick="closeLayoutZoom(event)">&times;</button>
