@@ -3432,9 +3432,26 @@
 
       if (tablewrap) tablewrap.addEventListener('scroll', updateScrollThumb, { passive: true });
 
-      [elPrice, elDown, elTerm].forEach(function (el) {
-        el.addEventListener('input', render);
+      // Первоначальный взнос двигается вместе со стоимостью квартиры,
+      // сохраняя ту же долю (%) — пока пользователь не тронет ползунок
+      // взноса вручную, тогда доля пересчитывается от нового значения.
+      var downPercent = Number(elPrice.value) > 0
+        ? Number(elDown.value) / Number(elPrice.value)
+        : 0;
+
+      elPrice.addEventListener('input', function () {
+        var price = Number(elPrice.value);
+        elDown.value = Math.round(price * downPercent / 1000) * 1000;
+        render();
       });
+
+      elDown.addEventListener('input', function () {
+        var price = Number(elPrice.value);
+        downPercent = price > 0 ? Number(elDown.value) / price : 0;
+        render();
+      });
+
+      elTerm.addEventListener('input', render);
 
       window.addEventListener('resize', syncHeight);
       window.addEventListener('load', syncHeight);
