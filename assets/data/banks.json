@@ -1,10 +1,10 @@
 [
-  { "name": "Сбербанк базовая",    "rate": 15.2, "term": 30, "mono": "СБ",  "color": "#21A038" },
-  { "name": "Сбербанк семейная",   "rate": 5.0,  "term": 30, "mono": "СБ",  "color": "#21A038" },
-  { "name": "Сбербанк IT",         "rate": 6.0,  "term": 30, "mono": "СБ",  "color": "#21A038" },
-  { "name": "Т-Банк базовая",      "rate": 16.9, "term": 30, "mono": "Т",   "color": "#1c1c1a" },
-  { "name": "Т-Банк семейная",     "rate": 6.0,  "term": 30, "mono": "Т",   "color": "#1c1c1a" },
-  { "name": "Альфа-Банк семейная", "rate": 6.0,  "term": 30, "mono": "АБ",  "color": "#EF3124" },
-  { "name": "ВТБ семейная",        "rate": 6.0,  "term": 30, "mono": "ВТБ", "color": "#00287A" },
-  { "name": "ЦентрИнвест семейная","rate": 5.9,  "term": 30, "mono": "ЦИ",  "color": "#0F6A4D" }
+  { "name": "Сбербанк базовая",    "rate": 15.2, "term": 30, "logo": "sberbank.svg" },
+  { "name": "Сбербанк семейная",   "rate": 5.0,  "term": 30, "logo": "sberbank.svg" },
+  { "name": "Сбербанк IT",         "rate": 6.0,  "term": 30, "logo": "sberbank.svg" },
+  { "name": "Т-Банк базовая",      "rate": 16.9, "term": 30, "logo": "tbank.svg" },
+  { "name": "Т-Банк семейная",     "rate": 6.0,  "term": 30, "logo": "tbank.svg" },
+  { "name": "Альфа-Банк семейная", "rate": 6.0,  "term": 30, "logo": "alfabank.svg" },
+  { "name": "ВТБ семейная",        "rate": 6.0,  "term": 30, "logo": "vtb.svg" },
+  { "name": "ЦентрИнвест семейная","rate": 5.9,  "term": 30, "logo": "centrinvest.svg" }
 ]

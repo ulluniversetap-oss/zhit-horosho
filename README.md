@@ -31,6 +31,13 @@ python3 -m http.server 8080
 - `assets/images/hero-bg.jpg` — постер для hero-видео, кадр из `assets/videos/hero-bg.mp4`
   (вытащен через `ffmpeg -ss 0.5 -frames:v 1 -vf scale=1920:-1`).
 - `assets/images/family-house.jpg` — фото дома уже на месте.
+- В ипотечном калькуляторе вместо цветных кружков-монограмм подставлены настоящие логотипы
+  банков (`assets/icons/banks/*.svg`): Сбербанк, Т-Банк, Альфа-Банк, ВТБ — с Wikimedia Commons
+  (официальные файлы бренд-логотипов, скачаны по точному названию через `Special:FilePath`,
+  без сторонних правок); ЦентрИнвест — напрямую с `centrinvest.ru/favicon.svg` (у банка не
+  нашлось файла на Wikimedia Commons). Значение `mono`/`color` в `FALLBACK_BANKS` и
+  `assets/data/banks.json` заменено на `logo` (имя файла), рендер — `<img>` внутри
+  `.mcalc-mono` с `object-fit: contain`.
 
 ## Незаполненные данные
 

@@ -2397,17 +2397,22 @@
 
   .mcalc-mono {
     flex: none;
-    width: 2.4rem;
+    width: 4.4rem;
     height: 2.4rem;
-    border-radius: 50%;
+    border-radius: 0.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Onest', sans-serif;
-    font-weight: 700;
-    font-size: 0.72rem;
-    color: #ffffff;
-    letter-spacing: -0.02em;
+    background: #ffffff;
+    border: 1px solid #e4e6ea;
+    padding: 0 var(--space-8);
+    box-sizing: border-box;
+  }
+
+  .mcalc-mono img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
   }
 
   .mcalc-cell {
@@ -3309,14 +3314,14 @@
     'use strict';
 
     var FALLBACK_BANKS = [
-      { name: 'Сбербанк базовая',     rate: 15.2, term: 30, mono: 'СБ',  color: '#21A038' },
-      { name: 'Сбербанк семейная',    rate: 5.0,  term: 30, mono: 'СБ',  color: '#21A038' },
-      { name: 'Сбербанк IT',          rate: 6.0,  term: 30, mono: 'СБ',  color: '#21A038' },
-      { name: 'Т-Банк базовая',       rate: 16.9, term: 30, mono: 'Т',   color: '#1c1c1a' },
-      { name: 'Т-Банк семейная',      rate: 6.0,  term: 30, mono: 'Т',   color: '#1c1c1a' },
-      { name: 'Альфа-Банк семейная',  rate: 6.0,  term: 30, mono: 'АБ',  color: '#EF3124' },
-      { name: 'ВТБ семейная',         rate: 6.0,  term: 30, mono: 'ВТБ', color: '#00287A' },
-      { name: 'ЦентрИнвест семейная', rate: 5.9,  term: 30, mono: 'ЦИ',  color: '#0F6A4D' }
+      { name: 'Сбербанк базовая',     rate: 15.2, term: 30, logo: 'sberbank.svg' },
+      { name: 'Сбербанк семейная',    rate: 5.0,  term: 30, logo: 'sberbank.svg' },
+      { name: 'Сбербанк IT',          rate: 6.0,  term: 30, logo: 'sberbank.svg' },
+      { name: 'Т-Банк базовая',       rate: 16.9, term: 30, logo: 'tbank.svg' },
+      { name: 'Т-Банк семейная',      rate: 6.0,  term: 30, logo: 'tbank.svg' },
+      { name: 'Альфа-Банк семейная',  rate: 6.0,  term: 30, logo: 'alfabank.svg' },
+      { name: 'ВТБ семейная',         rate: 6.0,  term: 30, logo: 'vtb.svg' },
+      { name: 'ЦентрИнвест семейная', rate: 5.9,  term: 30, logo: 'centrinvest.svg' }
     ];
 
     function initMortgageCalculator(root) {
@@ -3381,7 +3386,7 @@
           var payment = monthlyPayment(loan, b.rate, Math.min(term, b.term));
           return (
             '<div class="mcalc-row">' +
-              '<span class="mcalc-bank"><span class="mcalc-mono" style="background:' + b.color + '">' + b.mono + '</span>' + b.name + '</span>' +
+              '<span class="mcalc-bank"><span class="mcalc-mono"><img src="assets/icons/banks/' + b.logo + '" alt="' + b.name + '" loading="lazy"></span>' + b.name + '</span>' +
               '<span class="mcalc-cell is-num">' + b.rate.toLocaleString('ru-RU') + '%</span>' +
               '<span class="mcalc-cell is-payment">' + fmt(payment) + ' ₽/мес</span>' +
               '<span class="mcalc-cell is-num">' + b.term + '</span>' +
