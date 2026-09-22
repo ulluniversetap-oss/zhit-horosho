@@ -1363,10 +1363,6 @@
   }
 
   .walk-head {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: start;
-    gap: var(--space-48);
     margin: 0 0 var(--space-38_4);
   }
 
@@ -1395,17 +1391,6 @@
   }
 
   .walk-heading--oneline span { display: inline; }
-
-  .walk-note {
-    align-self: center;
-    margin: 0;
-    max-width: 24rem;
-    font-size: 0.85rem;
-    line-height: 1.45;
-    color: #1c1c1a;
-    opacity: 0.45;
-    text-align: right;
-  }
 
   .walk-grid {
     display: grid;
@@ -1582,19 +1567,14 @@
       height: 24rem;
       min-height: 0;
     }
-    /* Заголовок в одну строку (nowrap) на средних ширинах не помещается
-       рядом с note в общем гриде — переносим note под заголовок и
+    /* Заголовок в одну строку (nowrap) на средних ширинах не помещается —
        возвращаем перенос по словам, чтобы не было горизонтального
        переполнения. */
-    .walk-head { grid-template-columns: 1fr; gap: var(--space-16); }
-    .walk-note { text-align: left; max-width: none; }
     .walk-heading--oneline { white-space: normal; }
   }
 
   @media (max-width: 640px) {
     .walk-inner { padding: 0 var(--space-24); }
-    .walk-head { grid-template-columns: 1fr; gap: var(--space-16); }
-    .walk-note { text-align: left; max-width: none; }
     .walk-card { padding: var(--space-22_4) var(--space-20) var(--space-6_4); }
     .walk-heading--oneline { white-space: normal; }
   }
@@ -2397,21 +2377,21 @@
 
   .mcalc-mono {
     flex: none;
-    width: 4.4rem;
-    height: 2.4rem;
-    border-radius: 0.5rem;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
     background: #ffffff;
     border: 1px solid #e4e6ea;
-    padding: 0 var(--space-8);
     box-sizing: border-box;
   }
 
   .mcalc-mono img {
-    max-width: 100%;
-    max-height: 100%;
+    width: 82%;
+    height: 82%;
     object-fit: contain;
   }
 
@@ -2922,7 +2902,6 @@
 
     <div class="walk-head">
       <h2 class="walk-heading walk-heading--oneline">Всё нужное <span>— в пешей доступности</span></h2>
-      <p class="walk-note">Время пешком рассчитано по пешеходным маршрутам (OpenStreetMap) от условной точки дома — адрес Новосибирская, 37 пока не присвоен официально, поэтому расчёт ориентировочный. * — расстояние до детского сада уточняется отдельно.</p>
     </div>
 
     <div class="walk-grid">
@@ -3314,13 +3293,13 @@
     'use strict';
 
     var FALLBACK_BANKS = [
-      { name: 'Сбербанк базовая',     rate: 15.2, term: 30, logo: 'sberbank.svg' },
-      { name: 'Сбербанк семейная',    rate: 5.0,  term: 30, logo: 'sberbank.svg' },
-      { name: 'Сбербанк IT',          rate: 6.0,  term: 30, logo: 'sberbank.svg' },
-      { name: 'Т-Банк базовая',       rate: 16.9, term: 30, logo: 'tbank.svg' },
-      { name: 'Т-Банк семейная',      rate: 6.0,  term: 30, logo: 'tbank.svg' },
-      { name: 'Альфа-Банк семейная',  rate: 6.0,  term: 30, logo: 'alfabank.svg' },
-      { name: 'ВТБ семейная',         rate: 6.0,  term: 30, logo: 'vtb.svg' },
+      { name: 'Сбербанк базовая',     rate: 15.2, term: 30, logo: 'sberbank.ico' },
+      { name: 'Сбербанк семейная',    rate: 5.0,  term: 30, logo: 'sberbank.ico' },
+      { name: 'Сбербанк IT',          rate: 6.0,  term: 30, logo: 'sberbank.ico' },
+      { name: 'Т-Банк базовая',       rate: 16.9, term: 30, logo: 'tbank.ico' },
+      { name: 'Т-Банк семейная',      rate: 6.0,  term: 30, logo: 'tbank.ico' },
+      { name: 'Альфа-Банк семейная',  rate: 6.0,  term: 30, logo: 'alfabank.ico' },
+      { name: 'ВТБ семейная',         rate: 6.0,  term: 30, logo: 'vtb.ico' },
       { name: 'ЦентрИнвест семейная', rate: 5.9,  term: 30, logo: 'centrinvest.svg' }
     ];
 
