@@ -2659,21 +2659,25 @@
   }
 
   /* ===== Блок «Приезжайте — покажем на месте» (офисы продаж) =====
-     Последний блок страницы. Структура — по референсу (тёмная карточка
-     с телефоном/CTA слева, 2×2 сетка офисов справа), но в системе
-     токенов и цветов сайта: белая панель — как .offers-panel, тёмная
-     карточка — тот же #1b1c22, что у .addl-card--dark/.leadgen, серые
-     карточки офисов — тот же #f2f3f2, что у .offers-card, кнопка —
-     тот же паттерн пилюли, что у .leadgen-submit/.addl-btn, только
-     инвертирована (белая на тёмной карточке) и на всю ширину.
-     Заголовок с двумя начертаниями (тонкая первая строка + жирная
-     вторая) — единственный на сайте такого рисунка, поэтому набран
-     на Onest (300/800, оба веса уже загружены из Google Fonts), а не
-     RoadRadio: RoadRadio у нас только капслочный вес 700 и для микса
-     тонкий+жирный в обычном регистре не подходит. Мелкие тех-подписи
-     («ГЛАВНЫЙ ОФИС», часы работы) — на моноширинном системном стеке
-     (без догрузки нового файла шрифта), для того самого «технического»
-     ощущения ярлычка, как на референсе. */
+     Последний блок страницы. Первая версия слишком буквально повторяла
+     референс (моноширинные ярлычки, заголовок на несвойственных сайту
+     начертаниях 300/800) — переделано на собственный язык сайта:
+     - заголовок/note — тот же приём, что у .mcalc-head/.mcalc-heading/
+       .mcalc-note (RoadRadio 700 uppercase + акцентный span, note
+       приглушённым opacity справа) — единый почерк заголовков блоков.
+     - тёмная карточка контакта — тот же #1b1c22, что у .leadgen, с той
+       же точечной текстурой (::before, radial-gradient), что у .leadgen —
+       а не голая заливка, как было.
+     - CTA — стандартная пилюля .leadgen-submit/.addl-btn (акцентная
+       заливка + белый .icon-circle со стрелкой), а не отдельная белая
+       кнопка капсом, придуманная под референс.
+     - карточки офисов — переняли интерактивный язык .offers-card:
+       нейтральный серый фон, при hover заливка акцентным цветом и
+       белый текст, круглая акцентная кнопка-стрелка внизу слева
+       (как .offers-btn) и квадратный значок-бейдж (как
+       .finish-feature-icon) вместо моноширинной технической подписи.
+       Карточка главного офиса больше не отдельный цвет-вариант —
+       отличается только текстом ярлычка, как и остальные три. */
   .offices {
     position: relative;
     margin: 0 var(--space-36) var(--space-48);
@@ -2692,37 +2696,36 @@
   }
 
   .offices-head {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: var(--space-24);
-    margin: 0 0 var(--space-38_4);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: start;
+    gap: var(--space-48);
+    margin: 0 0 var(--space-41_6);
   }
 
   .offices-heading {
     margin: 0;
-    font-family: 'Onest', sans-serif;
-    font-weight: 300;
-    font-size: 2.5rem;
+    max-width: 34rem;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 2.8125rem;
     line-height: 1.15;
-    letter-spacing: -0.01em;
-    color: #9a9a94;
-  }
-
-  .offices-heading strong {
-    display: block;
-    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
     color: #1c1c1a;
   }
 
+  .offices-heading span { color: var(--accent, #f27239); }
+
   .offices-note {
+    align-self: end;
     margin: 0;
-    max-width: 19rem;
+    max-width: 22rem;
     font-size: 0.85rem;
-    line-height: 1.55;
+    line-height: 1.5;
+    color: #1c1c1a;
+    opacity: 0.45;
     text-align: right;
-    color: #7c7c76;
   }
 
   .offices-grid {
@@ -2732,6 +2735,8 @@
   }
 
   .offices-contact {
+    position: relative;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -2743,13 +2748,24 @@
     color: #ffffff;
   }
 
+  .offices-contact::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1px);
+    background-size: 15px 15px;
+    pointer-events: none;
+  }
+
+  .offices-contact > * { position: relative; z-index: 1; }
+
   .offices-label {
     margin: 0 0 var(--space-9_6);
-    font-family: 'Courier New', 'Consolas', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.14em;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--accent, #f27239);
   }
 
   .offices-phone {
@@ -2775,27 +2791,27 @@
   }
 
   .offices-cta {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     width: 100%;
-    height: 3.6rem;
+    gap: var(--space-25_6);
     box-sizing: border-box;
-    border-radius: 999px;
-    background: #ffffff;
+    padding: var(--space-8) var(--space-8) var(--space-8) var(--space-35_2);
+    background: var(--accent, #f27239);
     border: none;
-    color: #1c1c1a;
+    border-radius: 999px;
+    color: #ffffff;
     font-family: inherit;
     font-weight: 700;
-    font-size: 0.85rem;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
+    font-size: 0.9rem;
     text-decoration: none;
     cursor: pointer;
     transition: background-color 0.25s ease;
   }
 
-  .offices-cta:hover { background: #ececec; }
+  .offices-cta:hover { background: #d95f28; }
+  .offices-cta .icon-circle { width: 2.6rem; height: 2.6rem; background: #ffffff; color: var(--accent, #f27239); font-size: 1rem; }
 
   .offices-social {
     display: flex;
@@ -2809,17 +2825,16 @@
     width: 2.6rem;
     height: 2.6rem;
     border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.75);
     font-size: 0.68rem;
     font-weight: 700;
     text-decoration: none;
-    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
   .offices-social a:hover {
     background: var(--accent, #f27239);
-    border-color: var(--accent, #f27239);
     color: #ffffff;
   }
 
@@ -2830,16 +2845,46 @@
   }
 
   .offices-card {
+    position: relative;
+    display: block;
     box-sizing: border-box;
-    padding: var(--space-27_2);
-    border-radius: 1.2rem;
+    padding: var(--space-27_2) var(--space-27_2) var(--space-56);
+    border-radius: 0.9rem;
     background: #f2f3f2;
+    color: inherit;
+    text-decoration: none;
+    transition: background-color 0.35s ease, color 0.35s ease;
   }
 
-  .offices-card--main {
-    background: #ffffff;
-    border: 1px solid rgba(28, 28, 26, 0.08);
+  .offices-card:hover { background: var(--accent, #f27239); color: #ffffff; }
+
+  .offices-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    margin: 0 0 var(--space-16);
+    border-radius: 0.5rem;
+    background: var(--accent, #f27239);
+    color: #ffffff;
+    transition: background-color 0.35s ease, color 0.35s ease;
   }
+
+  .offices-card:hover .offices-card-icon { background: rgba(255, 255, 255, 0.2); }
+  .offices-card-icon svg { width: 1.1rem; height: 1.1rem; }
+
+  .offices-card-kicker {
+    margin: 0 0 var(--space-4);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent, #f27239);
+    transition: color 0.35s ease;
+  }
+
+  .offices-card:hover .offices-card-kicker { color: rgba(255, 255, 255, 0.85); }
 
   .offices-card h3 {
     margin: 0 0 var(--space-4);
@@ -2847,35 +2892,46 @@
     font-weight: 700;
     font-size: 1rem;
     line-height: 1.3;
-    color: #1c1c1a;
+    color: inherit;
   }
 
   .offices-card-addr {
-    margin: 0 0 var(--space-14_4);
+    margin: 0;
     font-size: 0.85rem;
     line-height: 1.4;
-    color: #57574f;
+    color: inherit;
+    opacity: 0.65;
+    transition: opacity 0.35s ease;
   }
 
+  .offices-card:hover .offices-card-addr { opacity: 0.9; }
+
   .offices-card-hours {
+    position: absolute;
+    left: var(--space-27_2);
+    bottom: var(--space-24);
     margin: 0;
-    font-family: 'Courier New', 'Consolas', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.04em;
-    color: #9a9a94;
+    font-size: 0.78rem;
+    color: inherit;
+    opacity: 0.55;
+  }
+
+  .offices-card:hover .offices-card-hours { opacity: 0.85; }
+
+  @media (max-width: 1200px) {
+    .offices-list { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 1024px) {
     .offices-grid { grid-template-columns: 1fr; }
+    .offices-head { grid-template-columns: 1fr; }
+    .offices-note { text-align: left; align-self: auto; }
     .offices-contact { flex-direction: row; flex-wrap: wrap; align-items: center; }
   }
 
   @media (max-width: 640px) {
     .offices-inner { padding: 0 var(--space-24); }
-    .offices-head { align-items: flex-start; }
-    .offices-note { text-align: left; max-width: none; }
     .offices-heading { font-size: 2rem; }
-    .offices-list { grid-template-columns: 1fr; }
     .offices-contact { flex-direction: column; align-items: stretch; }
   }
 
@@ -3843,7 +3899,7 @@
     <div class="offices-inner">
 
       <div class="offices-head">
-        <h2 class="offices-heading">Приезжайте —<br /><strong>покажем на месте</strong></h2>
+        <h2 class="offices-heading">Приезжайте — <span>покажем на месте</span></h2>
         <p class="offices-note">Консультация в любом из офисов продаж. Показ квартир и площадки — по предварительной записи.</p>
       </div>
 
@@ -3855,7 +3911,7 @@
           </div>
           <p class="offices-desc">Ответим на вопросы по планировкам, ипотеке и срокам. Перезвоним в течение 15 минут в рабочее время.</p>
           <div class="offices-actions">
-            <a href="#leadgen" class="offices-cta">Оставить заявку</a>
+            <a href="#leadgen" class="offices-cta">Оставить заявку<span class="icon-circle">→</span></a>
             <div class="offices-social">
               <a href="#" aria-label="ВКонтакте">VK</a>
               <a href="#" aria-label="Одноклассники">ОК</a>
@@ -3865,30 +3921,34 @@
         </div>
 
         <div class="offices-list">
-          <div class="offices-card offices-card--main">
-            <p class="offices-label">Главный офис</p>
+          <a href="#leadgen" class="offices-card">
+            <span class="offices-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.3" /></svg></span>
+            <p class="offices-card-kicker">Главный офис</p>
             <h3>Офис на ул. Советская, д. 28</h3>
             <p class="offices-card-addr">Центральный офис А-Бутик недвижимости</p>
-            <p class="offices-card-hours">Ежедневно 8:00 – 20:00</p>
-          </div>
-          <div class="offices-card">
-            <p class="offices-label">Офис продаж</p>
+            <p class="offices-card-hours">Ежедневно 8:00–20:00</p>
+          </a>
+          <a href="#leadgen" class="offices-card">
+            <span class="offices-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.3" /></svg></span>
+            <p class="offices-card-kicker">Офис продаж</p>
             <h3>ЖК «Берег Волги»</h3>
             <p class="offices-card-addr">ул. Степана Разина, д. 6</p>
-            <p class="offices-card-hours">Ежедневно 9:00 – 19:00</p>
-          </div>
-          <div class="offices-card">
-            <p class="offices-label">Офис продаж</p>
+            <p class="offices-card-hours">Ежедневно 9:00–19:00</p>
+          </a>
+          <a href="#leadgen" class="offices-card">
+            <span class="offices-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.3" /></svg></span>
+            <p class="offices-card-kicker">Офис продаж</p>
             <h3>ЖК «Новый»</h3>
             <p class="offices-card-addr">ул. Тракторостроителей, 27/1</p>
-            <p class="offices-card-hours">Ежедневно 9:00 – 19:00</p>
-          </div>
-          <div class="offices-card">
-            <p class="offices-label">Офис продаж</p>
+            <p class="offices-card-hours">Ежедневно 9:00–19:00</p>
+          </a>
+          <a href="#leadgen" class="offices-card">
+            <span class="offices-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.3" /></svg></span>
+            <p class="offices-card-kicker">Офис продаж</p>
             <h3>У ЖК «Герои Поколений»</h3>
             <p class="offices-card-addr">Справа от автосалона «Автопрестиж»</p>
-            <p class="offices-card-hours">Ежедневно 9:00 – 19:00</p>
-          </div>
+            <p class="offices-card-hours">Ежедневно 9:00–19:00</p>
+          </a>
         </div>
       </div>
 
