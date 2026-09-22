@@ -2646,8 +2646,15 @@
 
   .offices-grid {
     display: grid;
-    grid-template-columns: minmax(18rem, 30%) 1fr;
+    grid-template-columns: minmax(20rem, 34%) 1fr;
     gap: var(--space-19_2);
+    align-items: stretch;
+  }
+
+  .offices-left {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12, 0.75rem);
   }
 
   .offices-contact {
@@ -2781,17 +2788,18 @@
   }
 
   .offices-list {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-19_2);
-    margin-top: var(--space-19_2);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12, 0.75rem);
   }
 
   .offices-card {
     position: relative;
-    display: block;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-12, 0.75rem);
     box-sizing: border-box;
-    padding: var(--space-19_2) var(--space-19_2) var(--space-48);
+    padding: var(--space-16) var(--space-19_2);
     border-radius: 0.9rem;
     background: #f2f3f2;
     color: inherit;
@@ -2805,9 +2813,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
     width: 2.2rem;
     height: 2.2rem;
-    margin: 0 0 var(--space-12, 0.75rem);
     border-radius: 0.5rem;
     background: var(--accent, #f27239);
     color: #ffffff;
@@ -2816,6 +2824,8 @@
 
   .offices-card:hover .offices-card-icon { background: rgba(255, 255, 255, 0.2); }
   .offices-card-icon svg { width: 0.95rem; height: 0.95rem; }
+
+  .offices-card-text { min-width: 0; }
 
   .offices-card-kicker {
     margin: 0 0 var(--space-4);
@@ -2839,7 +2849,7 @@
   }
 
   .offices-card-addr {
-    margin: 0;
+    margin: 0 0 var(--space-4);
     font-size: 0.78rem;
     line-height: 1.4;
     color: inherit;
@@ -2850,9 +2860,6 @@
   .offices-card:hover .offices-card-addr { opacity: 0.9; }
 
   .offices-card-hours {
-    position: absolute;
-    left: var(--space-19_2);
-    bottom: var(--space-19_2);
     margin: 0;
     font-size: 0.72rem;
     color: inherit;
@@ -2861,23 +2868,19 @@
 
   .offices-card:hover .offices-card-hours { opacity: 0.85; }
 
-  @media (max-width: 1200px) {
-    .offices-list { grid-template-columns: 1fr 1fr; }
-  }
-
   @media (max-width: 1024px) {
     .offices-grid { grid-template-columns: 1fr; }
     .offices-head { grid-template-columns: 1fr; }
     .offices-note { text-align: left; align-self: auto; }
     .offices-contact { flex-direction: row; flex-wrap: wrap; align-items: center; }
-    .offices-map iframe { min-height: 16rem; }
+    .offices-map iframe { min-height: 20rem; }
   }
 
   @media (max-width: 640px) {
-    .offices-list { grid-template-columns: 1fr; }
     .offices-inner { padding: 0 var(--space-24); }
     .offices-heading { font-size: 2rem; }
     .offices-contact { flex-direction: column; align-items: stretch; }
+    .offices-map iframe { min-height: 16rem; }
   }
 
   /* ===== Блок «Новости и статьи» =====
@@ -3960,29 +3963,70 @@
       </div>
 
       <div class="offices-grid">
-        <div class="offices-contact">
-          <div>
-            <p class="offices-label">Контактный телефон</p>
-            <a href="tel:+78442204413" class="offices-phone">+7 (844) 220-44-13</a>
-          </div>
-          <div>
-            <p class="offices-label">Адрес главного офиса</p>
-            <p class="offices-address">г. Волгоград, ул. Советская, д. 28</p>
-          </div>
-          <p class="offices-desc">Ответим на вопросы по планировкам, ипотеке и срокам.<br />Перезвоним в течение 15 минут в рабочее время.</p>
-          <div class="offices-actions">
-            <a href="#leadgen" class="offices-cta">Оставить заявку<span class="icon-circle">→</span></a>
-            <div class="offices-social">
-              <a href="#" aria-label="ВКонтакте"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.864-.525-2.05-1.727-1.033-1.01-1.49-1.135-1.744-1.135-.356 0-.458.102-.458.593v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.12-5.34-3.202-2.17-3.02-2.766-5.284-2.766-5.744 0-.254.102-.492.593-.492h1.744c.44 0 .61.203.78.677.847 2.457 2.27 4.607 2.86 4.607.22 0 .322-.102.322-.66V9.721c-.068-1.186-.695-1.287-.695-1.71 0-.203.17-.406.44-.406h2.744c.373 0 .508.203.508.643v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.254-1.406 2.15-3.574 2.15-3.574.119-.254.322-.491.762-.491h1.744c.525 0 .644.27.525.643-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.78 1.203 1.253.745.847 1.32 1.558 1.473 2.05.17.49-.085.744-.576.744z"/></svg></a>
-              <a href="#" aria-label="Одноклассники"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.014 3.31a3.156 3.156 0 1 1 0 6.312 3.156 3.156 0 0 1 0-6.312m0-2.53a5.686 5.686 0 1 0 0 11.372 5.686 5.686 0 0 0 0-11.372zm5.842 12.913a1.265 1.265 0 0 0-1.743-.397 9.573 9.573 0 0 1-8.198 0 1.265 1.265 0 0 0-1.264 2.192c.676.39 1.39.703 2.128.94l-3.222 3.222a1.265 1.265 0 1 0 1.79 1.789l3.66-3.66 3.657 3.66a1.265 1.265 0 0 0 1.79-1.79l-3.22-3.221a9.516 9.516 0 0 0 2.128-.94 1.265 1.265 0 0 0 .494-1.795z"/></svg></a>
-              <a href="#" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.568 8.16c-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.2-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212-.07-.062-.174-.041-.249-.024-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472z"/></svg></a>
+        <div class="offices-left">
+          <div class="offices-contact">
+            <div>
+              <p class="offices-label">Контактный телефон</p>
+              <a href="tel:+78442204413" class="offices-phone">+7 (844) 220-44-13</a>
             </div>
+            <div>
+              <p class="offices-label">Адрес главного офиса</p>
+              <p class="offices-address">г. Волгоград, ул. Советская, д. 28</p>
+            </div>
+            <p class="offices-desc">Ответим на вопросы по планировкам, ипотеке и срокам.<br />Перезвоним в течение 15 минут в рабочее время.</p>
+            <div class="offices-actions">
+              <a href="#leadgen" class="offices-cta">Оставить заявку<span class="icon-circle">→</span></a>
+              <div class="offices-social">
+                <a href="#" aria-label="ВКонтакте"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.864-.525-2.05-1.727-1.033-1.01-1.49-1.135-1.744-1.135-.356 0-.458.102-.458.593v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.12-5.34-3.202-2.17-3.02-2.766-5.284-2.766-5.744 0-.254.102-.492.593-.492h1.744c.44 0 .61.203.78.677.847 2.457 2.27 4.607 2.86 4.607.22 0 .322-.102.322-.66V9.721c-.068-1.186-.695-1.287-.695-1.71 0-.203.17-.406.44-.406h2.744c.373 0 .508.203.508.643v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.254-1.406 2.15-3.574 2.15-3.574.119-.254.322-.491.762-.491h1.744c.525 0 .644.27.525.643-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.78 1.203 1.253.745.847 1.32 1.558 1.473 2.05.17.49-.085.744-.576.744z"/></svg></a>
+                <a href="#" aria-label="Одноклассники"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.014 3.31a3.156 3.156 0 1 1 0 6.312 3.156 3.156 0 0 1 0-6.312m0-2.53a5.686 5.686 0 1 0 0 11.372 5.686 5.686 0 0 0 0-11.372zm5.842 12.913a1.265 1.265 0 0 0-1.743-.397 9.573 9.573 0 0 1-8.198 0 1.265 1.265 0 0 0-1.264 2.192c.676.39 1.39.703 2.128.94l-3.222 3.222a1.265 1.265 0 1 0 1.79 1.789l3.66-3.66 3.657 3.66a1.265 1.265 0 0 0 1.79-1.79l-3.22-3.221a9.516 9.516 0 0 0 2.128-.94 1.265 1.265 0 0 0 .494-1.795z"/></svg></a>
+                <a href="#" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.568 8.16c-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.2-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212-.07-.062-.174-.041-.249-.024-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472z"/></svg></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="offices-list">
+            <a href="#leadgen" class="offices-card">
+              <span class="offices-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.3" /></svg></span>
+              <div class="offices-card-text">
+                <p class="offices-card-kicker">Главный офис</p>
+                <h3>Офис на ул. Советская, д. 28</h3>
+                <p class="offices-card-addr">Центральный офис А-Бутик недвижимости</p>
+                <p class="offices-card-hours">Ежедневно 8:00–20:00</p>
+              </div>
+            </a>
+            <a href="#leadgen" class="offices-card">
+              <span class="offices-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.3" /></svg></span>
+              <div class="offices-card-text">
+                <p class="offices-card-kicker">Офис продаж</p>
+                <h3>ЖК «Берег Волги»</h3>
+                <p class="offices-card-addr">ул. Степана Разина, д. 6</p>
+                <p class="offices-card-hours">Ежедневно 9:00–19:00</p>
+              </div>
+            </a>
+            <a href="#leadgen" class="offices-card">
+              <span class="offices-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.3" /></svg></span>
+              <div class="offices-card-text">
+                <p class="offices-card-kicker">Офис продаж</p>
+                <h3>ЖК «Новый»</h3>
+                <p class="offices-card-addr">ул. Тракторостроителей, 27/1</p>
+                <p class="offices-card-hours">Ежедневно 9:00–19:00</p>
+              </div>
+            </a>
+            <a href="#leadgen" class="offices-card">
+              <span class="offices-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.3" /></svg></span>
+              <div class="offices-card-text">
+                <p class="offices-card-kicker">Офис продаж</p>
+                <h3>У ЖК «Герои Поколений»</h3>
+                <p class="offices-card-addr">Справа от автосалона «Автопрестиж»</p>
+                <p class="offices-card-hours">Ежедневно 9:00–19:00</p>
+              </div>
+            </a>
           </div>
         </div>
 
         <div class="offices-map">
           <iframe
-            src="https://yandex.ru/map-widget/v1/?ll=44.516975%2C48.707067&z=13&l=map&pt=44.516975,48.707067,pm2rdm"
+            src="https://yandex.ru/map-widget/v1/?ll=44.516975%2C48.707067&z=12&l=map&pt=44.516975,48.707067,pm2rdm"
             width="100%"
             height="100%"
             frameborder="0"
@@ -3990,37 +4034,6 @@
             title="Карта офисов продаж"
           ></iframe>
         </div>
-      </div>
-
-      <div class="offices-list">
-        <a href="#leadgen" class="offices-card">
-          <span class="offices-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.3" /></svg></span>
-          <p class="offices-card-kicker">Главный офис</p>
-          <h3>Офис на ул. Советская, д. 28</h3>
-          <p class="offices-card-addr">Центральный офис А-Бутик недвижимости</p>
-          <p class="offices-card-hours">Ежедневно 8:00–20:00</p>
-        </a>
-        <a href="#leadgen" class="offices-card">
-          <span class="offices-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.3" /></svg></span>
-          <p class="offices-card-kicker">Офис продаж</p>
-          <h3>ЖК «Берег Волги»</h3>
-          <p class="offices-card-addr">ул. Степана Разина, д. 6</p>
-          <p class="offices-card-hours">Ежедневно 9:00–19:00</p>
-        </a>
-        <a href="#leadgen" class="offices-card">
-          <span class="offices-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.3" /></svg></span>
-          <p class="offices-card-kicker">Офис продаж</p>
-          <h3>ЖК «Новый»</h3>
-          <p class="offices-card-addr">ул. Тракторостроителей, 27/1</p>
-          <p class="offices-card-hours">Ежедневно 9:00–19:00</p>
-        </a>
-        <a href="#leadgen" class="offices-card">
-          <span class="offices-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.3" /></svg></span>
-          <p class="offices-card-kicker">Офис продаж</p>
-          <h3>У ЖК «Герои Поколений»</h3>
-          <p class="offices-card-addr">Справа от автосалона «Автопрестиж»</p>
-          <p class="offices-card-hours">Ежедневно 9:00–19:00</p>
-        </a>
       </div>
 
     </div>
