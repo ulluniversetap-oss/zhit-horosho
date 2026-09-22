@@ -2658,6 +2658,227 @@
     .addl-card { padding: var(--space-27_2) var(--space-19_2); }
   }
 
+  /* ===== Блок «Приезжайте — покажем на месте» (офисы продаж) =====
+     Последний блок страницы. Структура — по референсу (тёмная карточка
+     с телефоном/CTA слева, 2×2 сетка офисов справа), но в системе
+     токенов и цветов сайта: белая панель — как .offers-panel, тёмная
+     карточка — тот же #1b1c22, что у .addl-card--dark/.leadgen, серые
+     карточки офисов — тот же #f2f3f2, что у .offers-card, кнопка —
+     тот же паттерн пилюли, что у .leadgen-submit/.addl-btn, только
+     инвертирована (белая на тёмной карточке) и на всю ширину.
+     Заголовок с двумя начертаниями (тонкая первая строка + жирная
+     вторая) — единственный на сайте такого рисунка, поэтому набран
+     на Onest (300/800, оба веса уже загружены из Google Fonts), а не
+     RoadRadio: RoadRadio у нас только капслочный вес 700 и для микса
+     тонкий+жирный в обычном регистре не подходит. Мелкие тех-подписи
+     («ГЛАВНЫЙ ОФИС», часы работы) — на моноширинном системном стеке
+     (без догрузки нового файла шрифта), для того самого «технического»
+     ощущения ярлычка, как на референсе. */
+  .offices {
+    position: relative;
+    margin: 0 var(--space-36) var(--space-48);
+  }
+
+  .offices-panel {
+    background: #ffffff;
+    border-radius: 1.2rem;
+    padding: var(--space-80) 0;
+  }
+
+  .offices-inner {
+    max-width: 1920px;
+    margin: 0 auto;
+    padding: 0 var(--space-27_2);
+  }
+
+  .offices-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-24);
+    margin: 0 0 var(--space-38_4);
+  }
+
+  .offices-heading {
+    margin: 0;
+    font-family: 'Onest', sans-serif;
+    font-weight: 300;
+    font-size: 2.5rem;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: #9a9a94;
+  }
+
+  .offices-heading strong {
+    display: block;
+    font-weight: 800;
+    color: #1c1c1a;
+  }
+
+  .offices-note {
+    margin: 0;
+    max-width: 19rem;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    text-align: right;
+    color: #7c7c76;
+  }
+
+  .offices-grid {
+    display: grid;
+    grid-template-columns: minmax(18rem, 30%) 1fr;
+    gap: var(--space-19_2);
+  }
+
+  .offices-contact {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-24);
+    box-sizing: border-box;
+    padding: var(--space-38_4) var(--space-27_2);
+    border-radius: 1.2rem;
+    background: #1b1c22;
+    color: #ffffff;
+  }
+
+  .offices-label {
+    margin: 0 0 var(--space-9_6);
+    font-family: 'Courier New', 'Consolas', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .offices-phone {
+    display: block;
+    font-family: 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  .offices-desc {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .offices-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .offices-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 3.6rem;
+    box-sizing: border-box;
+    border-radius: 999px;
+    background: #ffffff;
+    border: none;
+    color: #1c1c1a;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+  }
+
+  .offices-cta:hover { background: #ececec; }
+
+  .offices-social {
+    display: flex;
+    gap: var(--space-9_6);
+  }
+
+  .offices-social a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .offices-social a:hover {
+    background: var(--accent, #f27239);
+    border-color: var(--accent, #f27239);
+    color: #ffffff;
+  }
+
+  .offices-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-19_2);
+  }
+
+  .offices-card {
+    box-sizing: border-box;
+    padding: var(--space-27_2);
+    border-radius: 1.2rem;
+    background: #f2f3f2;
+  }
+
+  .offices-card--main {
+    background: #ffffff;
+    border: 1px solid rgba(28, 28, 26, 0.08);
+  }
+
+  .offices-card h3 {
+    margin: 0 0 var(--space-4);
+    font-family: 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.3;
+    color: #1c1c1a;
+  }
+
+  .offices-card-addr {
+    margin: 0 0 var(--space-14_4);
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: #57574f;
+  }
+
+  .offices-card-hours {
+    margin: 0;
+    font-family: 'Courier New', 'Consolas', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: #9a9a94;
+  }
+
+  @media (max-width: 1024px) {
+    .offices-grid { grid-template-columns: 1fr; }
+    .offices-contact { flex-direction: row; flex-wrap: wrap; align-items: center; }
+  }
+
+  @media (max-width: 640px) {
+    .offices-inner { padding: 0 var(--space-24); }
+    .offices-head { align-items: flex-start; }
+    .offices-note { text-align: left; max-width: none; }
+    .offices-heading { font-size: 2rem; }
+    .offices-list { grid-template-columns: 1fr; }
+    .offices-contact { flex-direction: column; align-items: stretch; }
+  }
+
 </style>
 
 <body>
@@ -3611,6 +3832,66 @@
 
     <div class="addl-dots" id="addlDots">
       <span class="on"></span><span></span><span></span>
+    </div>
+  </div>
+</section>
+
+<div class="block-gap"></div>
+
+<section class="offices">
+  <div class="offices-panel">
+    <div class="offices-inner">
+
+      <div class="offices-head">
+        <h2 class="offices-heading">Приезжайте —<br /><strong>покажем на месте</strong></h2>
+        <p class="offices-note">Консультация в любом из офисов продаж. Показ квартир и площадки — по предварительной записи.</p>
+      </div>
+
+      <div class="offices-grid">
+        <div class="offices-contact">
+          <div>
+            <p class="offices-label">Контактный телефон</p>
+            <a href="tel:+78442204413" class="offices-phone">+7 (844) 220-44-13</a>
+          </div>
+          <p class="offices-desc">Ответим на вопросы по планировкам, ипотеке и срокам. Перезвоним в течение 15 минут в рабочее время.</p>
+          <div class="offices-actions">
+            <a href="#leadgen" class="offices-cta">Оставить заявку</a>
+            <div class="offices-social">
+              <a href="#" aria-label="ВКонтакте">VK</a>
+              <a href="#" aria-label="Одноклассники">ОК</a>
+              <a href="#" aria-label="Telegram">TG</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="offices-list">
+          <div class="offices-card offices-card--main">
+            <p class="offices-label">Главный офис</p>
+            <h3>Офис на ул. Советская, д. 28</h3>
+            <p class="offices-card-addr">Центральный офис А-Бутик недвижимости</p>
+            <p class="offices-card-hours">Ежедневно 8:00 – 20:00</p>
+          </div>
+          <div class="offices-card">
+            <p class="offices-label">Офис продаж</p>
+            <h3>ЖК «Берег Волги»</h3>
+            <p class="offices-card-addr">ул. Степана Разина, д. 6</p>
+            <p class="offices-card-hours">Ежедневно 9:00 – 19:00</p>
+          </div>
+          <div class="offices-card">
+            <p class="offices-label">Офис продаж</p>
+            <h3>ЖК «Новый»</h3>
+            <p class="offices-card-addr">ул. Тракторостроителей, 27/1</p>
+            <p class="offices-card-hours">Ежедневно 9:00 – 19:00</p>
+          </div>
+          <div class="offices-card">
+            <p class="offices-label">Офис продаж</p>
+            <h3>У ЖК «Герои Поколений»</h3>
+            <p class="offices-card-addr">Справа от автосалона «Автопрестиж»</p>
+            <p class="offices-card-hours">Ежедневно 9:00 – 19:00</p>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
