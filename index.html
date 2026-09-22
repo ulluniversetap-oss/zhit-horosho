@@ -2090,6 +2090,10 @@
   }
 
   .finish-features {
+    /* Full-bleed, как .finish-tour выше — пробивает боковой паддинг
+       .finish-inner, чтобы ряд плашек совпадал по ширине с 3D-туром
+       и краем секции, а не был уже него на паддинг с обеих сторон. */
+    margin: 0 calc(-1 * var(--space-27_2));
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: var(--space-16);
@@ -2112,14 +2116,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: repeating-linear-gradient(
-      135deg,
-      rgba(242, 114, 57, 0.12) 0px,
-      rgba(242, 114, 57, 0.12) 10px,
-      rgba(242, 114, 57, 0.04) 10px,
-      rgba(242, 114, 57, 0.04) 20px
-    );
-    color: var(--accent, #f27239);
+    background: var(--accent, #f27239);
+    color: #ffffff;
   }
 
   .finish-feature-icon svg { width: 1.7rem; height: 1.7rem; }
@@ -2151,7 +2149,7 @@
   @media (max-width: 640px) {
     .finish-inner { padding: 0 var(--space-24); }
     .finish-note { max-width: none; }
-    .finish-features { grid-template-columns: 1fr; }
+    .finish-features { grid-template-columns: 1fr; margin-left: calc(-1 * var(--space-24)); margin-right: calc(-1 * var(--space-24)); }
     .finish-tour { margin-left: calc(-1 * var(--space-24)); margin-right: calc(-1 * var(--space-24)); }
     .iframe-full { padding-bottom: 52.5%; }
   }
