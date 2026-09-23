@@ -2733,7 +2733,10 @@
     justify-content: center;
     width: 100%;
     box-sizing: border-box;
-    padding: var(--space-8) var(--space-48) var(--space-8) var(--space-35_2);
+    /* Высота забыта при первой вёрстке — фиксируем те же 5.5rem/88px,
+       что и у всех остальных кнопок сайта (см. .expert-lead__form .leadgen-submit). */
+    height: 5.5rem;
+    padding: 0 var(--space-48) 0 var(--space-35_2);
     background: var(--accent, #f27239);
     border: none;
     border-radius: 999px;
@@ -3014,21 +3017,14 @@
 
   .footer-logo-svg {
     display: block;
-    width: 2.6rem;
+    /* Увеличено на 40% по просьбе: было 2.6rem, 2.6 × 1.4 = 3.64rem. */
+    width: 3.64rem;
     height: auto;
     flex-shrink: 0;
   }
 
-  .footer-logo-text {
-    font-family: 'RoadRadio', 'Onest', sans-serif;
-    font-weight: 700;
-    font-size: 1.1rem;
-    text-transform: uppercase;
-    letter-spacing: -0.01em;
-  }
-
   .footer-desc {
-    margin: 0;
+    margin: var(--space-8) 0 0;
     max-width: 20rem;
     font-size: 0.85rem;
     line-height: 1.55;
@@ -4202,7 +4198,6 @@
 </clipPath>
 </defs>
 </svg>
-          <span class="footer-logo-text">Жить хорошо</span>
         </a>
         <p class="footer-desc">Жилой комплекс в Советском районе Волгограда. <br />Новосибирская, 37 — строительный адрес.</p>
       </div>
