@@ -2733,10 +2733,10 @@
     justify-content: center;
     width: 100%;
     box-sizing: border-box;
-    /* Высота забыта при первой вёрстке — фиксируем те же 5.5rem/88px,
-       что и у всех остальных кнопок сайта (см. .expert-lead__form .leadgen-submit). */
-    height: 5.5rem;
-    padding: 0 var(--space-48) 0 var(--space-35_2);
+    /* Высота — по вертикальному паддингу var(--space-8) сверху/снизу, тот же
+       приём, что у .addl-btn/.news-btn (кнопки в блоках «Доп. услуги» и
+       «Новости и статьи»), а не фиксированные 5.5rem, как у .leadgen-submit. */
+    padding: var(--space-8) var(--space-48) var(--space-8) var(--space-35_2);
     background: var(--accent, #f27239);
     border: none;
     border-radius: 999px;
