@@ -858,16 +858,6 @@
     background: linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.8) 100%);
   }
 
-  /* Стеклянная плашка-бейдж поверх фото — тот же визуальный язык,
-     что у .badge в hero (glass-bg + blur), для связности блоков. */
-  .trust-photo-badge {
-    position: absolute;
-    top: var(--space-24);
-    left: var(--space-24);
-    z-index: 2;
-    color: #ffffff;
-  }
-
   .trust-photo-text {
     position: absolute;
     left: 0;
@@ -1019,7 +1009,6 @@
     .trust-photo { min-height: 20rem; }
     .trust-photo img { transform: none; transition: none; }
     .trust-photo-text h2 { font-size: 2.1rem; }
-    .trust-photo-badge { display: none; }
   }
 
   /* ===== Блок «Выгодные условия» (акции, 4 карточки) =====
@@ -3991,9 +3980,6 @@
     <div class="trust-photo">
       <img src="assets/images/trust-photo.jpg" alt="Жилой комплекс сверху" />
       <div class="trust-photo-overlay"></div>
-      <div class="trust-photo-badge">
-        <span class="badge"><span class="badge-dot"></span>Закрытая территория</span>
-      </div>
       <div class="trust-photo-text">
         <h2>Жить — <span>спокойно</span></h2>
         <p>Закрытая территория, двор без машин, видеонаблюдение по периметру.<br />Всего 2 подъезда и 162 квартиры — вы знаете соседей в лицо.</p>
