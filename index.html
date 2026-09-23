@@ -2505,7 +2505,8 @@
 
   .mcalc-heading {
     margin: 0;
-    max-width: 34rem;
+    max-width: none;
+    white-space: nowrap;
     font-family: 'RoadRadio', 'Onest', sans-serif;
     font-weight: 700;
     font-size: 2.8125rem;
@@ -2519,7 +2520,8 @@
 
   .mcalc-note {
     margin: 0;
-    max-width: 22rem;
+    max-width: none;
+    white-space: nowrap;
     font-size: 0.85rem;
     line-height: 1.5;
     color: #1c1c1a;
@@ -3484,7 +3486,9 @@
       line-height: 1.1;
     }
 
-    .finish-heading {
+    .finish-heading,
+    .mcalc-heading,
+    .mcalc-note {
       white-space: normal;
     }
   }
