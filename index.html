@@ -930,27 +930,6 @@
     box-shadow: 0 1.75rem 3rem -1.25rem rgba(240, 61, 58, 0.55);
   }
 
-  /* Крупная полупрозрачная цифра-водяной знак — фоновый акцент вместо
-     пустого места, редакторский приём для "премиальности" карточек. */
-  .trust-card-num {
-    position: absolute;
-    top: -0.4rem;
-    right: 0.6rem;
-    font-family: 'RoadRadio', 'Onest', sans-serif;
-    font-weight: 700;
-    font-size: 4.2rem;
-    line-height: 1;
-    letter-spacing: -0.02em;
-    color: rgba(28, 28, 26, 0.05);
-    transition: color 0.35s ease;
-    pointer-events: none;
-    user-select: none;
-  }
-
-  .trust-card:hover .trust-card-num {
-    color: rgba(255, 255, 255, 0.16);
-  }
-
   .trust-card-top {
     position: relative;
     z-index: 1;
@@ -1041,7 +1020,6 @@
     .trust-photo img { transform: none; transition: none; }
     .trust-photo-text h2 { font-size: 2.1rem; }
     .trust-photo-badge { display: none; }
-    .trust-card-num { font-size: 3.4rem; }
   }
 
   /* ===== Блок «Выгодные условия» (акции, 4 карточки) =====
@@ -4024,7 +4002,6 @@
 
     <div class="trust-cards">
       <div class="trust-card">
-        <span class="trust-card-num">01</span>
         <div class="trust-card-top">
           <div class="trust-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round">
@@ -4042,7 +4019,6 @@
       </div>
 
       <div class="trust-card">
-        <span class="trust-card-num">02</span>
         <div class="trust-card-top">
           <div class="trust-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round">
@@ -4057,7 +4033,6 @@
       </div>
 
       <div class="trust-card">
-        <span class="trust-card-num">03</span>
         <div class="trust-card-top">
           <div class="trust-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round">
