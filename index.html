@@ -903,18 +903,15 @@
     padding: var(--space-32) var(--space-27_2);
     border-radius: 1.2rem;
     background: #eef1f5;
-    border: 1px solid rgba(28, 28, 26, 0.05);
     box-shadow: 0 1px 2px rgba(16, 24, 32, 0.03);
     overflow: hidden;
-    transition: background-color 0.35s ease, border-color 0.35s ease,
-      box-shadow 0.35s ease, transform 0.35s ease;
+    transition: background-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
   }
 
   /* Все плашки серые по умолчанию — акцентный красный только при
      наведении (раньше «Двор без машин» был красным всегда). */
   .trust-card:hover {
     background: var(--accent, #F03D3A);
-    border-color: transparent;
     color: #ffffff;
     transform: translateY(-0.3rem);
     box-shadow: 0 1.75rem 3rem -1.25rem rgba(240, 61, 58, 0.55);
@@ -1370,8 +1367,7 @@
 
   .layouts-heading {
     margin: 0;
-    max-width: none;
-    white-space: nowrap;
+    max-width: 40rem;
     font-family: 'RoadRadio', 'Onest', sans-serif;
     font-weight: 700;
     font-size: 2.8125rem;
@@ -1556,7 +1552,6 @@
   }
 
   @media (max-width: 1300px) {
-    .layouts-heading,
     .layouts-note {
       white-space: normal;
     }
@@ -1631,9 +1626,12 @@
   }
 
   /* Без белой подложки: блок лежит прямо на фоне страницы,
-     а несущим светлым слоем работают сами карточки. */
+     а несущим светлым слоем работают сами карточки. Паддинг 80px
+     здесь (как раньше в .finish-panel/.news-panel) задваивал
+     внешние отступы секции — отступ был заметно больше, чем у
+     карточных соседей. Оставляем только внешние margin/gap. */
   .walk-panel {
-    padding: var(--space-80) 0;
+    padding: 0;
   }
 
   .walk-inner {
@@ -4373,8 +4371,8 @@
   <div class="layouts-inner">
 
     <div class="layouts-head">
-      <h2 class="layouts-heading">От компактной <span>однушки</span> до просторной <span>трёшки</span></h2>
-      <p class="layouts-note">162 квартиры · площади от 30,81 до 68,71 м². Актуальную квартирографию и цены подтягиваем из каталога.</p>
+      <h2 class="layouts-heading">От компактной <span>однушки</span><br />до просторной <span>трёшки</span></h2>
+      <p class="layouts-note">162 квартиры · площади от 30,81 до 68,71 м².</p>
     </div>
 
     <div class="layouts-grid">
