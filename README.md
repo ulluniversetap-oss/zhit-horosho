@@ -417,8 +417,8 @@ python3 -m http.server 8080
 
 Заменена плейсхолдер-иконка ключа на настоящий 3D-ассет из Figma (получен
 от пользователя через Google Диск, папка «жить хорошо», файлы `1.png`/`2.png`).
-Добавлен hover-свап: `assets/images/icon-key.png` (серый, дефолт) и
-`assets/images/icon-key-hover.png` (красный, hover) — два `<img>` наложены
+Добавлен hover-свап: `assets/images/icon-key-gray.png` (серый, дефолт) и
+`assets/images/icon-key-red.png` (красный, hover) — два `<img>` наложены
 друг на друга абсолютным позиционированием внутри `.offers-icon`, переключение
 через `opacity` на `.offers-card:hover` (см. `.offers-icon-default` /
 `.offers-icon-hover` в `<style>`). Работает вместе с существующим
