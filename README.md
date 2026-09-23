@@ -518,6 +518,21 @@ python3 -m http.server 8080
 `.walk-head`, `.addl-head`, `.news-head`, заголовки офферов и сценариев note
 рядом не имели — их не трогали.
 
+## Однострочные заголовки/note у секций
+
+По просьбе несколько пар «заголовок + note» сведены в одну строку каждая
+(было по 2 строки из-за `<br>` или узкого `max-width`): `.layouts-heading`/
+`.layouts-note`, `.finish-heading`/`.finish-note`, `.mcalc-heading`/
+`.mcalc-note`, `.offices-heading`/`.offices-note`. Убрали `<br>` из разметки,
+`max-width` заменили на `none` + `white-space: nowrap`. Так как текст
+довольно длинный (особенно у «Планировок»), на средних ширинах он бы
+вылезал за пределы контейнера — поэтому для каждой пары есть свой
+breakpoint отката на `white-space: normal` (`.layouts-*` — 1300px,
+`.finish-*`/`.mcalc-*` — 1200px, `.offices-*` — 1024px), а ниже 640px общий
+откат на обычный перенос для всех разом (там же, где уменьшается
+font-size заголовков). Пороги подобраны по фактической ширине текста —
+проверено на 375–1920px, нигде нет горизонтального overflow.
+
 ## Шрифты
 
 - **RoadRadio** — заголовки, self-hosted (`assets/fonts/RoadRadio-Bold.ttf`), только вес 700.
