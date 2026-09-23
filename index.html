@@ -1362,9 +1362,9 @@
 
   .layouts-head {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr;
     align-items: start;
-    gap: var(--space-48);
+    gap: var(--space-16);
     margin: 0 0 var(--space-38_4);
   }
 
@@ -1383,15 +1383,13 @@
   .layouts-heading span { color: var(--accent, #F03D3A); }
 
   .layouts-note {
-    align-self: end;
-    margin: var(--space-6_4) 0 0;
+    margin: 0;
     max-width: none;
-    white-space: nowrap;
     font-size: 0.85rem;
     line-height: 1.5;
     color: #1c1c1a;
     opacity: 0.45;
-    text-align: right;
+    text-align: left;
   }
 
   .layouts-grid {
@@ -1553,11 +1551,6 @@
 
   @media (max-width: 1200px) {
     .layouts-grid { grid-template-columns: repeat(2, 1fr); }
-    /* На средних ширинах белый nowrap-текст у .layouts-note забирал
-       себе всю "auto"-колонку и сжимал заголовок до переноса в
-       лишние строки — переносим note под заголовок. */
-    .layouts-head { grid-template-columns: 1fr; gap: var(--space-16); }
-    .layouts-note { text-align: left; white-space: normal; align-self: auto; }
   }
 
   @media (max-width: 640px) {
@@ -2348,9 +2341,9 @@
 
   .finish-head {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr;
     align-items: start;
-    gap: var(--space-48);
+    gap: var(--space-16);
     margin: 0 0 var(--space-38_4);
   }
 
@@ -2370,14 +2363,13 @@
   .finish-heading span { color: var(--accent, #F03D3A); }
 
   .finish-note {
-    align-self: end;
     margin: 0;
     max-width: 38rem;
     font-size: 0.85rem;
     line-height: 1.5;
     color: #1c1c1a;
     opacity: 0.45;
-    text-align: right;
+    text-align: left;
   }
 
   /* Тур пробивает боковой паддинг .finish-inner отрицательными полями —
@@ -2467,8 +2459,6 @@
 
   @media (max-width: 1200px) {
     .finish-features { grid-template-columns: repeat(3, 1fr); }
-    .finish-head { grid-template-columns: 1fr; gap: var(--space-16); }
-    .finish-note { text-align: left; align-self: auto; }
   }
 
   @media (max-width: 640px) {
@@ -2507,9 +2497,9 @@
 
   .mcalc-head {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr;
     align-items: start;
-    gap: var(--space-48);
+    gap: var(--space-16);
     margin: 0 0 var(--space-41_6);
   }
 
@@ -2528,14 +2518,13 @@
   .mcalc-heading span { color: var(--mcalc-accent); }
 
   .mcalc-note {
-    align-self: end;
     margin: 0;
     max-width: 22rem;
     font-size: 0.85rem;
     line-height: 1.5;
     color: #1c1c1a;
     opacity: 0.45;
-    text-align: right;
+    text-align: left;
   }
 
   .mcalc-body {
@@ -2758,8 +2747,6 @@
   @media (max-width: 1200px) {
     .mcalc-body { grid-template-columns: 1fr; }
     .mcalc-sliders { grid-template-columns: repeat(3, 1fr); display: grid; }
-    .mcalc-head { grid-template-columns: 1fr; gap: var(--space-16); }
-    .mcalc-note { text-align: left; align-self: auto; }
   }
 
   @media (max-width: 720px) {
@@ -2949,9 +2936,9 @@
 
   .offices-head {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr;
     align-items: start;
-    gap: var(--space-48);
+    gap: var(--space-16);
     margin: 0 0 var(--space-41_6);
   }
 
@@ -2970,14 +2957,13 @@
   .offices-heading span { color: var(--accent, #F03D3A); }
 
   .offices-note {
-    align-self: end;
     margin: 0;
     max-width: 22rem;
     font-size: 0.85rem;
     line-height: 1.5;
     color: #1c1c1a;
     opacity: 0.45;
-    text-align: right;
+    text-align: left;
   }
 
   .offices-grid {
@@ -3161,8 +3147,6 @@
 
   @media (max-width: 1024px) {
     .offices-grid { grid-template-columns: 1fr; }
-    .offices-head { grid-template-columns: 1fr; }
-    .offices-note { text-align: left; align-self: auto; }
     .offices-contact { flex-direction: row; flex-wrap: wrap; align-items: center; }
     .offices-map iframe { min-height: 20rem; }
   }
