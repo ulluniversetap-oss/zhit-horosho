@@ -72,7 +72,7 @@
 
   .hero {
     --accent: #F03D3A;
-    --accent-secondary: #ff773c;
+    --accent-secondary: #EC5958;
     --glass-bg: rgba(255, 255, 255, 0.07);
     --glass-border: linear-gradient(
       135deg,
@@ -200,7 +200,6 @@
     cursor: pointer;
   }
 
-  .contact-btn:hover { background: rgba(255, 255, 255, 0.14); }
 
   /* Своя (меньше общей 4.5rem) иконка-круг — рассчитана так, чтобы
      вместе с вертикальным паддингом кнопки (0, высота задана самой
@@ -212,6 +211,8 @@
      (3.6rem), плюс одинаковый вертикальный паддинг 0.5rem у каждой
      кнопки даёт всем одну и ту же итоговую высоту ~5.5rem. */
   .icon-circle {
+    position: relative;
+    z-index: 2;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -223,6 +224,80 @@
     font-size: 1.3rem;
     flex-shrink: 0;
   }
+
+  /* ===== Единая анимация ховера для всех красных pill-кнопок сайта:
+     белый кружок расширяется и заливает всю кнопку, фон становится
+     белым, текст — фирменным красным. Круг живёт в ::before, а не в
+     самом .icon-circle: последний в DOM элемент по умолчанию красится
+     поверх остальных, и разросшийся .icon-circle просто закрашивал
+     текст кнопки собой. ::before с z-index:-1 красится строго между
+     фоном кнопки и текстом (текст — обычный неспозиционированный
+     инлайн-контент, он по правилам покраски CSS всегда выше
+     отрицательного z-index, но ниже z-index:0+), а сама иконка со
+     стрелкой (z-index:2) остаётся поверх всего и не мешает. */
+  .cta,
+  .leadgen-submit,
+  .contact-btn,
+  .addl-btn,
+  .offices-cta,
+  .news-btn {
+    position: relative;
+    z-index: 0; /* без явного z-index position:relative не создаёт свой контекст наложения, и ::before с z-index:-1 проваливается ЗА кнопку целиком (за hero-фон), а не просто под текст */
+    overflow: hidden;
+    transition: color 0.25s ease 0.1s;
+  }
+
+  .cta::before,
+  .leadgen-submit::before,
+  .contact-btn::before,
+  .addl-btn::before,
+  .offices-cta::before,
+  .news-btn::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    right: 0.5rem;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    background: #fff;
+    transform: translateY(-50%) scale(1);
+    transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+    pointer-events: none;
+  }
+
+  .contact-btn::before { width: 3.22rem; height: 3.22rem; }
+  /* .cta .icon-circle тянется по vw (clamp) вместе с hero — заливка
+     должна повторять тот же размер, иначе в статике белый круг
+     заливки крупнее настоящей иконки и торчит вокруг неё. */
+  .cta::before { width: clamp(3rem, 3.75vw, 4.5rem); height: clamp(3rem, 3.75vw, 4.5rem); }
+  .addl-btn::before,
+  .news-btn::before { width: 2.2rem; height: 2.2rem; }
+  .offices-cta::before { width: 2.6rem; height: 2.6rem; }
+
+  .cta:hover,
+  .leadgen-submit:hover,
+  .contact-btn:hover,
+  .addl-btn:hover,
+  .offices-cta:hover,
+  .news-btn:hover {
+    color: var(--accent, #F03D3A);
+  }
+
+  .cta:hover::before,
+  .leadgen-submit:hover::before,
+  .contact-btn:hover::before,
+  .addl-btn:hover::before,
+  .offices-cta:hover::before,
+  .news-btn:hover::before {
+    transform: translateY(-50%) scale(16);
+  }
+
+  /* .news-btn лежит на белой карточке (блок «Новости») — залитая
+     белым кнопка на ховере сливается с фоном карточки. Только здесь
+     добавляем красную обводку, чтобы граница кнопки не терялась. */
+  .news-btn:hover { border-color: var(--accent, #F03D3A); }
 
   /* Stats column */
   /* .hero теряет высоту при сужении окна (clamp 640-900px от 52vw) —
@@ -352,7 +427,6 @@
     font-size: 0.9rem;
     cursor: pointer;
   }
-  .cta:hover { background: #d95f28; }
   .cta .icon-circle {
     color: var(--accent);
     width: clamp(3rem, 3.75vw, 4.5rem);
@@ -371,9 +445,137 @@
     .contact-btn { gap: var(--space-16); padding: 0 var(--space-8) 0 var(--space-25_6); font-size: 0.75rem; }
   }
 
+  /* Гамбургер — скрыт на десктопе, показывается вместо nav/contacts
+     на мобильном (см. брейкпоинт ниже). */
+  .burger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.32rem;
+    width: 2.8rem;
+    height: 2.8rem;
+    border: none;
+    border-radius: 50%;
+    background: var(--glass-bg);
+    flex-shrink: 0;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .burger span {
+    display: block;
+    width: 1.2rem;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  .burger.is-open span:nth-child(1) { transform: translateY(0.42rem) rotate(45deg); }
+  .burger.is-open span:nth-child(2) { opacity: 0; }
+  .burger.is-open span:nth-child(3) { transform: translateY(-0.42rem) rotate(-45deg); }
+
+  /* Полноэкранная мобильная навигация — скрыта на десктопе, всегда
+     существует в DOM (не только в мобильном брейкпоинте), но не
+     занимает места, пока .is-open не добавлен. */
+  .mobile-nav {
+    display: none;
+  }
+
   @media (max-width: 900px) {
     .stats-column { display: none; } /* десктоп-версия: на мобильном верстка не продумывалась */
     .content { max-width: 100%; }
+
+    /* Шапка на мобильном: логотип + гамбургер, всё остальное уходит
+       в выезжающую панель .mobile-nav. */
+    .header .nav,
+    .header .contacts { display: none; }
+    .burger { display: flex; }
+
+    .mobile-nav {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: #0a0e19;
+      padding: var(--space-28_8) var(--space-24) var(--space-32);
+      overflow-y: auto;
+      transform: translateY(-100%);
+      opacity: 0;
+      transition: transform 0.35s ease, opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .mobile-nav.is-open {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .mobile-nav nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-8);
+    }
+
+    .mobile-nav nav a {
+      display: block;
+      padding: var(--space-16) 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 1.15rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .mobile-nav__contacts {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-12);
+      margin-top: var(--space-32);
+    }
+
+    .mobile-nav__contacts .phone { font-size: 1.3rem; }
+
+    .mobile-nav__contacts .contact-btn { width: 100%; justify-content: space-between; }
+
+    /* Пока меню открыто — страница за ним не скроллится. */
+    body.nav-open { overflow: hidden; }
+
+    /* Hero на мобильном — обычный поток вместо position:absolute для
+       CTA: раньше кнопка была прибита к низу секции и наезжала на
+       заголовок, если он переносился на 3 строки. Теперь высота hero
+       считается по контенту, а не фиксируется. */
+    .hero { min-height: 0; }
+
+    .hero__inner {
+      min-height: 78dvh;
+      padding: var(--space-24) var(--space-20) var(--space-32);
+      gap: var(--space-32);
+      justify-content: flex-start;
+    }
+
+    .header { margin-bottom: auto; } /* держит шапку у верха, весь остальной контент группируется у низа */
+
+    .content { gap: var(--space-16); }
+
+    .badges { gap: var(--space-8); }
+
+    .badge { font-size: 0.85rem; padding: var(--space-8) var(--space-16); }
+
+    .title { font-size: clamp(2.1rem, 9.5vw, 2.8rem); line-height: 0.95; }
+
+    .cta {
+      position: static;
+      width: 100%;
+      justify-content: space-between;
+      margin-top: var(--space-32);
+    }
   }
 
 
@@ -691,10 +893,12 @@
     padding: var(--space-35_2) var(--space-27_2);
     border-radius: 0.9rem;
     background: #eef1f5;
+    transition: background-color 0.3s ease;
   }
 
-  .trust-card--accent {
-    flex: 1.25;
+  /* Все плашки серые по умолчанию — акцентный красный только при
+     наведении (раньше «Двор без машин» был красным всегда). */
+  .trust-card:hover {
     background: var(--accent, #F03D3A);
     color: #ffffff;
   }
@@ -705,7 +909,8 @@
     font-family: 'Onest', sans-serif;
     font-weight: 700;
     font-size: 1.625rem;
-    color: inherit;
+    color: #272727;
+    transition: color 0.3s ease;
   }
 
   .trust-card p {
@@ -713,16 +918,14 @@
     max-width: 95%;
     font-size: 0.85rem;
     line-height: 1.4;
-    color: inherit;
-    opacity: 0.9;
+    color: #3c3c3a;
+    transition: color 0.3s ease;
   }
 
-  .trust-card:not(.trust-card--accent) h3,
-  .trust-card:not(.trust-card--accent) p {
-    color: #272727;
+  .trust-card:hover h3,
+  .trust-card:hover p {
+    color: #ffffff;
   }
-
-  .trust-card:not(.trust-card--accent) p { opacity: 1; color: #3c3c3a; }
 
   .trust-icon {
     position: absolute;
@@ -736,9 +939,12 @@
     border-radius: 50%;
     background: rgba(242, 114, 57, 0.12);
     color: #F03D3A;
+    transition: background-color 0.3s ease;
   }
 
-  .trust-icon--light {
+  /* На красном фоне (hover) нужен светлый кружок под иконку —
+     иначе полупрозрачная оранжевая подложка сливается с фоном. */
+  .trust-card:hover .trust-icon {
     background: rgba(255, 255, 255, 0.9);
     color: #F03D3A;
   }
@@ -1709,7 +1915,6 @@
     cursor: pointer;
   }
 
-  .leadgen-submit:hover { background: #d95f28; }
   .leadgen-submit .icon-circle { color: var(--accent, #F03D3A); font-size: 1.15rem; }
 
   /* Селектор через > : иначе правило .leadgen-content > p (специфичнее)
@@ -1754,7 +1959,16 @@
   .pdf-badge img { display: block; width: 100%; height: 100%; }
 
   @media (max-width: 1100px) {
-    .leadgen { grid-template-columns: 1fr; padding: var(--space-38_4); }
+    /* .leadgen — flex, не grid (grid-template-columns ниже был для
+       display:grid, которого тут нет — на flex он не действовал вообще,
+       форма как была рядом из 2 полей + кнопки в одну строку, так и
+       переполняла экран). Раскладываем в колонку: контент на всю
+       ширину, поля формы друг под другом. */
+    .leadgen { flex-direction: column; align-items: stretch; padding: var(--space-38_4) var(--space-24); }
+    .leadgen-content { width: 100%; }
+    .leadgen-content h2 { font-size: 1.9rem; }
+    .leadgen-form { flex-direction: column; align-items: stretch; }
+    .leadgen-submit { width: 100%; }
     .leadgen-mockup { display: none; } /* десктоп-версия: на мобильном верстка не продумывалась */
   }
 
@@ -1883,9 +2097,38 @@
   }
 
   @media (max-width: 900px) {
-    .row { grid-template-columns: 1fr; }
+    /* minmax(0, 1fr), не просто 1fr: иначе трек не сжимается меньше
+       min-content самого широкого потомка (длинный текст без переносов)
+       и вылезает за пределы row/viewport. */
+    .row { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+    .row--a, .row--b, .row--c { min-height: 0; }
+    .row--spacer { display: none; } /* пустые ряды-отступы нужны только для desktop-ритма */
+    .col:empty { display: none; }
+    .col { min-width: 0; }
     .col + .col { border-left: none; border-top: 1px solid #dcdcd8; }
-    .col-media { order: -1; min-height: 18rem; }
+    .col-media { order: -1; min-height: 0; min-width: 0; width: 100%; aspect-ratio: 4 / 3; }
+
+    /* Текст на мобильном статичен (см. JS-гвард ROW_FX_MQ) — просто
+       обычный блок под фото, а не absolute-элемент, летающий по
+       скроллу. */
+    /* display:block вместо flex-row — иначе .text-inner как flex-item
+       отказывается сжиматься уже своего max-content (текст с ручными
+       <br/> из десктоп-вёрстки) и вылезает за .row{overflow:hidden},
+       обрезаясь по краю экрана. */
+    .col-text { display: block; padding: var(--space-32) var(--space-24); }
+    .text-inner {
+      position: static;
+      width: 100%;
+      opacity: 1;
+      transform: none;
+      padding: 0;
+      text-align: left;
+      gap: var(--space-16);
+    }
+    .heading, .paragraph { text-align: left; }
+    .heading { font-size: 1.9rem; }
+    .paragraph { max-width: none; }
+    .br-desktop { display: none; } /* ручные переносы под десктопную ширину строки — на мобильном мешают, текст сам переносится по ширине */
   }
 
   /* ===== Блок 11 (финальный). «Оставьте заявку на подбор с экспертом» =====
@@ -2099,30 +2342,39 @@
     gap: var(--space-16);
   }
 
+  /* Мягкая карточка вместо сплошного цветного блока-«таблетки» —
+     тот же язык, что у .trust-icon: акцент только в самой иконке
+     (лёгкая заливка + обводка-цвет), а не заливает всю плашку. */
   .finish-feature {
     display: flex;
     align-items: center;
-    gap: var(--space-16);
+    gap: var(--space-14_4);
+    padding: var(--space-14_4) var(--space-16);
     background: #ffffff;
-    border: 1px solid rgba(28, 28, 26, 0.08);
-    border-radius: 0.7rem;
-    overflow: hidden;
+    border-radius: 0.9rem;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+
+  .finish-feature:hover {
+    box-shadow: 0 0.6rem 1.6rem rgba(20, 22, 26, 0.08);
+    transform: translateY(-2px);
   }
 
   .finish-feature-icon {
     flex-shrink: 0;
-    width: 4.6rem;
-    height: 4.6rem;
+    width: 3rem;
+    height: 3rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--accent, #F03D3A);
-    color: #ffffff;
+    border-radius: 50%;
+    background: rgba(240, 61, 58, 0.1);
+    color: var(--accent, #F03D3A);
   }
 
-  .finish-feature-icon svg { width: 1.7rem; height: 1.7rem; }
+  .finish-feature-icon svg { width: 1.35rem; height: 1.35rem; }
 
-  .finish-feature-text { padding: var(--space-6_4) var(--space-16) var(--space-6_4) 0; min-width: 0; }
+  .finish-feature-text { min-width: 0; }
 
   .finish-feature-text strong {
     display: block;
@@ -2315,10 +2567,12 @@
   .mcalc-tablewrap {
     background: #F7F9FB;
     border-radius: 0.9rem;
-    /* Верхний паддинг = паддингу .mcalc-sliders (1.75rem), чтобы
-       «БАНК» в шапке таблицы стоял вровень с «Стоимость квартиры, ₽»
-       слева. */
-    padding: var(--space-20) var(--space-38_4) var(--space-8) var(--space-24);
+    /* Верхний паддинг перенесён на саму .mcalc-row.is-head (см. ниже):
+       паддинг контейнера скролла не «прикрыт» ничем при прокрутке —
+       предыдущая строка проезжает сквозь него и видна в зазоре над
+       прилипшей шапкой. Паддинг на самой шапке — часть её непрозрачного
+       фона, зазор невозможен. */
+    padding: 0 var(--space-38_4) var(--space-8) var(--space-24);
     overflow-y: scroll;
     scrollbar-width: none;
   }
@@ -2362,12 +2616,15 @@
   }
 
   .mcalc-row.is-head {
-    padding: 0 0 var(--space-14_4);
+    padding: var(--space-20) 0 var(--space-14_4);
     font-size: 0.78rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: #1c1c1a;
-    opacity: 0.45;
+    /* Не opacity на весь элемент — это гасит и его собственный
+       непрозрачный фон (#F7F9FB), из-за чего строки, уезжающие под
+       залипшую шапку при скролле, просвечивали сквозь неё. Приглушаем
+       только цвет текста. */
+    color: rgba(28, 28, 26, 0.45);
   }
 
   .mcalc-row.is-head span:not(:first-child),
@@ -2567,7 +2824,6 @@
     transition: background-color 0.25s ease;
   }
 
-  .addl-btn:hover { background: #d95f28; }
   .addl-btn .icon-circle { width: 2.2rem; height: 2.2rem; background: #ffffff; color: var(--accent, #F03D3A); font-size: 0.9rem; }
 
   @media (max-width: 1024px) {
@@ -2753,7 +3009,6 @@
     transition: background-color 0.25s ease;
   }
 
-  .offices-cta:hover { background: #d95f28; }
   .offices-cta .icon-circle {
     position: absolute;
     right: 0.5rem;
@@ -2965,7 +3220,10 @@
     box-sizing: border-box;
     padding: var(--space-8) var(--space-8) var(--space-8) var(--space-24);
     background: var(--accent, #F03D3A);
-    border: none;
+    /* Прозрачная рамка того же веса, что и на hover, — чтобы при
+       появлении красной обводки кнопка не «прыгала» в размере
+       (border учтён в box-sizing: border-box заранее). */
+    border: 1.5px solid transparent;
     border-radius: 999px;
     color: #ffffff;
     font-family: inherit;
@@ -2973,10 +3231,9 @@
     font-size: 0.85rem;
     text-decoration: none;
     cursor: pointer;
-    transition: background-color 0.25s ease;
+    transition: background-color 0.25s ease, border-color 0.25s ease;
   }
 
-  .news-btn:hover { background: #d95f28; }
   .news-btn .icon-circle { width: 2.2rem; height: 2.2rem; background: #ffffff; color: var(--accent, #F03D3A); font-size: 0.9rem; }
 
   @media (max-width: 1024px) {
@@ -3147,6 +3404,243 @@
     .footer-grid { grid-template-columns: 1fr; gap: var(--space-27_2); }
   }
 
+  /* Единый заголовок блоков (45px/2.8125rem) на мобильном при таком
+     размере часто разбивается на 4-5 строк по одному-два слова —
+     не «перенос», а вырвиглазный столбик. Уменьшаем везде разом до
+     размера, при котором заголовки укладываются в 2-3 нормальные
+     строки на узких экранах. */
+  @media (max-width: 640px) {
+    .heading,
+    .scenarios-heading,
+    .offers-heading,
+    .layouts-heading,
+    .walk-heading,
+    .leadgen-content h2,
+    .nearby-heading,
+    .expert-lead__heading,
+    .finish-heading,
+    .mcalc-heading,
+    .addl-heading,
+    .offices-heading,
+    .news-heading {
+      font-size: 2.1rem;
+      line-height: 1.1;
+    }
+  }
+
+  /* ===== Модальная форма заявки (открывается с hero-кнопки «Подобрать
+     квартиру сейчас») — выезжающая справа панель, как в референсе. ===== */
+  .lead-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    background: rgba(10, 14, 25, 0.55);
+    justify-content: flex-end;
+  }
+
+  .lead-modal-overlay.is-open { display: flex; }
+
+  .lead-modal {
+    position: relative;
+    width: min(26.5rem, 100%);
+    height: 100dvh;
+    background: #ffffff;
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform 0.35s ease;
+    box-shadow: -1.2rem 0 3rem rgba(10, 14, 25, 0.25);
+  }
+
+  .lead-modal-overlay.is-open .lead-modal { transform: translateX(0); }
+
+  .lead-modal__body { padding: var(--space-48) var(--space-36) var(--space-36); }
+
+  .lead-modal__close {
+    position: absolute;
+    top: var(--space-24);
+    right: var(--space-24);
+    width: 2.6rem;
+    height: 2.6rem;
+    border: none;
+    border-radius: 50%;
+    background: #F7F9FB;
+    color: #1c1c1a;
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .lead-modal__close:hover { background: #ece9e4; }
+
+  .lead-modal__title {
+    margin: 0 0 var(--space-12);
+    max-width: 15rem;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 1.7rem;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: #1c1c1a;
+  }
+
+  .lead-modal__text {
+    margin: 0 0 var(--space-24);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #5a5a56;
+  }
+
+  .lead-modal__manager {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    margin: 0 0 var(--space-28);
+    padding: var(--space-14_4) var(--space-16);
+    background: #F7F9FB;
+    border-radius: 0.9rem;
+  }
+
+  /* Два перекрывающихся круглых фото, как в референсе — вместо одной
+     иконки-силуэта. */
+  .lead-modal__avatars {
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    width: 4.3rem;
+    height: 2.8rem;
+  }
+
+  .lead-modal__avatar-photo {
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #fff;
+    border: 2px solid #F7F9FB; /* совпадает с фоном плашки — визуально разделяет фото */
+  }
+
+  .lead-modal__avatar-photo + .lead-modal__avatar-photo { margin-left: -0.9rem; }
+
+  .lead-modal__online {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    background: #3ac569;
+    border: 2px solid #F7F9FB;
+  }
+
+  .lead-modal__manager strong { display: block; font-size: 0.92rem; color: #1c1c1a; }
+  .lead-modal__manager span { display: block; font-size: 0.8rem; color: #8a8a83; }
+
+  .lead-modal__form { display: flex; flex-direction: column; gap: var(--space-12); }
+
+  .lead-modal__input,
+  .lead-modal__select {
+    width: 100%;
+    height: 3.4rem;
+    box-sizing: border-box;
+    padding: 0 var(--space-16);
+    border: 1px solid #e2e2de;
+    border-radius: 0.7rem;
+    background: #fff;
+    color: #1c1c1a;
+    font-family: inherit;
+    font-size: 0.92rem;
+  }
+
+  .lead-modal__input:focus,
+  .lead-modal__select:focus {
+    outline: none;
+    border-color: var(--accent, #F03D3A);
+  }
+
+  .lead-modal__input::placeholder { color: #a9a49a; }
+
+  .lead-modal__select-label {
+    margin: var(--space-4) 0 calc(-1 * var(--space-4));
+    font-size: 0.82rem;
+    color: #5a5a56;
+  }
+
+  .lead-modal__select { appearance: none; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235a5a56' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--space-12) center;
+    background-size: 1.1rem;
+    padding-right: var(--space-36);
+  }
+
+  .lead-modal__submit {
+    height: 3.6rem;
+    margin-top: var(--space-8);
+    border: none;
+    border-radius: 999px;
+    background: var(--accent, #F03D3A);
+    color: #fff;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .lead-modal__submit:hover { background: #d12d2a; }
+
+  .lead-modal__consent {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-8);
+    margin-top: var(--space-4);
+    font-size: 0.76rem;
+    line-height: 1.4;
+    color: #8a8a83;
+    cursor: pointer;
+  }
+
+  .lead-modal__consent input { margin-top: 0.2rem; flex-shrink: 0; }
+  .lead-modal__consent a { color: #5a5a56; text-decoration: underline; }
+
+  .lead-modal__success {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-16);
+    padding-top: var(--space-32);
+  }
+
+  .lead-modal__success-icon {
+    width: 3.4rem;
+    height: 3.4rem;
+    border-radius: 50%;
+    background: rgba(240, 61, 58, 0.1);
+    color: var(--accent, #F03D3A);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lead-modal__success-icon svg { width: 1.7rem; height: 1.7rem; }
+
+  .lead-modal__success h3 {
+    margin: 0;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-size: 1.4rem;
+    text-transform: none;
+    color: #1c1c1a;
+  }
+
+  .lead-modal__success p { margin: 0; font-size: 0.9rem; color: #5a5a56; line-height: 1.5; }
+
+  @media (max-width: 640px) {
+    .lead-modal { width: 100%; }
+    .lead-modal__body { padding: var(--space-40) var(--space-24) var(--space-32); }
+  }
+
 </style>
 
 <body>
@@ -3204,32 +3698,59 @@
           <span class="icon-circle">→</span>
         </button>
       </div>
+
+      <button type="button" class="burger" aria-label="Открыть меню" aria-expanded="false" onclick="toggleMobileNav()">
+        <span></span><span></span><span></span>
+      </button>
     </header>
+
+    <div class="mobile-nav" id="mobileNav">
+      <nav aria-label="Мобильная навигация">
+        <ul>
+          <li><a href="/about-project">О проекте</a></li>
+          <li><a href="/offers">Предложения</a></li>
+          <li><a href="/who-its-for">Кому подойдёт</a></li>
+          <li><a href="/location">Локация</a></li>
+          <li><a href="/layouts">Планировки</a></li>
+          <li><a href="/purchase">Покупка</a></li>
+          <li><a href="/contacts">Контакты</a></li>
+          <li><a href="/about">О нас</a></li>
+        </ul>
+      </nav>
+      <div class="mobile-nav__contacts">
+        <a href="tel:+79500943392" class="phone">+7 950 094 33 92</a>
+        <a href="#" class="max-link">Написать в MAX</a>
+        <button type="button" class="contact-btn">
+          Связаться с нами
+          <span class="icon-circle">→</span>
+        </button>
+      </div>
+    </div>
 
     <div class="stats-column">
       <div class="stat-card">
         <svg class="cube" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M17.8742 3.12663L26.8805 7.98259C27.932 8.54981 27.932 10.1685 26.8805 10.7357L17.8742 15.5916C17.0718 16.0205 16.131 16.0205 15.3286 15.5916L6.32227 10.7357C5.27083 10.1685 5.27083 8.54981 6.32227 7.98259L15.3286 3.12663C16.131 2.69776 17.0718 2.69776 17.8742 3.12663Z" stroke="#FFB290" stroke-width="1.09863" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M4.99447 14.0145L13.3644 18.2064C14.402 18.7321 15.0661 19.7974 15.0661 20.9595V28.8729C15.0661 30.0212 13.8625 30.7544 12.8387 30.2425L4.46875 26.0506C3.43115 25.5249 2.76709 24.4597 2.76709 23.2975V15.3841C2.76709 14.2359 3.9707 13.5026 4.99447 14.0145Z" stroke="#FF8955" stroke-width="1.09863" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M28.2078 14.0145L19.8379 18.2064C18.8003 18.7321 18.1362 19.7974 18.1362 20.9595V28.8729C18.1362 30.0212 19.3398 30.7544 20.3636 30.2425L28.7336 26.0506C29.7712 25.5249 30.4352 24.4597 30.4352 23.2975V15.3841C30.4352 14.2359 29.2316 13.5026 28.2078 14.0145Z" stroke="#FF8955" stroke-width="1.09863" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M17.8747 3.12664L26.881 7.9826C27.9325 8.54982 27.9325 10.1685 26.881 10.7357L17.8747 15.5916C17.0723 16.0205 16.1315 16.0205 15.3291 15.5916L6.32275 10.7357C5.27132 10.1685 5.27132 8.54982 6.32275 7.9826L15.3291 3.12664C16.1315 2.69777 17.0723 2.69777 17.8747 3.12664Z" stroke="#EC5958" stroke-width="1.09863" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M4.99398 14.0145L13.3639 18.2064C14.4015 18.7321 15.0656 19.7974 15.0656 20.9595V28.8729C15.0656 30.0212 13.862 30.7544 12.8382 30.2425L4.46826 26.0506C3.43066 25.5249 2.7666 24.4596 2.7666 23.2975V15.3841C2.7666 14.2359 3.97021 13.5026 4.99398 14.0145Z" stroke="#E67A7A" stroke-width="1.09863" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M28.2083 14.0145L19.8384 18.2064C18.8008 18.7321 18.1367 19.7974 18.1367 20.9595V28.8729C18.1367 30.0212 19.3403 30.7544 20.3641 30.2425L28.7341 26.0506C29.7716 25.5249 30.4357 24.4596 30.4357 23.2975V15.3841C30.4357 14.2359 29.2321 13.5026 28.2083 14.0145Z" stroke="#E67A7A" stroke-width="1.09863" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         <strong>10 этажей</strong>
         <p>монолитно-кирпичная технология строительства</p>
       </div>
       <div class="stat-card">
         <svg class="cube" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M17.8744 3.12665L26.8808 7.98261C27.9322 8.54983 27.9322 10.1685 26.8808 10.7357L17.8744 15.5917C17.072 16.0205 16.1313 16.0205 15.3289 15.5917L6.32251 10.7357C5.27108 10.1685 5.27108 8.54983 6.32251 7.98261L15.3289 3.12665C16.1313 2.69777 17.072 2.69777 17.8744 3.12665Z" stroke="#FF8955" stroke-width="1.09863" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M4.99422 14.0145L13.3642 18.2064C14.4018 18.7321 15.0658 19.7974 15.0658 20.9595V28.8729C15.0658 30.0212 13.8622 30.7544 12.8385 30.2425L4.46851 26.0506C3.43091 25.5249 2.76685 24.4597 2.76685 23.2975V15.3841C2.76685 14.2359 3.97046 13.5026 4.99422 14.0145Z" stroke="#FFB290" stroke-width="1.09863" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M28.2078 14.0145L19.8379 18.2064C18.8003 18.7321 18.1362 19.7974 18.1362 20.9595V28.8729C18.1362 30.0212 19.3398 30.7544 20.3636 30.2425L28.7336 26.0506C29.7712 25.5249 30.4352 24.4597 30.4352 23.2975V15.3841C30.4352 14.2359 29.2316 13.5026 28.2078 14.0145Z" stroke="#FF8955" stroke-width="1.09863" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M17.8747 3.12664L26.881 7.9826C27.9325 8.54982 27.9325 10.1685 26.881 10.7357L17.8747 15.5916C17.0723 16.0205 16.1315 16.0205 15.3291 15.5916L6.32275 10.7357C5.27132 10.1685 5.27132 8.54982 6.32275 7.9826L15.3291 3.12664C16.1315 2.69777 17.0723 2.69777 17.8747 3.12664Z" stroke="#E67A7A" stroke-width="1.09863" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M4.99398 14.0145L13.3639 18.2064C14.4015 18.7321 15.0656 19.7974 15.0656 20.9595V28.8729C15.0656 30.0212 13.862 30.7544 12.8382 30.2425L4.46826 26.0506C3.43066 25.5249 2.7666 24.4596 2.7666 23.2975V15.3841C2.7666 14.2359 3.97021 13.5026 4.99398 14.0145Z" stroke="#EC5958" stroke-width="1.09863" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M28.2083 14.0145L19.8384 18.2064C18.8008 18.7321 18.1367 19.7974 18.1367 20.9595V28.8729C18.1367 30.0212 19.3403 30.7544 20.3641 30.2425L28.7341 26.0506C29.7716 25.5249 30.4357 24.4596 30.4357 23.2975V15.3841C30.4357 14.2359 29.2321 13.5026 28.2083 14.0145Z" stroke="#E67A7A" stroke-width="1.09863" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         <strong>Закрытая</strong>
         <p>территория<br />с видеонаблюдением</p>
       </div>
       <div class="stat-card">
         <svg class="cube" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M17.8744 3.12665L26.8808 7.98261C27.9322 8.54983 27.9322 10.1685 26.8808 10.7357L17.8744 15.5917C17.072 16.0205 16.1313 16.0205 15.3289 15.5917L6.32251 10.7357C5.27108 10.1685 5.27108 8.54983 6.32251 7.98261L15.3289 3.12665C16.1313 2.69777 17.072 2.69777 17.8744 3.12665Z" stroke="#FF8955" stroke-width="1.09863" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M4.99422 14.0145L13.3642 18.2064C14.4018 18.7321 15.0658 19.7974 15.0658 20.9595V28.8729C15.0658 30.0211 13.8622 30.7544 12.8385 30.2425L4.46851 26.0506C3.43091 25.5249 2.76685 24.4596 2.76685 23.2975V15.3841C2.76685 14.2358 3.97046 13.5026 4.99422 14.0145Z" stroke="#FF8955" stroke-width="1.09863" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M28.2078 14.0145L19.8379 18.2064C18.8003 18.7321 18.1362 19.7974 18.1362 20.9595V28.8729C18.1362 30.0211 19.3398 30.7544 20.3636 30.2425L28.7336 26.0506C29.7712 25.5249 30.4352 24.4596 30.4352 23.2975V15.3841C30.4352 14.2358 29.2316 13.5026 28.2078 14.0145Z" stroke="#FFB290" stroke-width="1.09863" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M17.8747 3.12664L26.881 7.9826C27.9325 8.54982 27.9325 10.1685 26.881 10.7357L17.8747 15.5916C17.0723 16.0205 16.1315 16.0205 15.3291 15.5916L6.32275 10.7357C5.27132 10.1685 5.27132 8.54982 6.32275 7.9826L15.3291 3.12664C16.1315 2.69777 17.0723 2.69777 17.8747 3.12664Z" stroke="#E67A7A" stroke-width="1.09863" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M4.99398 14.0145L13.3639 18.2064C14.4015 18.7321 15.0656 19.7974 15.0656 20.9595V28.8729C15.0656 30.0212 13.862 30.7544 12.8382 30.2425L4.46826 26.0506C3.43066 25.5249 2.7666 24.4596 2.7666 23.2975V15.3841C2.7666 14.2359 3.97021 13.5026 4.99398 14.0145Z" stroke="#E67A7A" stroke-width="1.09863" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M28.2083 14.0145L19.8384 18.2064C18.8008 18.7321 18.1367 19.7974 18.1367 20.9595V28.8729C18.1367 30.0212 19.3403 30.7544 20.3641 30.2425L28.7341 26.0506C29.7716 25.5249 30.4357 24.4596 30.4357 23.2975V15.3841C30.4357 14.2359 29.2321 13.5026 28.2083 14.0145Z" stroke="#EC5958" stroke-width="1.09863" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         <strong>1–3</strong>
         <p>комнатные планировки, 30,8–68,7 м²</p>
@@ -3246,7 +3767,7 @@
       <h1 class="title">Жилой комплекс<br />жить хорошо</h1>
     </div>
 
-    <button type="button" class="cta">
+    <button type="button" class="cta" onclick="openLeadModal()">
       Подобрать квартиру сейчас
       <span class="icon-circle">→</span>
     </button>
@@ -3269,8 +3790,8 @@
       <div class="text-inner">
         <h2 class="heading">Семейный дом<br />в <span class="accent">комфортном районе</span></h2>
         <p class="paragraph">
-          В Советском районе редко строят монолит-кирпич малым объёмом.<br />
-          «Жить хорошо» — камерный дом на 162 квартиры: без длинных коридоров,<br />
+          В Советском районе редко строят монолит-кирпич малым объёмом.<br class="br-desktop" />
+          «Жить хорошо» — камерный дом на 162 квартиры: без длинных коридоров,<br class="br-desktop" />
           без сотен машин во дворе и без очереди у лифта в восемь утра.
         </p>
       </div>
@@ -3385,10 +3906,10 @@
     </div>
 
     <div class="trust-cards">
-      <div class="trust-card trust-card--accent">
+      <div class="trust-card">
         <h3>Двор без машин</h3>
-        <p>Парковка вынесена за периметр. Внутри — детская<br />площадка, зелень и пешеходные маршруты.</p>
-        <div class="trust-icon trust-icon--light">
+        <p>Парковка вынесена за периметр. Внутри — детская<br class="br-desktop" />площадка, зелень и пешеходные маршруты.</p>
+        <div class="trust-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round">
             <path d="M5 11l1.4-4.2A2 2 0 0 1 8.3 5.4h7.4a2 2 0 0 1 1.9 1.4L19 11"/>
             <path d="M3.5 11h17a1 1 0 0 1 1 1v3.6a1 1 0 0 1-1 1H18v1.3a1 1 0 0 1-1 1h-.8a1 1 0 0 1-1-1v-1.3H8.8v1.3a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-1.3H3.5a1 1 0 0 1-1-1V12a1 1 0 0 1 1-1z"/>
@@ -3401,7 +3922,7 @@
 
       <div class="trust-card">
         <h3>Контроль доступа</h3>
-        <p>Огороженная территория и видеонаблюдение<br />на входных группах и по периметру двора.</p>
+        <p>Огороженная территория и видеонаблюдение<br class="br-desktop" />на входных группах и по периметру двора.</p>
         <div class="trust-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round">
             <path d="M12 3.2l6.5 2.6v4.7c0 4.1-2.7 7.4-6.5 8.5-3.8-1.1-6.5-4.4-6.5-8.5V5.8L12 3.2z"/>
@@ -3412,7 +3933,7 @@
 
       <div class="trust-card">
         <h3>162 квартиры на 2 подъезда</h3>
-        <p>Меньше соседей на этаже, меньше нагрузки<br />на лифты, двор рассчитан на реальное число жителей.</p>
+        <p>Меньше соседей на этаже, меньше нагрузки<br class="br-desktop" />на лифты, двор рассчитан на реальное число жителей.</p>
         <div class="trust-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round">
             <rect x="4" y="3" width="16" height="18" rx="1"/>
@@ -3448,17 +3969,17 @@
       <div class="nearby-card">
         <div class="nearby-dots"><span class="on"></span><span></span><span></span></div>
         <h3>Сформированный район</h3>
-        <p>Школы, сады, вузы, больница и магазины уже<br />работают. Не нужно ждать, пока район «разовьётся».</p>
+        <p>Школы, сады, вузы, больница и магазины уже<br class="br-desktop" />работают. Не нужно ждать, пока район «разовьётся».</p>
       </div>
       <div class="nearby-card">
         <div class="nearby-dots"><span></span><span class="on"></span><span></span></div>
         <h3>Транспорт в шаге</h3>
-        <p>Остановки автобусов и трамвая рядом, выезд на основные<br />магистрали Советского района &mdash; без объездов.</p>
+        <p>Остановки автобусов и трамвая рядом, выезд на основные<br class="br-desktop" />магистрали Советского района &mdash; без объездов.</p>
       </div>
       <div class="nearby-card">
         <div class="nearby-dots"><span></span><span></span><span class="on"></span></div>
         <h3>Три учебных заведения</h3>
-        <p>Аграрный университет, Кооперативный институт<br />и Медицинский колледж &mdash; в пешей доступности.</p>
+        <p>Аграрный университет, Кооперативный институт<br class="br-desktop" />и Медицинский колледж &mdash; в пешей доступности.</p>
       </div>
     </div>
   </div>
@@ -4247,6 +4768,51 @@
   <img id="layoutsLightboxImg" src="" alt="" onclick="event.stopPropagation()" />
 </div>
 
+<div class="lead-modal-overlay" id="leadModalOverlay" onclick="closeLeadModal(event)">
+  <div class="lead-modal" role="dialog" aria-modal="true" aria-labelledby="leadModalTitle" onclick="event.stopPropagation()">
+    <button type="button" class="lead-modal__close" aria-label="Закрыть" onclick="closeLeadModal()">&times;</button>
+
+    <div class="lead-modal__body" id="leadModalBody">
+      <h3 id="leadModalTitle" class="lead-modal__title">Оставьте заявку<br />и мы вам перезвоним</h3>
+      <p class="lead-modal__text">Подберём подходящие квартиры под ваш бюджет и задачу, расскажем об условиях покупки и ипотеке.</p>
+
+      <div class="lead-modal__manager">
+        <div class="lead-modal__avatars">
+          <img class="lead-modal__avatar-photo" src="assets/images/manager-1.jpg" alt="" />
+          <img class="lead-modal__avatar-photo" src="assets/images/manager-2.jpg" alt="" />
+          <span class="lead-modal__online"></span>
+        </div>
+        <div>
+          <strong>Менеджеры отдела продаж</strong>
+          <span>Ежедневно 8:00–20:00</span>
+        </div>
+      </div>
+
+      <form class="lead-modal__form" onsubmit="return submitLeadModal(event)">
+        <input class="lead-modal__input" type="text" name="name" placeholder="Ваше имя" required />
+        <input class="lead-modal__input" type="tel" name="phone" id="leadModalPhone" placeholder="+7 (___) ___-__-__" oninput="formatLeadModalPhone(this)" required />
+        <input class="lead-modal__input" type="email" name="email" placeholder="E-mail (необязательно)" />
+
+        <label class="lead-modal__select-label" for="leadModalCallback">Когда вам удобно созвониться?</label>
+        <select class="lead-modal__select" id="leadModalCallback" name="callback">
+          <option>Как можно скорее</option>
+          <option>Сегодня после обеда</option>
+          <option>Сегодня вечером</option>
+          <option>Завтра утром</option>
+          <option>Завтра после обеда</option>
+        </select>
+
+        <button type="submit" class="lead-modal__submit">Отправить заявку</button>
+
+        <label class="lead-modal__consent">
+          <input type="checkbox" required />
+          <span>Согласен с <a href="/privacy">политикой обработки персональных данных</a></span>
+        </label>
+      </form>
+    </div>
+  </div>
+</div>
+
 <script>
   // Ипотечный калькулятор. Механика перенесена с a-butik.ru/purchasing-methods/
   // (формула проверена на их собственном примере, сходится до рубля).
@@ -4453,6 +5019,58 @@
 </script>
 
 <script>
+  // Модальная форма заявки — открывается с кнопки .cta («Подобрать
+  // квартиру сейчас»). Открытие/закрытие, маска телефона, имитация
+  // отправки (нет бэкенда — как и у остальных форм на сайте, просто
+  // без onsubmit="return false" в тишину: подменяем контент на
+  // «спасибо», чтобы у пользователя было ощущение, что заявка ушла).
+  function openLeadModal() {
+    const overlay = document.getElementById('leadModalOverlay');
+    if (!overlay) return;
+    overlay.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLeadModal(event) {
+    if (event) event.preventDefault();
+    const overlay = document.getElementById('leadModalOverlay');
+    if (!overlay) return;
+    overlay.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  function formatLeadModalPhone(el) {
+    let digits = el.value.replace(/\D/g, '');
+    if (digits.startsWith('8')) digits = '7' + digits.slice(1);
+    if (!digits.startsWith('7')) digits = '7' + digits;
+    digits = digits.slice(0, 11);
+    let out = '+7';
+    if (digits.length > 1) out += ' (' + digits.slice(1, 4);
+    if (digits.length >= 4) out += ') ' + digits.slice(4, 7);
+    if (digits.length >= 7) out += '-' + digits.slice(7, 9);
+    if (digits.length >= 9) out += '-' + digits.slice(9, 11);
+    el.value = out;
+  }
+
+  function submitLeadModal(event) {
+    event.preventDefault();
+    const body = document.getElementById('leadModalBody');
+    if (!body) return false;
+    body.innerHTML =
+      '<div class="lead-modal__success">' +
+        '<div class="lead-modal__success-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>' +
+        '<h3>Заявка отправлена</h3>' +
+        '<p>Спасибо! Менеджер отдела продаж свяжется с вами в выбранное время.</p>' +
+      '</div>';
+    return false;
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeLeadModal();
+  });
+</script>
+
+<script>
   // Центрирует .stats-column строго между низом шапки и верхом CTA —
   // считает реальные отрисованные границы вместо подобранного числа,
   // поэтому отступы сверху и снизу гарантированно равны на любой ширине
@@ -4569,7 +5187,18 @@
     return p * p * (3 - 2 * p); // smootherstep
   }
 
+  const ROW_FX_MQ = window.matchMedia('(max-width: 900px)');
+
   function updateRow(row) {
+    // На мобильном текст не анимируем скроллом — он стоит статично под/над
+    // фото (см. CSS-брейкпоинт .text-inner) и всегда полностью виден.
+    // JS-transform/opacity здесь просто не нужны и мешали бы CSS.
+    if (ROW_FX_MQ.matches) {
+      const textInner = row.querySelector('.text-inner');
+      if (textInner) { textInner.style.transform = ''; textInner.style.opacity = ''; }
+      return;
+    }
+
     const rect = row.getBoundingClientRect();
     const vh = window.innerHeight;
 
@@ -4626,6 +5255,29 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
   updateAll();
+</script>
+
+<script>
+  // Мобильное меню: открыть/закрыть по гамбургеру, закрыть по клику
+  // на ссылку или клавише Esc, блокировать скролл страницы за панелью.
+  function toggleMobileNav(forceClose) {
+    const nav = document.getElementById('mobileNav');
+    const burger = document.querySelector('.burger');
+    if (!nav || !burger) return;
+    const willOpen = forceClose === true ? false : !nav.classList.contains('is-open');
+    nav.classList.toggle('is-open', willOpen);
+    burger.classList.toggle('is-open', willOpen);
+    burger.setAttribute('aria-expanded', String(willOpen));
+    document.body.classList.toggle('nav-open', willOpen);
+  }
+
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('#mobileNav a')) toggleMobileNav(true);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') toggleMobileNav(true);
+  });
 </script>
 
 </body>
