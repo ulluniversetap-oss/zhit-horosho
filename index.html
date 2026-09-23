@@ -2714,14 +2714,20 @@
     gap: var(--space-16);
   }
 
+  /* Текст центрируется не по всей ширине кнопки, а в зоне от левого
+     края до начала круглой иконки: иконка выведена из потока
+     (position: absolute), а padding-right резервирует под неё точно
+     её ширину + отступ — тогда justify-content: center центрирует
+     текст ровно в оставшейся зоне (тот же приём, что у
+     .expert-lead__form .leadgen-submit). */
   .offices-cta {
     display: inline-flex;
+    position: relative;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
-    gap: var(--space-25_6);
     box-sizing: border-box;
-    padding: var(--space-8) var(--space-8) var(--space-8) var(--space-35_2);
+    padding: var(--space-8) var(--space-48) var(--space-8) var(--space-35_2);
     background: var(--accent, #f27239);
     border: none;
     border-radius: 999px;
@@ -2735,7 +2741,17 @@
   }
 
   .offices-cta:hover { background: #d95f28; }
-  .offices-cta .icon-circle { width: 2.6rem; height: 2.6rem; background: #ffffff; color: var(--accent, #f27239); font-size: 1rem; }
+  .offices-cta .icon-circle {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2.6rem;
+    height: 2.6rem;
+    background: #ffffff;
+    color: var(--accent, #f27239);
+    font-size: 1rem;
+  }
 
   .offices-social {
     display: flex;
@@ -3992,7 +4008,7 @@
 <div class="block-gap"></div>
 
 <section class="expert-lead">
-  <img class="expert-lead__bg" src="assets/images/fon-lead-expert.jpg" alt="" />
+  <img class="expert-lead__bg" src="assets/images/family-lead-bg.webp" alt="" />
   <div class="expert-lead__inner">
 
     <div class="expert-lead__content">
@@ -4028,7 +4044,7 @@
     <div class="addl-list">
 
       <article class="addl-card">
-        <img src="assets/images/aerial-view.jpg" alt="Коммерческая недвижимость" loading="lazy" />
+        <img src="assets/images/commercial-storefront.webp" alt="Коммерческая недвижимость" loading="lazy" />
         <div class="addl-card-overlay"></div>
         <div class="addl-card-body">
           <h3>Коммерческая недвижимость</h3>
@@ -4038,7 +4054,7 @@
       </article>
 
       <article class="addl-card">
-        <img src="assets/images/trust-photo.jpg" alt="Дизайн-проект интерьера" loading="lazy" />
+        <img src="assets/images/interior-dining.webp" alt="Дизайн-проект интерьера" loading="lazy" />
         <div class="addl-card-overlay"></div>
         <div class="addl-card-body">
           <h3>Дизайн-проект интерьера</h3>
