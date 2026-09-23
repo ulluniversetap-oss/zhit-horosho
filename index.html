@@ -1370,7 +1370,8 @@
 
   .layouts-heading {
     margin: 0;
-    max-width: 40rem;
+    max-width: none;
+    white-space: nowrap;
     font-family: 'RoadRadio', 'Onest', sans-serif;
     font-weight: 700;
     font-size: 2.8125rem;
@@ -1385,6 +1386,7 @@
   .layouts-note {
     margin: 0;
     max-width: none;
+    white-space: nowrap;
     font-size: 0.85rem;
     line-height: 1.5;
     color: #1c1c1a;
@@ -1551,6 +1553,13 @@
 
   @media (max-width: 1200px) {
     .layouts-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 1300px) {
+    .layouts-heading,
+    .layouts-note {
+      white-space: normal;
+    }
   }
 
   @media (max-width: 640px) {
@@ -2364,7 +2373,8 @@
 
   .finish-note {
     margin: 0;
-    max-width: 38rem;
+    max-width: none;
+    white-space: nowrap;
     font-size: 0.85rem;
     line-height: 1.5;
     color: #1c1c1a;
@@ -2459,6 +2469,10 @@
 
   @media (max-width: 1200px) {
     .finish-features { grid-template-columns: repeat(3, 1fr); }
+    .finish-heading,
+    .finish-note {
+      white-space: normal;
+    }
   }
 
   @media (max-width: 640px) {
@@ -2749,6 +2763,10 @@
   @media (max-width: 1200px) {
     .mcalc-body { grid-template-columns: 1fr; }
     .mcalc-sliders { grid-template-columns: repeat(3, 1fr); display: grid; }
+    .mcalc-heading,
+    .mcalc-note {
+      white-space: normal;
+    }
   }
 
   @media (max-width: 720px) {
@@ -2946,7 +2964,8 @@
 
   .offices-heading {
     margin: 0;
-    max-width: 34rem;
+    max-width: none;
+    white-space: nowrap;
     font-family: 'RoadRadio', 'Onest', sans-serif;
     font-weight: 700;
     font-size: 2.8125rem;
@@ -2960,7 +2979,8 @@
 
   .offices-note {
     margin: 0;
-    max-width: 22rem;
+    max-width: none;
+    white-space: nowrap;
     font-size: 0.85rem;
     line-height: 1.5;
     color: #1c1c1a;
@@ -3151,6 +3171,10 @@
     .offices-grid { grid-template-columns: 1fr; }
     .offices-contact { flex-direction: row; flex-wrap: wrap; align-items: center; }
     .offices-map iframe { min-height: 20rem; }
+    .offices-heading,
+    .offices-note {
+      white-space: normal;
+    }
   }
 
   @media (max-width: 640px) {
@@ -3487,8 +3511,13 @@
     }
 
     .finish-heading,
+    .finish-note,
     .mcalc-heading,
-    .mcalc-note {
+    .mcalc-note,
+    .layouts-heading,
+    .layouts-note,
+    .offices-heading,
+    .offices-note {
       white-space: normal;
     }
   }
@@ -4344,8 +4373,8 @@
   <div class="layouts-inner">
 
     <div class="layouts-head">
-      <h2 class="layouts-heading">От компактной <span>однушки</span><br />до просторной <span>трёшки</span></h2>
-      <p class="layouts-note">162 квартиры · площади от 30,81 до 68,71 м².<br />Актуальную квартирографию и цены подтягиваем из каталога.</p>
+      <h2 class="layouts-heading">От компактной <span>однушки</span> до просторной <span>трёшки</span></h2>
+      <p class="layouts-note">162 квартиры · площади от 30,81 до 68,71 м². Актуальную квартирографию и цены подтягиваем из каталога.</p>
     </div>
 
     <div class="layouts-grid">
@@ -4452,7 +4481,7 @@
 
     <div class="finish-head">
       <h2 class="finish-heading">Готовая отделка — <span>заходи и живи</span></h2>
-      <p class="finish-note">Готовая отделка выполнена с использованием практичных и долговечных<br />материалов, которые подходят для комфортной повседневной жизни.</p>
+      <p class="finish-note">Готовая отделка выполнена с использованием практичных и долговечных материалов, которые подходят для комфортной повседневной жизни.</p>
     </div>
 
     <div class="finish-tour">
