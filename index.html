@@ -2380,11 +2380,11 @@
     text-align: left;
   }
 
-  /* Тур пробивает боковой паддинг .finish-inner отрицательными полями —
-     чтобы по ширине совпадал с блоком выше (.expert-lead__bg, который
-     залит на всю секцию без отступа), а не был уже него на 2×padding. */
+  /* По просьбе видео выровнено по ширине с заголовком/note (а не
+     на всю ширину секции пробоем паддинга) — раньше был full-bleed
+     отрицательными полями, теперь просто в потоке .finish-inner. */
   .finish-tour {
-    margin: 0 calc(-1 * var(--space-27_2)) var(--space-26);
+    margin: 0 0 var(--space-26);
   }
 
   .iframe-full {
@@ -2406,10 +2406,8 @@
   }
 
   .finish-features {
-    /* Full-bleed, как .finish-tour выше — пробивает боковой паддинг
-       .finish-inner, чтобы ряд плашек совпадал по ширине с 3D-туром
-       и краем секции, а не был уже него на паддинг с обеих сторон. */
-    margin: 0 calc(-1 * var(--space-27_2));
+    /* Тот же приём, что у .finish-tour выше — ряд плашек теперь
+       вписан в ширину .finish-inner, а не пробивает её паддинг. */
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: var(--space-16);
@@ -2476,8 +2474,7 @@
   @media (max-width: 640px) {
     .finish-inner { padding: 0 var(--space-24); }
     .finish-note { max-width: none; }
-    .finish-features { grid-template-columns: 1fr; margin-left: calc(-1 * var(--space-24)); margin-right: calc(-1 * var(--space-24)); }
-    .finish-tour { margin-left: calc(-1 * var(--space-24)); margin-right: calc(-1 * var(--space-24)); }
+    .finish-features { grid-template-columns: 1fr; }
     .iframe-full { padding-bottom: 52.5%; }
   }
 
