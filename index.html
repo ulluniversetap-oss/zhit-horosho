@@ -3118,16 +3118,12 @@
   }
 
   .footer-bottom {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: var(--space-24);
     padding-top: var(--space-24);
   }
 
   .footer-legal {
     margin: 0;
-    max-width: 64rem;
+    width: 100%;
     font-size: 0.72rem;
     line-height: 1.6;
     color: #ffffff;
@@ -3140,14 +3136,6 @@
     text-underline-offset: 2px;
   }
 
-  .footer-copy {
-    margin: 0;
-    flex-shrink: 0;
-    font-size: 0.78rem;
-    color: #ffffff;
-    opacity: 0.4;
-  }
-
   @media (max-width: 1024px) {
     .footer-grid { grid-template-columns: 1fr 1fr; row-gap: var(--space-36); }
     .footer-brand { grid-column: 1 / -1; }
@@ -3157,7 +3145,6 @@
     .site-footer { padding: var(--space-56) var(--space-24) var(--space-36); }
     .footer-inner { padding: 0; }
     .footer-grid { grid-template-columns: 1fr; gap: var(--space-27_2); }
-    .footer-bottom { flex-direction: column; align-items: flex-start; gap: var(--space-12); }
   }
 
 </style>
@@ -4251,7 +4238,6 @@
 
     <div class="footer-bottom">
       <p class="footer-legal">Информация, представленная на сайте, носит исключительно информационный характер, предложение ограничено и не является офертой или публичной офертой в соответствии со ст. 435, п. 2 ст. 437 Гражданского Кодекса Российской Федерации. Представленные цены, планировки, площади, а также варианты визуализации квартир, дома, прилегающего к нему благоустройства и района в целом не обладают признаками абсолютной идентичности проектной и рабочей документации на строительство объекта, схеме планировочной организации земельного участка. Часть информации, размещенной на сайте, возможно, устарела, и уже не является актуальной и требует уточнения в отделе продаж или оказывающего Вам услуги риелтора.</p>
-      <p class="footer-copy">© 2026 «А» Бутик недвижимости. Все права защищены.</p>
     </div>
   </div>
 </footer>
