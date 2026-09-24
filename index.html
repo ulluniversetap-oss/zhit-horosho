@@ -1023,7 +1023,9 @@
   .scenario-mini-stats {
     display: flex;
     flex-direction: column;
-    gap: var(--space-9_6);
+    /* +20% по просьбе: было var(--space-9_6) = 0.6rem (9.6px), точного
+       токена под 9.6*1.2=11.52px нет — посчитано напрямую. */
+    gap: 0.72rem;
     margin: 0;
     padding: 0;
     list-style: none;
