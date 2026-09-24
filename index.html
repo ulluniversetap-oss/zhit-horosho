@@ -784,15 +784,24 @@
     color: rgba(255, 255, 255, 0.85);
   }
 
+  /* Статы карточки — плашки-чипы вместо строки под разделителем
+     (было: одна строка "Label: value", разделённая border-top). */
   .scenario-stats {
     flex-basis: 100%;
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-8) var(--space-48);
-    padding-top: var(--space-14_4);
-    border-top: 1px solid rgba(255, 255, 255, 0.22);
-    font-size: 0.8rem;
+    gap: var(--space-8);
+    margin-top: var(--space-14_4);
+  }
+
+  .scenario-stats > div {
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    font-size: 0.78rem;
+    line-height: 1.2;
     color: rgba(255, 255, 255, 0.85);
+    white-space: nowrap;
   }
 
   .scenario-stats strong {
