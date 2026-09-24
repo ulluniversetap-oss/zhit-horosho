@@ -997,15 +997,20 @@
     gap: var(--space-8);
     box-sizing: border-box;
     width: 100%;
-    padding: var(--space-8) var(--space-8) var(--space-8) var(--space-14_4);
+    /* Высота и размер текста подогнаны под кнопку «Оставить заявку»
+       блока «Офисы продаж» (.offices-cta: height 3.2rem/51.2px,
+       font-size 0.9rem/14.4px) — по просьбе «сделай как кнопка в блоке
+       контакты». Раньше высота 46px получалась из паддинга, теперь
+       задана явно. */
+    height: 3.2rem;
+    padding: 0 var(--space-8) 0 var(--space-14_4);
     background: var(--accent, #F03D3A);
     border: none;
     border-radius: 999px;
     color: #ffffff;
     font-family: inherit;
     font-weight: 700;
-    /* +3px по просьбе: было 0.72rem (11.52px), стало 0.9075rem (14.52px). */
-    font-size: 0.9075rem;
+    font-size: 0.9rem;
     line-height: 1.2;
     text-align: left;
     cursor: pointer;
