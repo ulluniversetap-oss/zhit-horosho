@@ -1027,8 +1027,9 @@
     margin: 0;
     padding: 0;
     list-style: none;
-    /* +3px по просьбе: было 0.85rem (13.6px), стало 1.0375rem (16.6px). */
-    font-size: 1.0375rem;
+    /* +3px, потом -2px: было 0.85rem (13.6px) -> 1.0375rem (16.6px) ->
+       теперь 0.9125rem (14.6px). */
+    font-size: 0.9125rem;
     line-height: 1.3;
     color: rgba(255, 255, 255, 0.85);
   }
@@ -4321,7 +4322,7 @@
           <li><strong>Цена:</strong> от 4 099 000 ₽</li>
         </ul>
         <button type="button" class="scenario-mini-cta" onclick="openLeadModal()">
-          Подобрать квартиру сейчас
+          Смотреть подробнее
           <span class="icon-circle">→</span>
         </button>
       </div>
