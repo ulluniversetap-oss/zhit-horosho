@@ -949,7 +949,9 @@
     display: flex;
     align-items: stretch;
     gap: var(--space-24);
-    max-width: 44rem;
+    /* Сузили по просьбе «по ширине всю плашку меньше сделай, примерно
+       как на скрине» — было 44rem (704px), стало 34rem (544px). */
+    max-width: 34rem;
     padding: var(--space-19_2);
     background: rgba(20, 16, 14, 0.55);
     backdrop-filter: blur(14px);
@@ -998,7 +1000,8 @@
     color: #ffffff;
     font-family: inherit;
     font-weight: 700;
-    font-size: 0.72rem;
+    /* +3px по просьбе: было 0.72rem (11.52px), стало 0.9075rem (14.52px). */
+    font-size: 0.9075rem;
     line-height: 1.2;
     text-align: left;
     cursor: pointer;
@@ -1020,7 +1023,8 @@
     margin: 0;
     padding: 0;
     list-style: none;
-    font-size: 0.85rem;
+    /* +3px по просьбе: было 0.85rem (13.6px), стало 1.0375rem (16.6px). */
+    font-size: 1.0375rem;
     line-height: 1.3;
     color: rgba(255, 255, 255, 0.85);
   }
