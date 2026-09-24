@@ -935,7 +935,10 @@
   }
 
   .trust-photo-text h2 span {
-    color: var(--accent, #F03D3A);
+    /* было var(--accent, #F03D3A) — по просьбе «белым сделай заголовок»
+       весь h2 теперь белый (наследует color: #fff от .trust-photo-text),
+       акцентный span больше не подкрашивает "спокойно" отдельно. */
+    color: inherit;
   }
 
   .trust-photo-text p {
