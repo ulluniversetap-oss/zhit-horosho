@@ -731,8 +731,12 @@
 
   .scenario-card {
     display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
+    /* stretch (не flex-start): иконка растягивается по высоте до низа
+       статов-чипов, а не только до верхней строки — картинка идёт
+       вровень с текстом сверху и снизу, как на референсе. .scenario-stats
+       теперь лежит внутри .scenario-body, так что wrap для статов
+       больше не нужен. */
+    align-items: stretch;
     gap: var(--space-24);
     max-width: 47.6rem; /* 68rem − 30% */
     padding: var(--space-24) var(--space-27_2) var(--space-14_4);
@@ -748,7 +752,9 @@
   .scenario-icon {
     flex-shrink: 0;
     width: 5.4rem;
-    height: 5.2rem;
+    /* высота больше не фиксирована — растягивается по кросс-оси
+       (align-items: stretch у родителя) до высоты .scenario-body
+       (заголовок + текст + статы). */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -785,9 +791,12 @@
   }
 
   /* Статы карточки — плашки-чипы вместо строки под разделителем
-     (было: одна строка "Label: value", разделённая border-top). */
+     (было: одна строка "Label: value", разделённая border-top).
+     Теперь лежит внутри .scenario-body (после <p>), а не отдельным
+     flex-item карточки — из-за этого раньше отступ до чипов складывался
+     из gap самой .scenario-card (24px) и margin-top чипов (14.4px) —
+     получалось 38.4px, слишком далеко от текста. */
   .scenario-stats {
-    flex-basis: 100%;
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-8);
@@ -811,7 +820,10 @@
 
   @media (max-width: 900px) {
     .scenarios-inner { padding: 0 var(--space-24); }
-    .scenario-card { flex-direction: column; }
+    /* flex-direction: column переворачивает кросс-ось на горизонтальную —
+       align-items: stretch (родителя) растянул бы иконку на всю ширину
+       карточки, поэтому явно возвращаем flex-start только для мобильного. */
+    .scenario-card { flex-direction: column; align-items: flex-start; }
   }
 
   /* ===== Блок 4: «Жить — спокойно» ===== */
@@ -3997,11 +4009,11 @@
       <div class="scenario-body">
         <h3>Семье с детьми</h3>
         <p>Школа № 54, детский сад и больница № 7 — в пешей доступности.<br />Двор без машин: ребёнок выходит гулять, а не переходить парковку.</p>
-      </div>
-      <div class="scenario-stats">
-        <div><strong>Формат:</strong> 2–3 комнаты</div>
-        <div><strong>Площадь:</strong> от 45 м²</div>
-        <div><strong>Цена:</strong> от 4 099 000 ₽</div>
+        <div class="scenario-stats">
+          <div><strong>Формат:</strong> 2–3 комнаты</div>
+          <div><strong>Площадь:</strong> от 45 м²</div>
+          <div><strong>Цена:</strong> от 4 099 000 ₽</div>
+        </div>
       </div>
     </div>
 
@@ -4010,11 +4022,11 @@
       <div class="scenario-body">
         <h3>Родителям студента</h3>
         <p>Аграрный университет, Кооперативный институт и Медицинский колледж — рядом.<br />Четыре года аренды стоят дороже первоначального взноса.</p>
-      </div>
-      <div class="scenario-stats">
-        <div><strong>Формат:</strong> 1 комната</div>
-        <div><strong>Площадь:</strong> от 45 м²</div>
-        <div><strong>Цена:</strong> от 4 099 000 ₽</div>
+        <div class="scenario-stats">
+          <div><strong>Формат:</strong> 1 комната</div>
+          <div><strong>Площадь:</strong> от 45 м²</div>
+          <div><strong>Цена:</strong> от 4 099 000 ₽</div>
+        </div>
       </div>
     </div>
 
@@ -4023,11 +4035,11 @@
       <div class="scenario-body">
         <h3>Под аренду и инвестицию</h3>
         <p>Три учебных заведения в шаге ходьбы дают арендный спрос каждый сентябрь.<br />Компактные площади сдаются быстрее и ликвиднее при перепродаже.</p>
-      </div>
-      <div class="scenario-stats">
-        <div><strong>Формат:</strong> 1 комната</div>
-        <div><strong>Площадь:</strong> от 45 м²</div>
-        <div><strong>Цена:</strong> от 4 099 000 ₽</div>
+        <div class="scenario-stats">
+          <div><strong>Формат:</strong> 1 комната</div>
+          <div><strong>Площадь:</strong> от 45 м²</div>
+          <div><strong>Цена:</strong> от 4 099 000 ₽</div>
+        </div>
       </div>
     </div>
   </div>
