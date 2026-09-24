@@ -990,49 +990,10 @@
     gap: var(--space-16);
   }
 
-  .scenario-mini-cta {
-    display: inline-flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-8);
-    box-sizing: border-box;
-    width: 100%;
-    /* Высота и размер текста подогнаны под кнопку «Оставить заявку»
-       блока «Офисы продаж» (.offices-cta: height 3.2rem/51.2px,
-       font-size 0.9rem/14.4px) — по просьбе «сделай как кнопка в блоке
-       контакты». Раньше высота 46px получалась из паддинга, теперь
-       задана явно. */
-    height: 3.2rem;
-    padding: 0 var(--space-8) 0 var(--space-14_4);
-    background: var(--accent, #F03D3A);
-    border: none;
-    border-radius: 999px;
-    color: #ffffff;
-    font-family: inherit;
-    font-weight: 700;
-    font-size: 0.9rem;
-    line-height: 1.2;
-    text-align: left;
-    cursor: pointer;
-    transition: background-color 0.25s ease;
-  }
-
-  /* Текст центрирован именно в промежутке «от левого края кнопки до
-     левого края кружка» (как у остальных pill-кнопок сайта), а не
-     прижат к левому краю на всю ширину кнопки — flex:1 забирает всё
-     место до .icon-circle, text-align центрирует внутри него. */
-  .scenario-mini-cta-label {
-    flex: 1;
-    text-align: center;
-  }
-
-  .scenario-mini-cta .icon-circle {
-    width: 1.9rem;
-    height: 1.9rem;
-    background: #ffffff;
-    color: var(--accent, #F03D3A);
-    font-size: 0.8rem;
-  }
+  /* Кнопка CTA — по просьбе «кнопку просто туда вот эту поставь
+     отсюда (со скрина с блока доп услуги)» переиспользуем готовый
+     .addl-btn как есть, без отдельного класса/стилей под мини-блок
+     (был свой .scenario-mini-cta — убрали, здесь не нужен). */
 
   .scenario-mini-stats {
     display: flex;
@@ -4337,10 +4298,7 @@
           <li><strong>Рассрочка:</strong> без %</li>
           <li><strong>Цена:</strong> от 4 099 000 ₽</li>
         </ul>
-        <button type="button" class="scenario-mini-cta" onclick="openLeadModal()">
-          <span class="scenario-mini-cta-label">Смотреть подробнее</span>
-          <span class="icon-circle">→</span>
-        </button>
+        <button type="button" class="addl-btn" onclick="openLeadModal()">Смотреть подробнее<span class="icon-circle">→</span></button>
       </div>
     </div>
   </div>
