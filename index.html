@@ -3630,7 +3630,13 @@
 
   .lead-modal-overlay.is-open .lead-modal { transform: translateX(0); }
 
-  .lead-modal__body { padding: var(--space-48) var(--space-36) var(--space-36); }
+  /* padding-top увеличен с --space-48 (48px) до --space-64 (64px) —
+     кнопка-крестик (.lead-modal__close) стоит на top: 24px, высотой
+     2.6rem (41.6px), т.е. занимает 24–65.6px по вертикали. Раньше
+     контент начинался на 48px — выше нижнего края кружка, из-за чего
+     заголовок визуально «наезжал» на крестик сбоку. 64px ≈ нижний край
+     кружка — контент теперь начинается вровень с ним. */
+  .lead-modal__body { padding: var(--space-64) var(--space-36) var(--space-36); }
 
   .lead-modal__close {
     position: absolute;
@@ -3826,7 +3832,10 @@
 
   @media (max-width: 640px) {
     .lead-modal { width: 100%; }
-    .lead-modal__body { padding: var(--space-40) var(--space-24) var(--space-32); }
+    /* Та же логика, что у базового правила (см. комментарий выше по
+       файлу) — крестик тот же на всех ширинах (top: 24px + 41.6px), так
+       что padding-top тоже поднят до --space-64. */
+    .lead-modal__body { padding: var(--space-64) var(--space-24) var(--space-32); }
   }
 
   @media (prefers-reduced-motion: reduce) {
