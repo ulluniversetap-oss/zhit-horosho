@@ -751,10 +751,12 @@
 
   .scenario-icon {
     flex-shrink: 0;
-    width: 5.4rem;
-    /* высота больше не фиксирована — растягивается по кросс-оси
-       (align-items: stretch у родителя) до высоты .scenario-body
-       (заголовок + текст + статы). */
+    /* Высота растягивается по кросс-оси (align-items: stretch у
+       родителя) до высоты .scenario-body (заголовок + текст + статы);
+       ширина явно не задана — aspect-ratio: 1 подтягивает её к той же
+       величине, что и высота, так что иконка остаётся квадратом
+       независимо от того, насколько высокий текстовый блок. */
+    aspect-ratio: 1 / 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -824,6 +826,11 @@
        align-items: stretch (родителя) растянул бы иконку на всю ширину
        карточки, поэтому явно возвращаем flex-start только для мобильного. */
     .scenario-card { flex-direction: column; align-items: flex-start; }
+    /* aspect-ratio нужен явный width, чтобы вычислить height — на
+       desktop его давал stretch по кросс-оси, здесь кросс-ось стала
+       горизонтальной и не растягивается (align-items: flex-start), так
+       что без width иконка схлопнется. */
+    .scenario-icon { width: 5.4rem; }
   }
 
   /* ===== Блок 4: «Жить — спокойно» ===== */
