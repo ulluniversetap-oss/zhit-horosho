@@ -3651,7 +3651,12 @@
 
   .lead-modal__title {
     margin: 0 0 var(--space-12);
-    max-width: 15rem;
+    /* max-width раньше был 15rem — при ручных <br /> ("Оставьте заявку" /
+       "и мы вам перезвоним") каждая половина всё равно не влезала в
+       одну строку и текст рвался на 4 строки вместо задуманных 2-х.
+       22rem — по ширине содержимого модалки (352px = 26.5rem модалки
+       минус 2×36px паддинга), с запасом под обе строки. */
+    max-width: 22rem;
     font-family: 'RoadRadio', 'Onest', sans-serif;
     font-weight: 700;
     font-size: 1.7rem;
@@ -4972,7 +4977,7 @@
 
     <div class="lead-modal__body" id="leadModalBody">
       <h3 id="leadModalTitle" class="lead-modal__title">Оставьте заявку<br />и мы вам перезвоним</h3>
-      <p class="lead-modal__text">Подберём подходящие квартиры под ваш бюджет и задачу, расскажем об условиях покупки и ипотеке.</p>
+      <p class="lead-modal__text">Подберём подходящие квартиры<br />под ваш бюджет и задачу, расскажем<br />об условиях покупки и ипотеке.</p>
 
       <div class="lead-modal__manager">
         <div class="lead-modal__avatars">
