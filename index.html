@@ -1012,6 +1012,15 @@
     transition: background-color 0.25s ease;
   }
 
+  /* Текст центрирован именно в промежутке «от левого края кнопки до
+     левого края кружка» (как у остальных pill-кнопок сайта), а не
+     прижат к левому краю на всю ширину кнопки — flex:1 забирает всё
+     место до .icon-circle, text-align центрирует внутри него. */
+  .scenario-mini-cta-label {
+    flex: 1;
+    text-align: center;
+  }
+
   .scenario-mini-cta .icon-circle {
     width: 1.9rem;
     height: 1.9rem;
@@ -4324,7 +4333,7 @@
           <li><strong>Цена:</strong> от 4 099 000 ₽</li>
         </ul>
         <button type="button" class="scenario-mini-cta" onclick="openLeadModal()">
-          Смотреть подробнее
+          <span class="scenario-mini-cta-label">Смотреть подробнее</span>
           <span class="icon-circle">→</span>
         </button>
       </div>
