@@ -867,6 +867,188 @@
     .scenario-stats { margin-top: var(--space-14_4); }
   }
 
+  /* ===== Блок 3, мини-версия сценария «Семье с детьми» (первый из трёх
+     будущих мини-блоков, на которые распадётся .scenarios) =====
+     ЛОКАЛЬНАЯ ВЕРСТКА ПО РЕФЕРЕНСУ (Figma-фрейм), НЕ ЗАПУШЕНО.
+     Тот же sticky-приём, что у блоков 4/5: полноэкранное фото (тут —
+     существующий ассет family-lead-bg.webp, использованный ниже в
+     .expert-lead) + тёмный градиент снизу для читаемости текста, заголовок,
+     подпись и мини-карточка «планировка + CTA + статы» поверх фото внизу
+     слева. z-index=1 — ниже второго мини-блока (пока это временный блок
+     .scenarios-rest с оставшимися 2 сценариями по старому дизайну) и
+     блоков 4/5, которые идут следом. min-height подобран так, чтобы
+     следующий блок полностью его перекрывал при наезде. */
+  .scenario-mini {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    margin: 0 var(--space-36);
+    border-radius: 1.2rem;
+    overflow: hidden;
+    min-height: 38rem;
+  }
+
+  .scenario-mini-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .scenario-mini-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(10, 8, 6, 0.1) 0%,
+      rgba(10, 8, 6, 0.05) 35%,
+      rgba(10, 8, 6, 0.45) 70%,
+      rgba(10, 8, 6, 0.88) 100%
+    );
+  }
+
+  .scenario-mini-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 38rem;
+    padding: var(--space-48) 2.72rem;
+    color: #ffffff;
+  }
+
+  .scenario-mini-heading {
+    margin: 0 0 var(--space-14_4);
+    max-width: 32rem;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 2.25rem;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+
+  .scenario-mini-text {
+    margin: 0 0 var(--space-27_2);
+    max-width: 30rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .scenario-mini-panel {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-24);
+    max-width: 34rem;
+    padding: var(--space-19_2);
+    background: rgba(20, 16, 14, 0.55);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 0.8rem;
+  }
+
+  .scenario-mini-plan-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    flex-shrink: 0;
+    width: 9rem;
+  }
+
+  .scenario-mini-plan {
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    padding: var(--space-4_8);
+  }
+
+  .scenario-mini-plan img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .scenario-mini-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-8);
+    box-sizing: border-box;
+    width: 100%;
+    padding: var(--space-8) var(--space-8) var(--space-8) var(--space-14_4);
+    background: var(--accent, #F03D3A);
+    border: none;
+    border-radius: 999px;
+    color: #ffffff;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.72rem;
+    line-height: 1.2;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+  }
+
+  .scenario-mini-cta .icon-circle {
+    width: 1.9rem;
+    height: 1.9rem;
+    background: #ffffff;
+    color: var(--accent, #F03D3A);
+    font-size: 0.8rem;
+  }
+
+  .scenario-mini-stats {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-9_6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.85rem;
+    line-height: 1.3;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .scenario-mini-stats strong {
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  @media (max-width: 900px) {
+    .scenario-mini-inner { padding: var(--space-32) var(--space-24); }
+    .scenario-mini-panel { flex-direction: column; max-width: none; }
+    .scenario-mini-plan-col { width: 100%; flex-direction: row; align-items: center; }
+    .scenario-mini-plan { width: 5.4rem; flex-shrink: 0; }
+    .scenario-mini-cta { width: auto; flex: 1; }
+  }
+
+  /* Второй "временный" мини-блок — оставшиеся 2 сценария (Родителям
+     студента / Под аренду и инвестицию) в старом комбинированном виде,
+     пока для них не готовы отдельные референсы-фреймы. Использует те же
+     .scenario-card/.scenarios-heading стили, что и раньше, просто другой
+     класс на обёртке (у .scenarios теперь другая роль — общий фон для
+     этого временного блока не нужен, только затемнённая подложка). */
+  .scenarios-rest {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: url('assets/images/scenarios-bg.jpg') center / cover no-repeat;
+    padding: var(--space-80) 0;
+    margin: 0 var(--space-36);
+    border-radius: 1.2rem;
+    overflow: hidden;
+  }
+
   /* ===== Блок 4: «Жить — спокойно» ===== */
   /* position: sticky + z-index выше блока 3 => пока страница скроллится,
      этот блок физически "наезжает" снизу и закрывает предыдущий, который
@@ -875,7 +1057,10 @@
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    z-index: 2;
+    /* было z-index: 2, но .scenarios теперь распался на два sticky-слоя
+       (.scenario-mini z=1, .scenarios-rest z=2), поэтому блок 4 сдвинут
+       на z=4, блок 5 (.nearby) — на z=5. */
+    z-index: 4;
     margin: 0 var(--space-36);
     background: #F7F9FB;
     border-radius: 1.2rem;
@@ -2169,7 +2354,8 @@
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    z-index: 3;
+    /* было z-index: 3, сдвинут на 5 — см. комментарий у .trust. */
+    z-index: 5;
     margin: 0 var(--space-36) var(--space-48);
     border-radius: 1.2rem;
     overflow: hidden;
@@ -4098,22 +4284,41 @@
 
 </section>
 <div class="sticky-stack">
-<section class="scenarios">
-  <div class="scenarios-inner">
-    <h2 class="scenarios-heading">Три разных сценария<br />в одном доме</h2>
 
-    <div class="scenario-card">
-      <div class="scenario-icon"><img src="assets/images/plan-family.jpg" alt="Планировка: семья с детьми" /></div>
-      <div class="scenario-body">
-        <h3>Семье с детьми</h3>
-        <p>Школа № 54, детский сад и больница № 7 — в пешей доступности.<br />Двор без машин: ребёнок выходит гулять, а не переходить парковку.</p>
-        <div class="scenario-stats">
-          <div><strong>Формат:</strong> 2–3 комнаты</div>
-          <div><strong>Площадь:</strong> от 45 м²</div>
-          <div><strong>Цена:</strong> от 4 099 000 ₽</div>
-        </div>
+<!-- Мини-блок 1 из 3 будущих (сценарий «Семье с детьми») — сверстан по
+     присланному референсу (Figma-фрейм). ЛОКАЛЬНО, НЕ ЗАПУШЕНО.
+     Сценарии 2 и 3 («Родителям студента» / «Под аренду и инвестицию»)
+     пока остаются ниже в старом комбинированном виде (.scenarios-rest) —
+     будут переверстаны в такие же мини-блоки следующим шагом. -->
+<section class="scenario-mini">
+  <img class="scenario-mini-bg" src="assets/images/family-lead-bg.webp" alt="Семья с детьми в квартире ЖК «Жить хорошо»" />
+  <div class="scenario-mini-overlay"></div>
+  <div class="scenario-mini-inner">
+    <h2 class="scenario-mini-heading">Семье с детьми</h2>
+    <p class="scenario-mini-text">Школа № 54, детский сад и больница № 7 — в пешей доступности.<br />Двор без машин: ребёнок выходит гулять, а не переходить парковку.</p>
+    <div class="scenario-mini-panel">
+      <div class="scenario-mini-plan-col">
+        <div class="scenario-mini-plan"><img src="assets/images/plan-family.jpg" alt="Планировка: семья с детьми" /></div>
+        <button type="button" class="scenario-mini-cta" onclick="openLeadModal()">
+          Подобрать квартиру сейчас
+          <span class="icon-circle">→</span>
+        </button>
       </div>
+      <ul class="scenario-mini-stats">
+        <li><strong>Формат:</strong> 2–3 комнаты</li>
+        <li><strong>Площадь:</strong> от 45 м²</li>
+        <li><strong>Рассрочка:</strong> без %</li>
+        <li><strong>Цена:</strong> от 4 099 000 ₽</li>
+      </ul>
     </div>
+  </div>
+</section>
+
+<div class="block-gap"></div>
+
+<section class="scenarios-rest">
+  <div class="scenarios-inner">
+    <h2 class="scenarios-heading">Ещё два сценария<br />в этом же доме</h2>
 
     <div class="scenario-card">
       <div class="scenario-icon"><img src="assets/images/plan-student.jpg" alt="Планировка: родителям студента" /></div>
