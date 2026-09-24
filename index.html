@@ -925,9 +925,13 @@
     max-width: 32rem;
     font-family: 'RoadRadio', 'Onest', sans-serif;
     font-weight: 700;
-    font-size: 2.25rem;
+    /* Было 2.25rem — по просьбе «заголовок по размеру такой же сделай
+       как в других блоках» подняли до 2.8125rem (45px), как у
+       большинства секций сайта (.scenarios-heading, .offers-heading
+       и т.д.). */
+    font-size: 2.8125rem;
     line-height: 1.05;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
     text-transform: uppercase;
   }
 
@@ -3817,6 +3821,7 @@
      строки на узких экранах. */
   @media (max-width: 640px) {
     .heading,
+    .scenario-mini-heading,
     .scenarios-heading,
     .offers-heading,
     .layouts-heading,
