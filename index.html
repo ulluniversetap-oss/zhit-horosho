@@ -819,22 +819,22 @@
     border-radius: 1.2rem;
   }
 
+  /* Полноэкранное фото на всю ширину блока, карточки — стеклянные
+     плашки, «плавающие» поверх фото в правой части (было: сетка
+     1.35fr/1fr, фото и карточки — отдельные колонки на белой подложке). */
   .trust-inner {
-    display: grid;
-    grid-template-columns: 1.35fr 1fr;
-    gap: var(--space-24);
-    background: #ffffff;
-    border-radius: 1.2rem;
-    padding: var(--space-24);
-  }
-
-  .trust-photo {
     position: relative;
     border-radius: 1.2rem;
     overflow: hidden;
+    background: #14151a;
     /* высота подогнана под .scenarios (860px), чтобы блок 4 полностью
        закрывал блок 3 при sticky-наезде, без остаточной полоски сверху */
     min-height: 51rem;
+  }
+
+  .trust-photo {
+    position: absolute;
+    inset: 0;
   }
 
   .trust-photo img {
@@ -863,6 +863,7 @@
     left: 0;
     right: 0;
     bottom: 0;
+    z-index: 1;
     padding: var(--space-35_2);
     color: #ffffff;
   }
@@ -890,6 +891,12 @@
   }
 
   .trust-cards {
+    position: absolute;
+    top: var(--space-32);
+    right: var(--space-32);
+    bottom: var(--space-32);
+    z-index: 2;
+    width: min(27rem, 38%);
     display: flex;
     flex-direction: column;
     gap: var(--space-16);
@@ -902,14 +909,19 @@
     flex-direction: column;
     padding: var(--space-32) var(--space-27_2);
     border-radius: 1.2rem;
-    background: #eef1f5;
-    box-shadow: 0 1px 2px rgba(16, 24, 32, 0.03);
+    /* Стеклянная плашка поверх фото (раньше — непрозрачный светло-серый
+       фон #eef1f5, т.к. карточки лежали рядом с фото на белой подложке,
+       не поверх него). */
+    background: rgba(17, 19, 26, 0.45);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: background-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
   }
 
-  /* Все плашки серые по умолчанию — акцентный красный только при
-     наведении (раньше «Двор без машин» был красным всегда). */
+  /* Все плашки стеклянные по умолчанию — акцентный красный только при
+     наведении. */
   .trust-card:hover {
     background: var(--accent, #F03D3A);
     color: #ffffff;
@@ -930,7 +942,7 @@
     font-family: 'Onest', sans-serif;
     font-weight: 700;
     font-size: 1.625rem;
-    color: #272727;
+    color: #ffffff;
     transition: color 0.3s ease;
   }
 
@@ -941,7 +953,7 @@
     max-width: 95%;
     font-size: 0.85rem;
     line-height: 1.4;
-    color: #3c3c3a;
+    color: rgba(255, 255, 255, 0.7);
     transition: color 0.3s ease;
   }
 
@@ -958,13 +970,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-    background: rgba(240, 61, 58, 0.1);
+    /* Скруглённый квадрат вместо круга — по референсу. */
+    border-radius: 0.9rem;
+    background: rgba(240, 61, 58, 0.18);
     color: #F03D3A;
     transition: background-color 0.35s ease, color 0.35s ease, transform 0.35s ease;
   }
 
-  /* На красном фоне (hover) нужен светлый кружок под иконку —
+  /* На красном фоне (hover) нужен светлый значок под иконку —
      иначе полупрозрачная оранжевая подложка сливается с фоном. */
   .trust-card:hover .trust-icon {
     background: #ffffff;
@@ -1001,11 +1014,27 @@
     transform: translate(0, 0);
   }
 
+  /* На узких экранах стеклянный оверлей поверх фото читается плохо —
+     карточки уходят под фото в обычный поток, как непрозрачные светлые
+     плашки (прежнее поведение блока целиком, не только на мобильном). */
   @media (max-width: 900px) {
-    .trust-inner { grid-template-columns: 1fr; }
-    .trust-photo { min-height: 20rem; }
+    .trust-inner { display: block; min-height: auto; }
+    .trust-photo { position: relative; min-height: 20rem; }
     .trust-photo img { transform: none; transition: none; }
     .trust-photo-text h2 { font-size: 2.1rem; }
+    .trust-cards {
+      position: static;
+      width: auto;
+      padding: var(--space-16);
+      gap: var(--space-16);
+    }
+    .trust-card {
+      background: #eef1f5;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+    .trust-card h3 { color: #272727; }
+    .trust-card p { color: #3c3c3a; }
   }
 
   /* ===== Блок «Выгодные условия» (акции, 4 карточки) =====
