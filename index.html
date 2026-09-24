@@ -3650,7 +3650,14 @@
   .lead-modal__close:hover { background: #ece9e4; }
 
   .lead-modal__title {
-    margin: 0 0 var(--space-12);
+    /* margin: 0 auto (не "0 0 …") — при фиксированном max-width блок
+       раньше прилипал к левому краю, а на ширинах модалки шире 352px
+       (например 400–424px) справа оставался незадействованный зазор —
+       контент выглядел смещённым влево, а не отцентрованным. text-align:
+       center довершает — переносы строк (<br />) остаются, но каждая
+       строка теперь по центру блока, а не по левому краю. */
+    margin: 0 auto var(--space-12);
+    text-align: center;
     /* max-width раньше был 15rem — при ручных <br /> ("Оставьте заявку" /
        "и мы вам перезвоним") каждая половина всё равно не влезала в
        одну строку и текст рвался на 4 строки вместо задуманных 2-х.
@@ -3666,7 +3673,8 @@
   }
 
   .lead-modal__text {
-    margin: 0 0 var(--space-24);
+    margin: 0 auto var(--space-24);
+    text-align: center;
     font-size: 0.9rem;
     line-height: 1.5;
     color: #5a5a56;
@@ -3675,6 +3683,7 @@
   .lead-modal__manager {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: var(--space-12);
     margin: 0 0 var(--space-28);
     padding: var(--space-14_4) var(--space-16);
