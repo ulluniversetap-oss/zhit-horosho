@@ -1148,267 +1148,103 @@
     max-width: 36rem;
   }
 
-  /* ===== Блок 4: «Жить — спокойно» ===== */
-  /* position: sticky + z-index выше блока 3 => пока страница скроллится,
-     этот блок физически "наезжает" снизу и закрывает предыдущий, который
-     в этот момент неподвижен (тоже sticky). Никакого JS. */
-  .trust {
+  /* ===== Блок «Жить — спокойно» (перенесён после карты с инфраструктурой
+     .walk, по просьбе «этот блок перенеси на место после карты с
+     инфраструктурой») =====
+     Был одной секцией .trust с фото + 3 стеклянными карточками поверх
+     (роль конкретных стилей .trust/.trust-inner/.trust-photo/.trust-card
+     и т.д. упразднена, разметка удалена). По просьбе «на 3 таких карточки
+     разбей, также со своими иконками в плашках» пересобран тем же
+     приёмом, что и .scenario-mini выше (3 отдельные sticky-секции,
+     каждая наезжает на предыдущую при скролле): полноэкранное фото,
+     иконка в круглой плашке (стиль/цвет как у старой .trust-icon),
+     заголовок и текст — взяты из прежних .trust-card h3/p. Фон у всех
+     трёх временно один и тот же (assets/images/trust-photo.jpg) — по
+     словам «картинки ща пришлю» ожидаются отдельные фото под каждую
+     карточку, заменить src в .trust-mini-bg трёх секций при получении.
+     ЛОКАЛЬНО, НЕ ЗАПУШЕНО. */
+  .trust-mini {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    /* было z-index: 2, но .scenarios теперь распался на три sticky-слоя
-       (.scenario-mini z=1, .scenario-mini--2 z=2, .scenario-mini--3
-       z=3), поэтому блок 4 сдвинут на z=4, блок 5 (.nearby) — на z=5. */
-    z-index: 4;
+    z-index: 1;
     margin: 0 var(--space-36);
-    background: #F7F9FB;
-    border-radius: 1.2rem;
-  }
-
-  /* Полноэкранное фото на всю ширину блока, карточки — стеклянные
-     плашки, «плавающие» поверх фото в правой части (было: сетка
-     1.35fr/1fr, фото и карточки — отдельные колонки на белой подложке). */
-  .trust-inner {
-    position: relative;
     border-radius: 1.2rem;
     overflow: hidden;
-    background: #14151a;
-    /* высота подогнана под .scenarios (фактически ~864px на 1440px),
-       чтобы блок 4 полностью закрывал блок 3 при sticky-наезде, без
-       остаточной полоски сверху. Раньше было 51rem (816px) — на 48px
-       меньше .scenarios, из-за чего верх блока 3 оставался виден даже
-       в момент полного наезда. Подняли с запасом. */
-    min-height: 56rem;
+    min-height: 30rem;
   }
 
-  .trust-photo {
-    position: absolute;
-    inset: 0;
-  }
-
-  .trust-photo img {
+  .trust-mini-bg {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* Лёгкий "паркёр" при появлении блока — фото чуть увеличено и
-       на sticky-наезде плавно возвращается к 1, добавляет глубины,
-       не отвлекая от текста. */
-    transform: scale(1.06);
-    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .trust-photo:hover img { transform: scale(1); }
-
-  .trust-photo-overlay {
+  .trust-mini-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.8) 100%);
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, 0.75) 100%);
   }
 
-  .trust-photo-text {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
+  .trust-mini-inner {
+    position: relative;
     z-index: 1;
-    /* Горизонтальный отступ подложки блока (от края панели до контента)
-       увеличен на 60% (35.2px → 56.32px = 3.52rem), вертикальный
-       (35.2px) не трогали — тот же принцип, что у .scenarios-inner /
-       .nearby-inner: речь про отступ подложки, не про паддинг внутри
-       стеклянных .trust-card (там вернули как было). */
-    padding: var(--space-35_2) 3.52rem;
-    color: #ffffff;
-  }
-
-  .trust-photo-text h2 {
-    margin: 0 0 var(--space-14_4);
-    font-family: 'RoadRadio', 'Onest', sans-serif;
-    font-weight: 700;
-    font-size: 3.375rem;
-    line-height: 1;
-    letter-spacing: -0.03em;
-    text-transform: uppercase;
-  }
-
-  .trust-photo-text h2 span {
-    /* было var(--accent, #F03D3A) — по просьбе «белым сделай заголовок»
-       весь h2 теперь белый (наследует color: #fff от .trust-photo-text),
-       акцентный span больше не подкрашивает "спокойно" отдельно. */
-    color: inherit;
-  }
-
-  .trust-photo-text p {
-    margin: 0;
-    max-width: 38rem;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    color: rgba(255, 255, 255, 0.9);
-  }
-
-  .trust-cards {
-    position: absolute;
-    top: var(--space-32);
-    /* Горизонтальный отступ колонки карточек от правого края подложки
-       увеличен на 60% (32px → 51.2px = 3.2rem), как и у левого текстового
-       отступа (.trust-photo-text) — раньше тут забыли применить, из-за
-       чего слева и справа получались разные по толщине поля. Верх/низ
-       (top/bottom) не трогали. */
-    right: 3.2rem;
-    bottom: var(--space-32);
-    z-index: 2;
-    width: min(27rem, 38%);
     display: flex;
     flex-direction: column;
-    gap: var(--space-16);
-  }
-
-  .trust-card {
-    position: relative;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    /* +60% горизонтали пробовали здесь (внутри самой стеклянной
-       карточки), но по уточнению «я не имел ввиду внутри стеклянных
-       блоков, верни как было» — вернули исходные 27.2px, +60% перенесли
-       в .trust-photo-text (отступ подложки блока целиком от края до
-       контента). */
-    padding: var(--space-32) var(--space-27_2);
-    border-radius: 1.2rem;
-    /* Стеклянная плашка поверх фото (раньше — непрозрачный светло-серый
-       фон #eef1f5, т.к. карточки лежали рядом с фото на белой подложке,
-       не поверх него). */
-    background: rgba(17, 19, 26, 0.45);
-    backdrop-filter: blur(20px) saturate(160%);
-    -webkit-backdrop-filter: blur(20px) saturate(160%);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    transition: background-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
-  }
-
-  /* Все плашки стеклянные по умолчанию — акцентный красный только при
-     наведении. */
-  .trust-card:hover {
-    background: var(--accent, #F03D3A);
-    color: #ffffff;
-    transform: translateY(-0.3rem);
-    box-shadow: 0 1.75rem 3rem -1.25rem rgba(240, 61, 58, 0.55);
-  }
-
-  .trust-card-top {
-    position: relative;
-    z-index: 1;
-    margin-bottom: var(--space-19_2);
-  }
-
-  .trust-card h3 {
-    position: relative;
-    z-index: 1;
-    margin: auto 0 var(--space-9_6);
-    font-family: 'Onest', sans-serif;
-    font-weight: 700;
-    /* было 1.625rem (26px) — по просьбе «размер заголовков на 25%
-       меньше сделай» уменьшили до 1.21875rem (19.5px = 26px × 0.75),
-       затем по просьбе «на 5px увеличь» добавили 5px:
-       19.5px + 5px = 24.5px = 1.53125rem. */
-    font-size: 1.53125rem;
-    color: #ffffff;
-    transition: color 0.3s ease;
-  }
-
-  .trust-card p {
-    position: relative;
-    z-index: 1;
-    margin: 0;
-    max-width: 95%;
-    font-size: 0.85rem;
-    line-height: 1.4;
-    color: rgba(255, 255, 255, 0.7);
-    transition: color 0.3s ease;
-  }
-
-  .trust-card:hover h3,
-  .trust-card:hover p {
+    justify-content: flex-end;
+    min-height: 30rem;
+    padding: var(--space-48) 2.72rem;
     color: #ffffff;
   }
 
-  .trust-icon {
-    position: relative;
-    z-index: 1;
+  /* Иконка в круглой плашке — тот же язык, что был у старой .trust-icon
+     (скруглённый квадрат, акцентная подложка), но непрозрачная (без
+     hover-состояния — карточка теперь не интерактивна, это просто
+     подпись-факт). */
+  .trust-mini-icon {
     width: 3rem;
     height: 3rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Скруглённый квадрат вместо круга — по референсу. */
+    margin-bottom: var(--space-16);
     border-radius: 0.9rem;
-    background: rgba(240, 61, 58, 0.18);
-    color: #F03D3A;
-    transition: background-color 0.35s ease, color 0.35s ease, transform 0.35s ease;
+    background: rgba(240, 61, 58, 0.85);
+    color: #ffffff;
   }
 
-  /* На красном фоне (hover) нужен светлый значок под иконку —
-     иначе полупрозрачная оранжевая подложка сливается с фоном. */
-  .trust-card:hover .trust-icon {
-    background: #ffffff;
-    color: #F03D3A;
-    transform: scale(1.08);
+  .trust-mini-icon svg { width: 1.4rem; height: 1.4rem; }
+
+  .trust-mini-heading {
+    margin: 0 0 var(--space-14_4);
+    max-width: 32rem;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 2.8125rem;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
   }
 
-  .trust-icon svg { width: 1.4rem; height: 1.4rem; }
-
-  /* Стрелка-аффорданс в углу — была задумана как белый кружок с красной
-     стрелкой, появляющийся на hover (язык .offers-btn из блока
-     «Выгодные условия»). По просьбе «при наводке плашки загораются
-     красным, убери в этом состоянии кнопку справа, она лишняя там» —
-     на красном фоне карточки при hover белая кнопка со стрелкой
-     оказалась лишним элементом, спорит с заголовком/текстом. Правило
-     .trust-card:hover .trust-card-arrow убрано — кружок больше никогда
-     не показывается (остаётся opacity: 0 всегда), сама разметка
-     (<span class="trust-card-arrow">) не трогалась, чтобы легко вернуть
-     при необходимости. */
-  .trust-card-arrow {
-    position: absolute;
-    right: var(--space-27_2);
-    bottom: var(--space-27_2);
-    z-index: 1;
-    width: 2.3rem;
-    height: 2.3rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.95);
-    color: var(--accent, #F03D3A);
-    font-size: 1rem;
-    opacity: 0;
-    transform: translate(-0.5rem, 0.5rem);
-    transition: opacity 0.35s ease, transform 0.35s ease;
+  .trust-mini-text {
+    margin: 0;
+    max-width: 30rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
   }
 
-  /* На узких экранах стеклянный оверлей поверх фото читается плохо —
-     карточки уходят под фото в обычный поток, как непрозрачные светлые
-     плашки (прежнее поведение блока целиком, не только на мобильном). */
   @media (max-width: 900px) {
-    .trust-inner { display: block; min-height: auto; }
-    .trust-photo { position: relative; min-height: 20rem; }
-    .trust-photo img { transform: none; transition: none; }
-    .trust-photo-text h2 { font-size: 2.1rem; }
-    .trust-cards {
-      position: static;
-      width: auto;
-      padding: var(--space-16);
-      gap: var(--space-16);
-    }
-    .trust-card {
-      background: #eef1f5;
-      backdrop-filter: none;
-      -webkit-backdrop-filter: none;
-    }
-    .trust-card h3 { color: #272727; }
-    .trust-card p { color: #3c3c3a; }
+    .trust-mini-inner { padding: var(--space-32) var(--space-24); }
   }
+
+  /* Второй и третий блоки — тот же приём z-index, что у
+     .scenario-mini--2/--3: каждый следующий на 1 выше, чтобы по очереди
+     наезжать при скролле внутри своего локального .sticky-stack. */
+  .trust-mini--2 { z-index: 2; }
+  .trust-mini--3 { z-index: 3; }
 
   /* ===== Блок «Выгодные условия» (акции, 4 карточки) =====
      Размеры сверены с Figma (node 130:18644 и дети): контейнер-паддинг
@@ -4793,75 +4629,6 @@
 
 <div class="block-gap"></div>
 
-<section class="trust">
-  <div class="trust-inner">
-    <div class="trust-photo">
-      <img src="assets/images/trust-photo.jpg" alt="Жилой комплекс сверху" />
-      <div class="trust-photo-overlay"></div>
-      <div class="trust-photo-text">
-        <h2>Жить — <span>спокойно</span></h2>
-        <p>Закрытая территория, двор без машин, видеонаблюдение по периметру.<br />Всего 2 подъезда и 162 квартиры — вы знаете соседей в лицо.</p>
-      </div>
-    </div>
-
-    <div class="trust-cards">
-      <div class="trust-card">
-        <div class="trust-card-top">
-          <div class="trust-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round">
-              <path d="M5 11l1.4-4.2A2 2 0 0 1 8.3 5.4h7.4a2 2 0 0 1 1.9 1.4L19 11"/>
-              <path d="M3.5 11h17a1 1 0 0 1 1 1v3.6a1 1 0 0 1-1 1H18v1.3a1 1 0 0 1-1 1h-.8a1 1 0 0 1-1-1v-1.3H8.8v1.3a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-1.3H3.5a1 1 0 0 1-1-1V12a1 1 0 0 1 1-1z"/>
-              <circle cx="7.2" cy="14.4" r="0.7"/>
-              <circle cx="16.8" cy="14.4" r="0.7"/>
-              <line x1="3" y1="3" x2="21" y2="21"/>
-            </svg>
-          </div>
-        </div>
-        <h3>Двор без машин</h3>
-        <p>Парковка вынесена за периметр. <br class="br-desktop" />Внутри — детская площадка, <br class="br-desktop" />зелень и пешеходные маршруты.</p>
-        <span class="trust-card-arrow">→</span>
-      </div>
-
-      <div class="trust-card">
-        <div class="trust-card-top">
-          <div class="trust-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round">
-              <path d="M12 3.2l6.5 2.6v4.7c0 4.1-2.7 7.4-6.5 8.5-3.8-1.1-6.5-4.4-6.5-8.5V5.8L12 3.2z"/>
-              <path d="M9 11.6l2 2 4-4.2"/>
-            </svg>
-          </div>
-        </div>
-        <h3>Контроль доступа</h3>
-        <p>Огороженная территория и видеонаблюдение<br class="br-desktop" />на входных группах и по периметру двора.</p>
-        <span class="trust-card-arrow">→</span>
-      </div>
-
-      <div class="trust-card">
-        <div class="trust-card-top">
-          <div class="trust-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round">
-              <rect x="4" y="3" width="16" height="18" rx="1"/>
-              <line x1="12" y1="3" x2="12" y2="21"/>
-              <line x1="6.8" y1="7" x2="8.8" y2="7"/>
-              <line x1="15.2" y1="7" x2="17.2" y2="7"/>
-              <line x1="6.8" y1="11" x2="8.8" y2="11"/>
-              <line x1="15.2" y1="11" x2="17.2" y2="11"/>
-              <line x1="6.8" y1="15" x2="8.8" y2="15"/>
-              <line x1="15.2" y1="15" x2="17.2" y2="15"/>
-              <rect x="10.5" y="17" width="3" height="4"/>
-            </svg>
-          </div>
-        </div>
-        <h3>162 квартиры на 2 подъезда</h3>
-        <p>Меньше соседей на этаже, меньше<br class="br-desktop" />нагрузки на лифты, двор рассчитан<br class="br-desktop" />на реальное число жителей.</p>
-        <span class="trust-card-arrow">→</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="block-gap"></div>
-
 <section class="nearby">
   <img class="nearby-bg" src="assets/images/nearby-bg.jpg" alt="Жилой дом «Жить хорошо» вечером" />
   <div class="nearby-overlay"></div>
@@ -5141,6 +4908,79 @@
   </div>
   </div>
 </section>
+
+<div class="block-gap"></div>
+
+<!-- Блок «Жить — спокойно» — перенесён сюда (сразу после карты с
+     инфраструктурой .walk) и разбит на 3 отдельные sticky-карточки, по
+     просьбе «этот блок перенеси на место после карты с инфраструктурой»
+     + «на 3 таких карточки разбей, также со своими иконками в плашках».
+     Фон у всех трёх временно trust-photo.jpg — заменить на присланные
+     фото под каждую карточку, когда придут. ЛОКАЛЬНО, НЕ ЗАПУШЕНО. -->
+<div class="sticky-stack">
+
+<section class="trust-mini">
+  <img class="trust-mini-bg" src="assets/images/trust-photo.jpg" alt="Двор без машин в ЖК «Жить хорошо»" />
+  <div class="trust-mini-overlay"></div>
+  <div class="trust-mini-inner">
+    <div class="trust-mini-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M5 11l1.4-4.2A2 2 0 0 1 8.3 5.4h7.4a2 2 0 0 1 1.9 1.4L19 11"/>
+        <path d="M3.5 11h17a1 1 0 0 1 1 1v3.6a1 1 0 0 1-1 1H18v1.3a1 1 0 0 1-1 1h-.8a1 1 0 0 1-1-1v-1.3H8.8v1.3a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-1.3H3.5a1 1 0 0 1-1-1V12a1 1 0 0 1 1-1z"/>
+        <circle cx="7.2" cy="14.4" r="0.7"/>
+        <circle cx="16.8" cy="14.4" r="0.7"/>
+        <line x1="3" y1="3" x2="21" y2="21"/>
+      </svg>
+    </div>
+    <h2 class="trust-mini-heading">Двор без машин</h2>
+    <p class="trust-mini-text">Парковка вынесена за периметр. Внутри — детская площадка, зелень и пешеходные маршруты.</p>
+  </div>
+</section>
+
+<div class="block-gap"></div>
+
+<section class="trust-mini trust-mini--2">
+  <img class="trust-mini-bg" src="assets/images/trust-photo.jpg" alt="Контроль доступа в ЖК «Жить хорошо»" />
+  <div class="trust-mini-overlay"></div>
+  <div class="trust-mini-inner">
+    <div class="trust-mini-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M12 3.2l6.5 2.6v4.7c0 4.1-2.7 7.4-6.5 8.5-3.8-1.1-6.5-4.4-6.5-8.5V5.8L12 3.2z"/>
+        <path d="M9 11.6l2 2 4-4.2"/>
+      </svg>
+    </div>
+    <h2 class="trust-mini-heading">Контроль доступа</h2>
+    <p class="trust-mini-text">Огороженная территория и видеонаблюдение на входных группах и по периметру двора.</p>
+  </div>
+</section>
+
+<div class="block-gap"></div>
+
+<section class="trust-mini trust-mini--3">
+  <img class="trust-mini-bg" src="assets/images/trust-photo.jpg" alt="162 квартиры на 2 подъезда в ЖК «Жить хорошо»" />
+  <div class="trust-mini-overlay"></div>
+  <div class="trust-mini-inner">
+    <div class="trust-mini-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round">
+        <rect x="4" y="3" width="16" height="18" rx="1"/>
+        <line x1="12" y1="3" x2="12" y2="21"/>
+        <line x1="6.8" y1="7" x2="8.8" y2="7"/>
+        <line x1="15.2" y1="7" x2="17.2" y2="7"/>
+        <line x1="6.8" y1="11" x2="8.8" y2="11"/>
+        <line x1="15.2" y1="11" x2="17.2" y2="11"/>
+        <line x1="6.8" y1="15" x2="8.8" y2="15"/>
+        <line x1="15.2" y1="15" x2="17.2" y2="15"/>
+        <rect x="10.5" y="17" width="3" height="4"/>
+      </svg>
+    </div>
+    <h2 class="trust-mini-heading">162 квартиры<br />на 2 подъезда</h2>
+    <p class="trust-mini-text">Меньше соседей на этаже, меньше нагрузки на лифты, двор рассчитан на реальное число жителей.</p>
+  </div>
+</section>
+
+</div><!-- /.sticky-stack -->
+
+<div class="block-gap"></div>
 
 <section class="leadgen">
   <div class="leadgen-content">
