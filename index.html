@@ -520,6 +520,10 @@
     /* По просьбе «на макбук разрешении размер иконок на 15% меньше» —
        иконки-кубы в карточках статистики хиро-блока. Было 2rem. */
     .stat-card .cube { width: 1.7rem; height: 1.7rem; }
+
+    /* По просьбе «расстояние между иконкой и заголовком на 20% больше,
+       на мак разрешении» — было clamp(0.95rem, 1.17vw, 1.4rem). */
+    .stat-card .cube { margin-bottom: clamp(1.14rem, 1.404vw, 1.68rem); }
   }
 
   /* Ноутбучные ширины (1280-1600px): в шапке 8 пунктов меню + телефон +
@@ -4131,22 +4135,6 @@
 
   .apt-picker__card-photo img { display: block; width: 100%; height: auto; }
 
-  .apt-picker__card-fav {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    width: 1.8rem;
-    height: 1.8rem;
-    border: none;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.9);
-    color: #a9a49a;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  }
-
   .apt-picker__card-title {
     margin: 0 0 0.2rem;
     font-family: 'Onest', sans-serif;
@@ -6061,7 +6049,6 @@
     cardEl.innerHTML =
       '<div class="apt-picker__card-photo">' +
         '<img src="' + unit.img + '" alt="Планировка ' + unit.rooms + '-комнатной квартиры, ' + unit.area.toFixed(2).replace('.', ',') + ' м²" />' +
-        '<button type="button" class="apt-picker__card-fav" aria-label="В избранное">♥</button>' +
       '</div>' +
       '<h4 class="apt-picker__card-title">' + unit.rooms + 'к, ' + unit.area.toFixed(2).replace('.', ',') + ' м²</h4>' +
       '<p class="apt-picker__card-meta">Подъезд ' + unit.entrance + ' · Этаж ' + unit.floor + ' из 10</p>' +
@@ -6072,7 +6059,7 @@
         '<div class="apt-picker__card-stat"><span>Цена за м²</span><strong>' + aptFormatPrice(pricePerM2) + '</strong></div>' +
       '</div>' +
       '<p class="apt-picker__card-price">' + aptFormatPrice(unit.price) + '</p>' +
-      '<p class="apt-picker__card-price-sub">Ипотека от 4.4% — рассчитаем платёж в заявке</p>' +
+      '<p class="apt-picker__card-price-sub">Ипотека от 4.4% —<br />рассчитаем платёж в заявке</p>' +
       '<button type="button" class="apt-picker__card-cta" onclick="closeApartmentPicker(); openLeadModal();">Забронировать</button>' +
       '<span class="apt-picker__card-more" onclick="aptZoomCardPhoto(event)">Подробнее</span>';
   }
