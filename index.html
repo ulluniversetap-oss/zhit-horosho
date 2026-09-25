@@ -1171,7 +1171,9 @@
     margin: 0 var(--space-36);
     border-radius: 1.2rem;
     overflow: hidden;
-    min-height: 30rem;
+    /* было 30rem, +20% по просьбе «по высоте их побольше сделай, процентов
+       на 20» = 36rem. */
+    min-height: 36rem;
   }
 
   .trust-mini-bg {
@@ -1194,7 +1196,8 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    min-height: 30rem;
+    /* было 30rem — та же правка +20%, что у .trust-mini выше. */
+    min-height: 36rem;
     padding: var(--space-48) 2.72rem;
     color: #ffffff;
   }
