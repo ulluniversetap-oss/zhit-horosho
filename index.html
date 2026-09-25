@@ -802,7 +802,9 @@
     top: 0;
     z-index: 1;
     background: url('assets/images/scenarios-bg.jpg') center / cover no-repeat;
-    padding: var(--space-80) 0;
+    /* Внутренний вертикальный паддинг -20% по просьбе «у всех
+       блоков»: было var(--space-80). */
+    padding: var(--space-64) 0;
     margin: 0 var(--space-36);
     border-radius: 1.44rem;
     overflow: hidden;
@@ -1312,15 +1314,19 @@
        блок 5. Sticky здесь убран намеренно — см. .sticky-stack ниже. */
     position: relative;
     z-index: 4;
-    margin: 0 var(--space-36) var(--space-48);
+    /* Внешний вертикальный отступ -20% по просьбе «у всех блоков»:
+       было var(--space-48) = 3rem, стало var(--space-38_4) = 2.4rem. */
+    margin: 0 var(--space-36) var(--space-38_4);
   }
 
   .offers-panel {
     background: #ffffff;
     border-radius: 1.44rem;
     /* Вертикальный ритм как у блоков 3 и 5 (5rem). Раньше было
-       8rem/10.5rem из Figma — выбивалось из общего ритма страницы. */
-    padding: var(--space-80) 0;
+       8rem/10.5rem из Figma — выбивалось из общего ритма страницы.
+       -20% по просьбе «у всех блоков»: было var(--space-80) = 5rem,
+       стало var(--space-64) = 4rem. */
+    padding: var(--space-64) 0;
   }
 
   .offers-inner {
@@ -1520,11 +1526,13 @@
     display: none; /* временно скрыт по просьбе — не увидели особого смысла в блоке; разметка сохранена */
     position: relative;
     z-index: 5;
-    margin: 0 var(--space-36) var(--space-48);
+    /* Внешний/внутренний вертикальный отступ -20% по просьбе «у всех
+       блоков»: margin было var(--space-48), padding — var(--space-80). */
+    margin: 0 var(--space-36) var(--space-38_4);
     border-radius: 1.44rem;
     overflow: hidden;
     background: #1b1c22;
-    padding: var(--space-80) var(--space-48);
+    padding: var(--space-64) var(--space-48);
     grid-template-columns: 1.1fr 0.9fr;
     align-items: center;
     gap: var(--space-64);
@@ -1673,13 +1681,17 @@
   .layouts {
     position: relative;
     z-index: 5;
-    margin: 0 var(--space-36) var(--space-48);
+    /* Внешний вертикальный отступ -20% по просьбе «у всех блоков»:
+       было var(--space-48). */
+    margin: 0 var(--space-36) var(--space-38_4);
   }
 
   .layouts-panel {
     background: #ffffff;
     border-radius: 1.44rem;
-    padding: var(--space-80) 0;
+    /* Внутренний вертикальный паддинг -20% по просьбе «у всех
+       блоков»: было var(--space-80). */
+    padding: var(--space-64) 0;
   }
 
   .layouts-inner {
@@ -1960,7 +1972,9 @@
   .walk {
     position: relative;
     z-index: 5;
-    margin: 0 var(--space-36) var(--space-48);
+    /* Внешний вертикальный отступ -20% по просьбе «у всех блоков»:
+       было var(--space-48). */
+    margin: 0 var(--space-36) var(--space-38_4);
   }
 
   /* Без белой подложки: блок лежит прямо на фоне страницы,
@@ -2241,16 +2255,18 @@
        при наезде; высоту теперь задаёт содержимое. */
     position: relative;
     z-index: 6;
-    margin: 0 var(--space-36) var(--space-48);
+    /* Внешний вертикальный отступ -20% по просьбе «у всех блоков»:
+       было var(--space-48). */
+    margin: 0 var(--space-36) var(--space-38_4);
     border-radius: 1.44rem;
     overflow: hidden;
     background: #1b1c22;
-    /* Вертикальные — как у блока акций (5rem, .offers-panel);
-       боковые — по просьбе «одинаковые горизонтальные отступы у всех
-       блоков с подложками, как у "Двор без машин"» — было
-       var(--space-27_2) (27.2px), стало 2.72rem (43.52px), как у
-       .scenario-mini-inner/.trust-mini-inner/.nearby-inner. */
-    padding: var(--space-80) 2.72rem;
+    /* Вертикальные — как у блока акций (.offers-panel, теперь 4rem
+       после общего -20%); боковые — по просьбе «одинаковые
+       горизонтальные отступы у всех блоков с подложками, как у "Двор
+       без машин"» — было var(--space-27_2) (27.2px), стало 2.72rem
+       (43.52px), как у .scenario-mini-inner/.trust-mini-inner/.nearby-inner. */
+    padding: var(--space-64) 2.72rem;
     /* Свободная композиция вместо колонок: контент во всю ширину,
        мокап позиционируется поверх правой части и уходит за край.
        Пропорция блока ~3:1 — форма разворачивается в одну строку. */
@@ -2398,7 +2414,9 @@
     top: 0;
     /* было z-index: 3, сдвинут на 5 — см. комментарий у .trust. */
     z-index: 5;
-    margin: 0 var(--space-36) var(--space-48);
+    /* Внешний вертикальный отступ -20% по просьбе «у всех блоков»:
+       было var(--space-48). */
+    margin: 0 var(--space-36) var(--space-38_4);
     border-radius: 1.44rem;
     overflow: hidden;
     min-height: 56rem;
@@ -2586,7 +2604,9 @@
   .expert-lead {
     position: relative;
     z-index: 7;
-    margin: 0 var(--space-36) var(--space-48);
+    /* Внешний вертикальный отступ -20% по просьбе «у всех блоков»:
+       было var(--space-48). */
+    margin: 0 var(--space-36) var(--space-38_4);
     border-radius: 1.44rem;
     overflow: hidden;
     min-height: clamp(28rem, 34vw, 34rem);
@@ -2705,7 +2725,9 @@
   .finish {
     position: relative;
     z-index: 5;
-    margin: 0 var(--space-36) var(--space-48);
+    /* Внешний вертикальный отступ -20% по просьбе «у всех блоков»:
+       было var(--space-48). */
+    margin: 0 var(--space-36) var(--space-38_4);
   }
 
   .finish-panel {
@@ -3181,7 +3203,9 @@
      .leadgen-submit/.icon-circle, единая для всех трёх карточек. */
   .addl {
     position: relative;
-    margin: 0 var(--space-36) var(--space-48);
+    /* Внешний вертикальный отступ -20% по просьбе «у всех блоков»:
+       было var(--space-48). */
+    margin: 0 var(--space-36) var(--space-38_4);
   }
 
   .addl-inner {
@@ -3341,13 +3365,17 @@
        отличается только текстом ярлычка, как и остальные три. */
   .offices {
     position: relative;
-    margin: 0 var(--space-36) var(--space-48);
+    /* Нижний внешний вертикальный отступ -20% по просьбе: было
+       var(--space-48) = 3rem, стало var(--space-38_4) = 2.4rem. */
+    margin: 0 var(--space-36) var(--space-38_4);
   }
 
   .offices-panel {
     background: #ffffff;
     border-radius: 1.44rem;
-    padding: var(--space-80) 0;
+    /* Внутренний вертикальный паддинг -20% по просьбе: было
+       var(--space-80) = 5rem, стало var(--space-64) = 4rem. */
+    padding: var(--space-64) 0;
   }
 
   .offices-inner {
@@ -3601,7 +3629,9 @@
      стандартная акцентная пилюля с .icon-circle, как у .addl-btn. */
   .news {
     position: relative;
-    margin: 0 var(--space-36) var(--space-48);
+    /* Внешний вертикальный отступ -20% по просьбе «у всех блоков»:
+       было var(--space-48). */
+    margin: 0 var(--space-36) var(--space-38_4);
   }
 
   .news-panel {
