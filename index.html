@@ -2371,6 +2371,7 @@
   /* Тот же sticky-приём: z-index выше блока 4, поэтому при скролле этот
      блок наезжает на «Жить — спокойно» и полностью закрывает его. */
   .nearby {
+    display: none; /* временно скрыт по просьбе — разметка сохранена */
     position: -webkit-sticky;
     position: sticky;
     top: 0;
@@ -4343,6 +4344,97 @@
     display: block;
   }
 
+  .article-modal__map {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 0.9rem;
+    overflow: hidden;
+    margin: var(--space-8) 0 var(--space-8);
+  }
+
+  .article-modal__map iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  /* Таблица сравнения сценариев (статья «Сколько стоят четыре года
+     учёбы») — идёт первым экраном сразу после лида, до остального
+     текста, поэтому вынесена отдельным блоком, а не секцией. */
+  .article-modal__table-wrap {
+    margin: 0 0 var(--space-8);
+    border: 1px solid #ece9e4;
+    border-radius: 0.9rem;
+    overflow-x: auto;
+  }
+
+  .article-modal__table { min-width: 30rem; }
+
+  .article-modal__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+  }
+
+  .article-modal__table th,
+  .article-modal__table td {
+    padding: var(--space-8) var(--space-12);
+    text-align: left;
+    border-bottom: 1px solid #ece9e4;
+  }
+
+  .article-modal__table th {
+    background: #F7F9FB;
+    font-weight: 700;
+    color: #1c1c1a;
+  }
+
+  .article-modal__table tr:last-child td { border-bottom: none; }
+
+  .article-modal__table tr.article-modal__table-highlight td {
+    background: rgba(240, 61, 58, 0.06);
+    font-weight: 700;
+    color: #1c1c1a;
+  }
+
+  .article-modal__table-note {
+    margin: var(--space-8) 0 var(--space-27_2);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: #8a8a83;
+  }
+
+  .article-modal__quote {
+    margin: 0 0 var(--space-8);
+    padding: var(--space-16) var(--space-20);
+    border-left: 3px solid var(--accent, #F03D3A);
+    background: #F7F9FB;
+    font-weight: 700;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #1c1c1a;
+  }
+
+  .article-modal__calc-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    margin: 0 0 var(--space-8);
+  }
+
+  .article-modal__calc-form .lead-modal__input { width: 100%; box-sizing: border-box; }
+
+  .article-modal__success {
+    padding: var(--space-16) 0 var(--space-8);
+    text-align: center;
+  }
+
+  .article-modal__success h4 { margin: 0 0 var(--space-8); }
+  .article-modal__success p { margin: 0; color: #4a4a46; font-size: 0.9rem; }
+
   .article-modal__plans {
     display: flex;
     gap: var(--space-16);
@@ -5703,7 +5795,7 @@
           </div>
         </a>
 
-        <a href="#leadgen" class="news-card">
+        <a href="#" class="news-card" onclick="openArticleModal('district-guide'); return false;">
           <div class="news-card-photo">
             <img src="assets/images/news-district.jpg" alt="Советский район Волгограда: путеводитель по району" loading="lazy" />
           </div>
@@ -5714,7 +5806,7 @@
           </div>
         </a>
 
-        <a href="#leadgen" class="news-card">
+        <a href="#" class="news-card" onclick="openArticleModal('student-costs'); return false;">
           <div class="news-card-photo">
             <img src="assets/images/news-students.jpg" alt="Сколько стоят четыре года учёбы студента" loading="lazy" />
           </div>
@@ -6324,6 +6416,116 @@
         { img: 'assets/images/plan-3k-68.jpg', label: '3-комнатная' }
       ],
       cta: 'Покажем дом на площадке'
+    },
+    'district-guide': {
+      kicker: 'Путеводитель по району',
+      cover: 'assets/images/news-district.jpg',
+      title: 'Советский район Волгограда: путеводитель по району',
+      lead: 'Район редко попадает в разговоры о престижных локациях — и это говорит о разговорах, а не о районе.',
+      sections: [
+        {
+          heading: 'Образовательный кластер',
+          paragraphs: ['Рядом — Аграрный университет, Кооперативный институт и Медицинский колледж, школа № 54 и детский сад. Дорога до занятий занимает минуты, а не пересадки на транспорте.'],
+          callout: '3 вуза в одной пешей зоне'
+        },
+        {
+          heading: 'Медицина и повседневное',
+          paragraphs: ['Больница № 7, аптеки и магазины распределены по застройке района, а не собраны в одном торговом центре — до нужного не нужно ехать через весь район.']
+        },
+        {
+          heading: 'Транспорт',
+          paragraphs: [
+            'Остановки автобусов и трамвая — в шаговой доступности, рядом выезд на основные магистрали Советского района.',
+            'Трамвай — отдельный плюс: он ходит по выделенному пути и не стоит в общих пробках, поэтому время в пути предсказуемо даже в час пик.'
+          ]
+        },
+        {
+          heading: 'Карта района',
+          paragraphs: [],
+          map: 'https://yandex.ru/map-widget/v1/?ll=44.452650%2C48.679260&z=14&pt=44.452650,48.679260,pm2rdm'
+        },
+        {
+          heading: 'Как устроена застройка',
+          paragraphs: ['Новое жильё здесь появляется точечно, в уже сформированной среде — со своими школами, магазинами и маршрутами, а не с чистого поля.'],
+          list: [
+            'Плюс: инфраструктура уже работает в день заселения, ничего не нужно ждать',
+            'Минус: выбор новостроек меньше, чем в районах комплексной застройки — рассматривать нужно точечно'
+          ]
+        },
+        {
+          heading: 'Кому подходит',
+          paragraphs: [],
+          list: [
+            'Семьям с детьми — школа, детский сад и двор в пешей доступности',
+            'Родителям студентов — три учебных заведения рядом, не нужно снимать квартиру ближе к вузу',
+            'Тем, кто берёт квартиру под аренду или инвестицию — устойчивый спрос на жильё рядом с вузами'
+          ]
+        },
+        {
+          heading: 'Кому не подходит',
+          paragraphs: ['Честно: если вы работаете в центре города и цените вечернюю городскую жизнь — рестораны, набережную, пешие прогулки после работы — район разочарует. Это спальный район с понятным набором функций, не более того.']
+        },
+        {
+          heading: 'Что строится сейчас',
+          paragraphs: ['В районе строится ЖК «Жить хорошо» — монолит-кирпичный дом на 162 квартиры со своей котельной и двором без машин. <a href="#" onclick="openArticleModal(\'all-included\'); return false;">Подробный разбор дома — в отдельной статье</a>.']
+        }
+      ],
+      cta: 'Пришлём подборку новостроек в Советском районе'
+    },
+    'student-costs': {
+      kicker: 'Калькулятор-аргумент',
+      cover: 'assets/images/news-students.jpg',
+      title: 'Сколько стоят четыре года учёбы студента',
+      lead: '«Всего на четыре года» — это 48 месяцев и сумма, сопоставимая с первоначальным взносом на квартиру.',
+      table: {
+        head: ['Сценарий', 'В месяц', 'За 4 года', 'Что остаётся'],
+        rows: [
+          { cells: ['Общежитие', '≈3 000 ₽', '≈144 000 ₽', 'Ничего, место не гарантировано'] },
+          { cells: ['Аренда', '≈17 000 ₽', '≈816 000 ₽', 'Ничего, риск роста ставки'] },
+          { cells: ['Покупка', 'от 4 099 000 ₽', 'платёж — под ваш взнос', 'Квартира в собственности'], highlight: true }
+        ],
+        note: 'Цифры по общежитию и аренде — ориентировочные средние по Волгограду. Точный ипотечный платёж зависит от взноса и ставки — посчитаем его для вас ниже.'
+      },
+      sections: [
+        {
+          heading: 'Общежитие',
+          paragraphs: ['Дёшево по деньгам, дорого по всему остальному: соседи по комнате, очередь на кухню и душ, ограничения на гостей. Место при этом не гарантировано на все 4 года — распределение проходит заново каждый год.']
+        },
+        {
+          heading: 'Аренда',
+          paragraphs: ['Ставка аренды — это ещё не вся сумма: сверху коммуналка, депозит при заезде и риск, что хозяин поднимет цену через год. Итоговый чек обычно выше первоначальной цифры в объявлении.'],
+          callout: '≈816 000 ₽ за 48 месяцев'
+        },
+        {
+          heading: 'Покупка',
+          paragraphs: ['От 4 099 000 ₽ — с ежемесячным платежом и первоначальным взносом, которые считаются под конкретную семью и программу (в том числе семейную ипотеку от 4,4%).'],
+          quote: 'Через четыре года у семьи остаётся не потраченная сумма, а квартира.'
+        },
+        {
+          heading: 'Что после выпуска',
+          paragraphs: [],
+          list: [
+            'Продать — вернуть вложенные деньги, часто с ростом стоимости за 4 года',
+            'Сдавать — новый поток студентов рядом с теми же вузами обеспечивает спрос на аренду',
+            'Оставить ребёнку — готовое жильё к началу самостоятельной жизни'
+          ]
+        },
+        {
+          heading: 'Скрытая статья расходов',
+          paragraphs: ['Если квартира не рядом с вузом, каждая лишняя минута в дороге умножается на 4 года. Дорога туда-обратно длиннее на 40 минут в день — это время, которое можно было потратить на учёбу, подработку или сон.'],
+          callout: '≈650 часов за 4 года на дорогу'
+        },
+        {
+          heading: 'Как посчитать под себя',
+          paragraphs: ['Сравните две цифры: то, что вы платите (или планируете платить) за аренду и коммуналку в месяц, и ипотечный платёж за квартиру рядом с вузом. Если разница небольшая — покупка выгоднее уже в первый год, а не через 4.']
+        }
+      ],
+      plans: [
+        { img: 'assets/images/plan-1k-32.jpg', label: '1-комнатная, 32,71 м²' },
+        { img: 'assets/images/plan-1k-40.jpg', label: '1-комнатная, 40,08 м²' }
+      ],
+      calcForm: true,
+      cta: 'Рассчитаем платёж под ваш взнос за 15 минут'
     }
   };
 
@@ -6335,9 +6537,25 @@
     if (s.list) {
       html += '<ul>' + s.list.map(function (li) { return '<li>' + li + '</li>'; }).join('') + '</ul>';
     }
+    if (s.quote) html += '<p class="article-modal__quote">' + s.quote + '</p>';
     if (s.photo) html += '<img class="article-modal__photo" src="' + s.photo + '" alt="" loading="lazy" />';
+    if (s.map) {
+      html += '<div class="article-modal__map"><iframe src="' + s.map + '" loading="lazy" title="Карта района" allowfullscreen></iframe></div>';
+    }
     if (s.note) html += '<p class="article-modal__note">' + s.note + '</p>';
     html += '</div>';
+    return html;
+  }
+
+  function renderArticleTable(t) {
+    var rows = t.rows.map(function (r) {
+      var cls = r.highlight ? ' class="article-modal__table-highlight"' : '';
+      return '<tr' + cls + '>' + r.cells.map(function (c) { return '<td>' + c + '</td>'; }).join('') + '</tr>';
+    }).join('');
+    var html = '<div class="article-modal__table-wrap"><table class="article-modal__table"><thead><tr>' +
+      t.head.map(function (h) { return '<th>' + h + '</th>'; }).join('') +
+      '</tr></thead><tbody>' + rows + '</tbody></table></div>';
+    if (t.note) html += '<p class="article-modal__table-note">' + t.note + '</p>';
     return html;
   }
 
@@ -6345,23 +6563,49 @@
     var article = ARTICLES[id];
     if (!article) return;
     var body = document.getElementById('articleModalBody');
-    var plansHtml = (article.plans || []).map(function (p) {
-      return '<div class="article-modal__plan"><img src="' + p.img + '" alt="Планировка: ' + p.label + '" loading="lazy" /><span>' + p.label + '</span></div>';
-    }).join('');
+    var plansHtml = '';
+    if (article.plans && article.plans.length) {
+      plansHtml = '<div class="article-modal__plans">' + article.plans.map(function (p) {
+        return '<div class="article-modal__plan"><img src="' + p.img + '" alt="Планировка: ' + p.label + '" loading="lazy" /><span>' + p.label + '</span></div>';
+      }).join('') + '</div>';
+    }
+    var ctaHtml;
+    if (article.calcForm) {
+      ctaHtml =
+        '<form class="article-modal__calc-form" onsubmit="return submitArticleCalc(event)">' +
+          '<input class="lead-modal__input" type="tel" placeholder="+7 (___) ___-__-__" oninput="formatLeadModalPhone(this)" required />' +
+          '<input class="lead-modal__input" type="text" inputmode="numeric" placeholder="Сумма первоначального взноса, ₽" required />' +
+          '<button type="submit" class="article-modal__cta">' + article.cta + '</button>' +
+        '</form>';
+    } else {
+      ctaHtml = '<button type="button" class="article-modal__cta" onclick="closeArticleModal(); openLeadModal();">' + article.cta + '</button>';
+    }
     body.innerHTML =
       '<img class="article-modal__cover" src="' + article.cover + '" alt="" />' +
       '<div class="article-modal__body">' +
         '<p class="article-modal__kicker">' + article.kicker + '</p>' +
         '<h3 id="articleModalTitle" class="article-modal__title">' + article.title + '</h3>' +
         '<p class="article-modal__lead">' + article.lead + '</p>' +
+        (article.table ? renderArticleTable(article.table) : '') +
         article.sections.map(renderArticleSection).join('') +
-        '<div class="article-modal__plans">' + plansHtml + '</div>' +
-        '<button type="button" class="article-modal__cta" onclick="closeArticleModal(); openLeadModal();">' + article.cta + '</button>' +
+        plansHtml +
+        ctaHtml +
       '</div>';
     var overlay = document.getElementById('articleModalOverlay');
     overlay.classList.add('is-open');
     overlay.querySelector('.article-modal').scrollTop = 0;
     document.body.style.overflow = 'hidden';
+  }
+
+  function submitArticleCalc(event) {
+    event.preventDefault();
+    var form = event.target;
+    form.outerHTML =
+      '<div class="article-modal__success">' +
+        '<h4>Заявка принята</h4>' +
+        '<p>Посчитаем платёж под ваш взнос и перезвоним в течение 15 минут.</p>' +
+      '</div>';
+    return false;
   }
 
   function closeArticleModal(event) {
