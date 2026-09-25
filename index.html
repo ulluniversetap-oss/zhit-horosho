@@ -4213,6 +4213,184 @@
     .apt-picker__card { border-left: none; border-top: 1px solid #ece9e4; }
   }
 
+  /* ===== Модалка статьи (блок «Новости и статьи») — центральное окно
+     со скроллом, контент рендерится по клику из ARTICLES (см. <script>
+     ниже), карточка переиспользует .apt-picker-overlay-подход. ===== */
+  .article-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    background: rgba(10, 14, 25, 0.55);
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-24);
+  }
+
+  .article-modal-overlay.is-open { display: flex; }
+
+  .article-modal {
+    position: relative;
+    width: min(46rem, 100%);
+    max-height: min(50rem, 92vh);
+    background: #ffffff;
+    border-radius: 1.44rem;
+    overflow-y: auto;
+    box-shadow: 0 2rem 4rem rgba(10, 14, 25, 0.3);
+  }
+
+  .article-modal__close {
+    position: absolute;
+    top: var(--space-16);
+    right: var(--space-16);
+    z-index: 2;
+    width: 2.2rem;
+    height: 2.2rem;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    color: #1c1c1a;
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .article-modal__close:hover { background: #ffffff; }
+
+  .article-modal__cover {
+    width: 100%;
+    height: 16rem;
+    object-fit: cover;
+    display: block;
+  }
+
+  .article-modal__body { padding: var(--space-38_4); }
+
+  .article-modal__kicker {
+    margin: 0 0 var(--space-8);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent, #F03D3A);
+  }
+
+  .article-modal__title {
+    margin: 0 0 var(--space-24);
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 1.7rem;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: #1c1c1a;
+  }
+
+  .article-modal__lead {
+    margin: 0 0 var(--space-27_2);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #4a4a46;
+  }
+
+  .article-modal__section { margin: 0 0 var(--space-27_2); }
+
+  .article-modal__section h4 {
+    margin: 0 0 var(--space-8);
+    font-family: 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #1c1c1a;
+  }
+
+  .article-modal__section p {
+    margin: 0 0 var(--space-8);
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: #4a4a46;
+  }
+
+  .article-modal__section ul {
+    margin: 0 0 var(--space-8);
+    padding-left: 1.1rem;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: #4a4a46;
+  }
+
+  .article-modal__note {
+    margin: 0 0 var(--space-8);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: #8a8a83;
+    font-style: italic;
+  }
+
+  .article-modal__callout {
+    display: inline-block;
+    margin: 0 0 var(--space-8);
+    padding: var(--space-8) var(--space-16);
+    border-radius: 0.6rem;
+    background: rgba(240, 61, 58, 0.08);
+    color: var(--accent, #F03D3A);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  .article-modal__photo {
+    width: 100%;
+    border-radius: 0.9rem;
+    margin: var(--space-8) 0 var(--space-8);
+    display: block;
+  }
+
+  .article-modal__plans {
+    display: flex;
+    gap: var(--space-16);
+    margin: var(--space-8) 0 var(--space-27_2);
+  }
+
+  .article-modal__plan {
+    flex: 1;
+    text-align: center;
+  }
+
+  .article-modal__plan img {
+    width: 100%;
+    border-radius: 0.7rem;
+    background: #F7F9FB;
+    margin: 0 0 var(--space-8);
+  }
+
+  .article-modal__plan span {
+    font-size: 0.8rem;
+    color: #8a8a83;
+  }
+
+  .article-modal__cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+    padding: var(--space-16) var(--space-24);
+    background: var(--accent, #F03D3A);
+    border: none;
+    border-radius: 999px;
+    color: #ffffff;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  @media (max-width: 640px) {
+    .article-modal__cover { height: 10rem; }
+    .article-modal__body { padding: var(--space-24); }
+    .article-modal__title { font-size: 1.35rem; }
+    .article-modal__plans { flex-direction: column; }
+  }
+
   /* ===== Модальная форма заявки (открывается с hero-кнопки «Подобрать
      квартиру сейчас») — выезжающая справа панель, как в референсе. ===== */
   .lead-modal-overlay {
@@ -5514,7 +5692,7 @@
       </div>
 
       <div class="news-grid">
-        <a href="#leadgen" class="news-card">
+        <a href="#" class="news-card" onclick="openArticleModal('all-included'); return false;">
           <div class="news-card-photo">
             <img src="assets/images/news-aerial.jpg" alt="ЖК «Жить хорошо»: всё включено" loading="lazy" />
           </div>
@@ -5653,6 +5831,15 @@
     </div>
 
     <div class="apt-picker__card" id="aptPickerCard"></div>
+  </div>
+</div>
+
+<!-- Модалка статьи (блок «Новости и статьи»). Контент рендерится по
+     клику из объекта ARTICLES в <script> ниже (см. openArticleModal). -->
+<div class="article-modal-overlay" id="articleModalOverlay" onclick="closeArticleModal(event)">
+  <div class="article-modal" role="dialog" aria-modal="true" aria-labelledby="articleModalTitle" onclick="event.stopPropagation()">
+    <button type="button" class="article-modal__close" aria-label="Закрыть" onclick="closeArticleModal()">&times;</button>
+    <div id="articleModalBody"></div>
   </div>
 </div>
 
@@ -6081,6 +6268,110 @@
 </script>
 
 <script>
+  // Модалка статьи (блок «Новости и статьи») — контент задан здесь
+  // статически (нет бэкенда/CMS), рендерится в #articleModalBody по
+  // клику на карточку. Ключ объекта — id статьи, передаётся в
+  // openArticleModal(id).
+  var ARTICLES = {
+    'all-included': {
+      kicker: 'Разбор характеристик',
+      cover: 'assets/images/news-aerial.jpg',
+      title: 'ЖК «Жить хорошо»: всё включено',
+      lead: 'Разбираем характеристики на бытовом уровне: где эффект реальный, а где его преувеличивают.',
+      sections: [
+        {
+          heading: 'Монолит-кирпич',
+          paragraphs: [
+            'Что даёт: свободные планировки, шумоизоляция, долговечность.'
+          ],
+          note: 'Честная оговорка: бесшумности не будет ни в одном доме.'
+        },
+        {
+          heading: 'Своя котельная',
+          paragraphs: [],
+          list: [
+            'Независимость от городских сетей и плановых отключений',
+            'Стабильное давление и температура горячей воды',
+            'Меньше аварий на общедомовых сетях',
+            'Ремонт и обслуживание — зона ответственности УК, а не города'
+          ],
+          callout: '0 дней летних отключений',
+          photo: 'assets/images/boiler-room.jpg'
+        },
+        {
+          heading: 'Двор без машин',
+          paragraphs: ['Что меняется для ребёнка: выходит гулять, а не переходит парковку — двор становится безопасным пространством, а не проездом.'],
+          note: 'Честная оговорка: парковка по периметру, не у подъезда.'
+        },
+        {
+          heading: 'Закрытая территория',
+          paragraphs: ['Что реально работает: ограждение и видеонаблюдение на входных группах и по периметру двора. Чего не ждать: это не консьерж-сервис и не пропускной пункт с охраной у каждого подъезда.']
+        },
+        {
+          heading: '10 этажей, 2 подъезда',
+          paragraphs: ['Почему масштаб дома важнее остального: меньше соседей на этаже, меньше нагрузки на лифты, двор рассчитан на реальное число жителей — это ощущается ежедневно сильнее, чем отделка или планировка.'],
+          callout: '8–9 квартир на этаже',
+          photo: 'assets/images/hero-bg.jpg'
+        },
+        {
+          heading: 'Итог',
+          paragraphs: ['Рейтинг по силе бытового эффекта: своя котельная → масштаб дома (10 этажей, 2 подъезда) → двор без машин.']
+        }
+      ],
+      plans: [
+        { img: 'assets/images/plan-1k-40.jpg', label: '1-комнатная' },
+        { img: 'assets/images/plan-2k-51.jpg', label: '2-комнатная' },
+        { img: 'assets/images/plan-3k-68.jpg', label: '3-комнатная' }
+      ],
+      cta: 'Покажем дом на площадке'
+    }
+  };
+
+  function renderArticleSection(s) {
+    var html = '<div class="article-modal__section">';
+    html += '<h4>' + s.heading + '</h4>';
+    (s.paragraphs || []).forEach(function (p) { html += '<p>' + p + '</p>'; });
+    if (s.callout) html += '<span class="article-modal__callout">' + s.callout + '</span>';
+    if (s.list) {
+      html += '<ul>' + s.list.map(function (li) { return '<li>' + li + '</li>'; }).join('') + '</ul>';
+    }
+    if (s.photo) html += '<img class="article-modal__photo" src="' + s.photo + '" alt="" loading="lazy" />';
+    if (s.note) html += '<p class="article-modal__note">' + s.note + '</p>';
+    html += '</div>';
+    return html;
+  }
+
+  function openArticleModal(id) {
+    var article = ARTICLES[id];
+    if (!article) return;
+    var body = document.getElementById('articleModalBody');
+    var plansHtml = (article.plans || []).map(function (p) {
+      return '<div class="article-modal__plan"><img src="' + p.img + '" alt="Планировка: ' + p.label + '" loading="lazy" /><span>' + p.label + '</span></div>';
+    }).join('');
+    body.innerHTML =
+      '<img class="article-modal__cover" src="' + article.cover + '" alt="" />' +
+      '<div class="article-modal__body">' +
+        '<p class="article-modal__kicker">' + article.kicker + '</p>' +
+        '<h3 id="articleModalTitle" class="article-modal__title">' + article.title + '</h3>' +
+        '<p class="article-modal__lead">' + article.lead + '</p>' +
+        article.sections.map(renderArticleSection).join('') +
+        '<div class="article-modal__plans">' + plansHtml + '</div>' +
+        '<button type="button" class="article-modal__cta" onclick="closeArticleModal(); openLeadModal();">' + article.cta + '</button>' +
+      '</div>';
+    var overlay = document.getElementById('articleModalOverlay');
+    overlay.classList.add('is-open');
+    overlay.querySelector('.article-modal').scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeArticleModal(event) {
+    if (event) event.preventDefault();
+    var overlay = document.getElementById('articleModalOverlay');
+    if (!overlay) return;
+    overlay.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
   // Модальная форма заявки — открывается с кнопки .cta («Подобрать
   // квартиру сейчас»). Открытие/закрытие, маска телефона, имитация
   // отправки (нет бэкенда — как и у остальных форм на сайте, просто
