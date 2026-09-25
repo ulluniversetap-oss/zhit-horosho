@@ -4730,7 +4730,7 @@
           <li><strong>Рассрочка:</strong> без %</li>
           <li><strong>Цена:</strong> от 4 099 000 ₽</li>
         </ul>
-        <button type="button" class="addl-btn" onclick="openLeadModal()"><span class="addl-btn-label">Смотреть подробнее</span><span class="icon-circle">→</span></button>
+        <button type="button" class="addl-btn" onclick="openApartmentPicker()"><span class="addl-btn-label">Смотреть подробнее</span><span class="icon-circle">→</span></button>
       </div>
     </div>
   </div>
@@ -4756,7 +4756,7 @@
           <li><strong>Рассрочка:</strong> без %</li>
           <li><strong>Цена:</strong> от 4 099 000 ₽</li>
         </ul>
-        <button type="button" class="addl-btn" onclick="openLeadModal()"><span class="addl-btn-label">Смотреть подробнее</span><span class="icon-circle">→</span></button>
+        <button type="button" class="addl-btn" onclick="openApartmentPicker()"><span class="addl-btn-label">Смотреть подробнее</span><span class="icon-circle">→</span></button>
       </div>
     </div>
   </div>
@@ -4785,7 +4785,7 @@
           <li><strong>Рассрочка:</strong> без %</li>
           <li><strong>Цена:</strong> от 4 099 000 ₽</li>
         </ul>
-        <button type="button" class="addl-btn" onclick="openLeadModal()"><span class="addl-btn-label">Смотреть подробнее</span><span class="icon-circle">→</span></button>
+        <button type="button" class="addl-btn" onclick="openApartmentPicker()"><span class="addl-btn-label">Смотреть подробнее</span><span class="icon-circle">→</span></button>
       </div>
     </div>
   </div>
@@ -5172,10 +5172,6 @@
     <div class="layouts-head">
       <h2 class="layouts-heading">От компактной <span>однушки</span><br />до просторной <span>трёшки</span></h2>
       <p class="layouts-note">162 квартиры · площади от 30,81 до 68,71 м².</p>
-      <button type="button" class="addl-btn layouts-picker-btn" onclick="openApartmentPicker()">
-        <span class="addl-btn-label">Выбор квартиры</span>
-        <span class="icon-circle">→</span>
-      </button>
     </div>
 
     <div class="layouts-grid">
@@ -5192,7 +5188,7 @@
           <div class="layouts-row"><span>Площадь</span><span>32,71 м²</span></div>
           <div class="layouts-row"><span>Этаж</span><span>2 из 10</span></div>
         </div>
-        <div class="layouts-more">Смотреть подробнее</div>
+        <div class="layouts-more" onclick="event.preventDefault(); event.stopPropagation(); openApartmentPicker();">Смотреть подробнее</div>
       </a>
 
       <a class="layouts-card" href="/layouts/2k-51">
@@ -5207,7 +5203,7 @@
           <div class="layouts-row"><span>Площадь</span><span>51,83 м²</span></div>
           <div class="layouts-row"><span>Этаж</span><span>5 из 10</span></div>
         </div>
-        <div class="layouts-more">Смотреть подробнее</div>
+        <div class="layouts-more" onclick="event.preventDefault(); event.stopPropagation(); openApartmentPicker();">Смотреть подробнее</div>
       </a>
 
       <a class="layouts-card" href="/layouts/3k-68">
@@ -5222,7 +5218,7 @@
           <div class="layouts-row"><span>Площадь</span><span>68,71 м²</span></div>
           <div class="layouts-row"><span>Этаж</span><span>8 из 10</span></div>
         </div>
-        <div class="layouts-more">Смотреть подробнее</div>
+        <div class="layouts-more" onclick="event.preventDefault(); event.stopPropagation(); openApartmentPicker();">Смотреть подробнее</div>
       </a>
 
       <a class="layouts-card" href="/layouts/1k-40">
@@ -5237,7 +5233,7 @@
           <div class="layouts-row"><span>Площадь</span><span>40,08 м²</span></div>
           <div class="layouts-row"><span>Этаж</span><span>8 из 10</span></div>
         </div>
-        <div class="layouts-more">Смотреть подробнее</div>
+        <div class="layouts-more" onclick="event.preventDefault(); event.stopPropagation(); openApartmentPicker();">Смотреть подробнее</div>
       </a>
 
     </div>
