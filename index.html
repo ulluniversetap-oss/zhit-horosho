@@ -949,7 +949,11 @@
        как на скрине» — было 44rem (704px), стало 34rem (544px). */
     max-width: 34rem;
     padding: var(--space-19_2);
-    background: rgba(20, 16, 14, 0.55);
+    /* По просьбе «плашку сделай по тени и цвету как плашку ниже блоком»
+       — было rgba(20, 16, 14, 0.55) (почти чёрный), теперь тот же тон,
+       что у .scenario-card (блок «Ещё два сценария» ниже):
+       rgba(48, 38, 32, 0.55). */
+    background: rgba(48, 38, 32, 0.55);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     border-radius: 0.8rem;
