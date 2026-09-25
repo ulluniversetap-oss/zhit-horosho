@@ -70,6 +70,61 @@
     font-family: 'Onest', -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   }
 
+  /* Кастомный скроллбар — по просьбе «сделай скролл этой штукой в
+     браузере точно такой же, как при скролле мышкой (плавный)».
+     Нативный скроллбар рисует ОС/браузер, JS не может подключиться к
+     его перетаскиванию и анимировать его так же, как колесо (там
+     работает preventDefault + rAF-докатка, см. скрипт в конце body).
+     Поэтому: нативный скрываем, рисуем свою тонкую полоску справа —
+     её перетаскивание двигает ту же общую цель (target) в rAF-цикле,
+     что и колесо, так что плавность одинаковая. Включается классом
+     .custom-scrollbar-enabled на <html> из JS — если скрипт по
+     какой-то причине не запустится (например, скрипты выключены),
+     класс не появится и увидим нативный скроллбар как раньше, ничего
+     не сломается. Только для мыши/трекпада (pointer: fine) — на тач-
+     устройствах кастомная полоска не включается, там своя нативная
+     инерция скролла. */
+  html.custom-scrollbar-enabled {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  html.custom-scrollbar-enabled::-webkit-scrollbar {
+    display: none;
+  }
+
+  .custom-scrollbar {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 14px;
+    height: 100vh;
+    z-index: 9999;
+  }
+
+  html.custom-scrollbar-enabled .custom-scrollbar {
+    display: block;
+  }
+
+  .custom-scrollbar-thumb {
+    position: absolute;
+    top: 0;
+    right: 3px;
+    width: 8px;
+    border-radius: 999px;
+    background: rgba(20, 16, 14, 0.35);
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+
+  .custom-scrollbar-thumb:hover {
+    background: rgba(20, 16, 14, 0.5);
+  }
+
+  html.custom-scrollbar-dragging .custom-scrollbar-thumb {
+    background: rgba(20, 16, 14, 0.6);
+  }
+
   .hero {
     --accent: #F03D3A;
     --accent-secondary: #EC5958;
@@ -4127,6 +4182,8 @@
 
 <body>
 
+<div class="custom-scrollbar" aria-hidden="true"><div class="custom-scrollbar-thumb"></div></div>
+
 <section class="hero">
   <video class="hero__bg" src="assets/videos/hero-bg.mp4" poster="assets/images/hero-bg.jpg" autoplay muted loop playsinline></video>
   <div class="hero__overlay"></div>
@@ -5632,14 +5689,22 @@
 <script>
   // Плавная инерционная прокрутка колесом мыши/трекпадом (как на
   // godaylight.com) — при остановке скролла позиция не замирает
-  // мгновенно, а докатывается с лёгким затуханием. Работает только на
-  // wheel-событиях (мышь/трекпад); скроллбар, клавиши, тач — нативные.
+  // мгновенно, а докатывается с лёгким затуханием. По просьбе «сделай
+  // скролл этой штукой в браузере точно такой же, как при скролле
+  // мышкой (плавный)» та же rAF-докатка теперь работает и при
+  // перетаскивании кастомного скроллбара (см. .custom-scrollbar в
+  // <style> и разметку сразу после <body>) — колесо и перетаскивание
+  // двигают одну и ту же цель (target), которую this же tick()
+  // плавно докатывает (current) через window.scrollTo. Клавиши, тач,
+  // переход по якорю — по-прежнему нативные (сразу гасят анимацию,
+  // см. слушатель 'scroll' ниже).
   (function () {
     let current = window.scrollY;
     let target = window.scrollY;
     const EASE = 0.1; // меньше — плавнее и дольше "докатывается"
     let raf = null;
     let lastSet = Math.round(window.scrollY);
+    let updateThumb = function () {};
 
     function maxScroll() {
       return document.documentElement.scrollHeight - window.innerHeight;
@@ -5670,6 +5735,10 @@
       e.preventDefault();
       target += e.deltaY;
       target = Math.max(0, Math.min(target, maxScroll()));
+      startRaf();
+    }
+
+    function startRaf() {
       if (!raf) raf = requestAnimationFrame(tick);
     }
 
@@ -5680,14 +5749,17 @@
       }
       lastSet = Math.round(current);
       window.scrollTo(0, current);
+      updateThumb();
       if (current === target) { raf = null; return; }
       raf = requestAnimationFrame(tick);
     }
 
-    // Если scrollY изменился НЕ из нашего tick() (перетаскивание
-    // скроллбара, клавиши, переход по якорю) — сразу гасим анимацию и
-    // берём реальную позицию как есть. Без этого наш rAF-цикл продолжал
-    // тянуть страницу к старой цели поверх скроллбара и всё "трясло".
+    // Если scrollY изменился НЕ из нашего tick() (клавиши, переход по
+    // якорю, тач) — сразу гасим анимацию и берём реальную позицию как
+    // есть. Перетаскивание кастомного скроллбара сюда не попадает —
+    // оно двигает только target и само не трогает window.scrollY
+    // напрямую. Без этой развязки наш rAF-цикл продолжал бы тянуть
+    // страницу к старой цели поверх стороннего скролла и всё "трясло".
     window.addEventListener('scroll', function () {
       if (Math.abs(window.scrollY - lastSet) > 1) {
         if (raf) { cancelAnimationFrame(raf); raf = null; }
@@ -5695,9 +5767,83 @@
         target = window.scrollY;
         lastSet = Math.round(window.scrollY);
       }
+      updateThumb();
     }, { passive: true });
 
     window.addEventListener('wheel', onWheel, { passive: false });
+
+    // ===== Кастомный скроллбар =====
+    // Только на устройствах с мышью/трекпадом (pointer: fine) — на
+    // тач-устройствах нативный скролл уже инерционный сам по себе, а
+    // тонкую полоску-таргет пальцем прицельно не перетащить.
+    const track = document.querySelector('.custom-scrollbar');
+    const thumb = document.querySelector('.custom-scrollbar-thumb');
+    const isFinePointer = window.matchMedia('(pointer: fine)').matches;
+
+    if (track && thumb && isFinePointer) {
+      document.documentElement.classList.add('custom-scrollbar-enabled');
+
+      function trackHeight() {
+        return track.clientHeight;
+      }
+
+      updateThumb = function () {
+        const max = maxScroll();
+        const total = document.documentElement.scrollHeight;
+        const viewport = window.innerHeight;
+        const th = Math.max(30, trackHeight() * (viewport / total));
+        const travel = trackHeight() - th;
+        const ratio = max > 0 ? Math.min(1, Math.max(0, current / max)) : 0;
+        thumb.style.height = th + 'px';
+        thumb.style.transform = 'translateY(' + (travel * ratio) + 'px)';
+      };
+
+      let dragging = false;
+
+      // Позиция курсора -> позиция скролла, центр thumb'а под курсором.
+      function scrollFromClientY(clientY) {
+        const max = maxScroll();
+        const th = thumb.getBoundingClientRect().height;
+        const travel = trackHeight() - th;
+        const trackRect = track.getBoundingClientRect();
+        const rel = clientY - trackRect.top - th / 2;
+        const ratio = travel > 0 ? Math.min(1, Math.max(0, rel / travel)) : 0;
+        return ratio * max;
+      }
+
+      thumb.addEventListener('mousedown', function (e) {
+        e.preventDefault();
+        dragging = true;
+        document.documentElement.classList.add('custom-scrollbar-dragging');
+      });
+
+      window.addEventListener('mousemove', function (e) {
+        if (!dragging) return;
+        target = Math.max(0, Math.min(scrollFromClientY(e.clientY), maxScroll()));
+        startRaf();
+      });
+
+      window.addEventListener('mouseup', function () {
+        if (!dragging) return;
+        dragging = false;
+        document.documentElement.classList.remove('custom-scrollbar-dragging');
+      });
+
+      // Клик по треку вне thumb'а — сразу скроллим к этой точке (как
+      // клик по нативному треку скроллбара).
+      track.addEventListener('mousedown', function (e) {
+        if (e.target === thumb) return;
+        const trackRect = track.getBoundingClientRect();
+        const clickRatio = (e.clientY - trackRect.top) / trackRect.height;
+        target = Math.max(0, Math.min(clickRatio * maxScroll(), maxScroll()));
+        startRaf();
+      });
+
+      window.addEventListener('resize', updateThumb);
+      window.addEventListener('load', updateThumb);
+      document.fonts && document.fonts.ready.then(updateThumb);
+      updateThumb();
+    }
   })();
 </script>
 
