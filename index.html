@@ -1001,6 +1001,27 @@
     color: rgba(255, 255, 255, 0.85);
   }
 
+  /* Маркер списка по просьбе «добавь маркер списка в пункты» — своя
+     точка перед каждым пунктом (list-style: none выше, поэтому маркер
+     через ::before), фирменный красный акцент. */
+  .scenario-mini-stats li {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-8);
+  }
+
+  .scenario-mini-stats li::before {
+    content: '';
+    flex-shrink: 0;
+    width: 0.35rem;
+    height: 0.35rem;
+    border-radius: 50%;
+    /* var(--accent) не резолвится тут — токен объявлен в скоупе .hero,
+       а этот блок вне .hero, поэтому фолбэк на литеральный цвет как в
+       .addl-btn. */
+    background: var(--accent, #F03D3A);
+  }
+
   .scenario-mini-stats strong {
     color: #ffffff;
     font-weight: 700;
