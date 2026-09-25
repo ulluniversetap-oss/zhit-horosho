@@ -1005,14 +1005,20 @@
      точка перед каждым пунктом (list-style: none выше, поэтому маркер
      через ::before), фирменный красный акцент. */
   .scenario-mini-stats li {
+    /* было align-items: baseline — маркер визуально плющило в овал,
+       т.к. пустой ::before без текста растягивался под baseline-расчёт
+       строки; center убирает искажение. */
     display: flex;
-    align-items: baseline;
+    align-items: center;
     gap: var(--space-8);
   }
 
   .scenario-mini-stats li::before {
     content: '';
     flex-shrink: 0;
+    /* aspect-ratio вдобавок к width/height — гарантия круга, даже если
+       что-то в контексте попытается сжать/растянуть высоту. */
+    aspect-ratio: 1 / 1;
     width: 0.35rem;
     height: 0.35rem;
     border-radius: 50%;

@@ -1153,6 +1153,16 @@ baseline` с отступом `var(--space-8)` от маркера до текс
 `.addl-btn`). Проверено на 1440px и 375px — маркеры видны, панель
 544px, overflow нигде нет. **Не запушено**.
 
+### Маркер-кружок был овалом — исправлено
+
+По просьбе «овал ща а не круг»: `align-items: baseline` на
+`.scenario-mini-stats li` заменён на `center` (baseline-расчёт для
+пустого `::before` без текста визуально плющил маркер), плюс на сам
+`::before` добавлен `aspect-ratio: 1 / 1` в дополнение к `width`/
+`height` — гарантия круга независимо от контекста. Computed style
+подтверждает `width === height` (5.59375px) на 1440px. **Не
+запушено**.
+
 ## Шрифты
 
 - **RoadRadio** — заголовки, self-hosted (`assets/fonts/RoadRadio-Bold.ttf`), только вес 700.
