@@ -999,6 +999,16 @@
     align-self: stretch;
   }
 
+  /* По просьбе «отцентруй текст в кнопке так как раньше делали» — тот
+     же приём, что уже применялся к .scenario-mini-cta-label (коммит
+     ae9a3be): текст в своём span с flex: 1; text-align: center,
+     центрируется в промежутке от левого края кнопки до .icon-circle,
+     а не жмётся к левому краю на всю растянутую ширину кнопки. */
+  .scenario-mini-panel .addl-btn-label {
+    flex: 1;
+    text-align: center;
+  }
+
   .scenario-mini-stats {
     display: flex;
     flex-direction: column;
@@ -4329,7 +4339,7 @@
           <li><strong>Рассрочка:</strong> без %</li>
           <li><strong>Цена:</strong> от 4 099 000 ₽</li>
         </ul>
-        <button type="button" class="addl-btn" onclick="openLeadModal()">Смотреть подробнее<span class="icon-circle">→</span></button>
+        <button type="button" class="addl-btn" onclick="openLeadModal()"><span class="addl-btn-label">Смотреть подробнее</span><span class="icon-circle">→</span></button>
       </div>
     </div>
   </div>
