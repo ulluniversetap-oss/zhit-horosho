@@ -1,10 +1,10 @@
 [
-  { "name": "Сбербанк базовая",    "rate": 15.2, "term": 30, "logo": "sberbank.ico" },
-  { "name": "Сбербанк семейная",   "rate": 5.0,  "term": 30, "logo": "sberbank.ico" },
-  { "name": "Сбербанк IT",         "rate": 6.0,  "term": 30, "logo": "sberbank.ico" },
-  { "name": "Т-Банк базовая",      "rate": 16.9, "term": 30, "logo": "tbank.ico" },
-  { "name": "Т-Банк семейная",     "rate": 6.0,  "term": 30, "logo": "tbank.ico" },
-  { "name": "Альфа-Банк семейная", "rate": 6.0,  "term": 30, "logo": "alfabank.ico" },
-  { "name": "ВТБ семейная",        "rate": 6.0,  "term": 30, "logo": "vtb.ico" },
-  { "name": "ЦентрИнвест семейная","rate": 5.9,  "term": 30, "logo": "centrinvest.svg" }
+  { "name": "Сбербанк базовая",    "rate": 15.2, "term": 30, "logo": "sberbank-v2.png" },
+  { "name": "Сбербанк семейная",   "rate": 5.0,  "term": 30, "logo": "sberbank-v2.png" },
+  { "name": "Сбербанк IT",         "rate": 6.0,  "term": 30, "logo": "sberbank-v2.png" },
+  { "name": "Т-Банк базовая",      "rate": 16.9, "term": 30, "logo": "tbank-v2.png" },
+  { "name": "Т-Банк семейная",     "rate": 6.0,  "term": 30, "logo": "tbank-v2.png" },
+  { "name": "Альфа-Банк семейная", "rate": 6.0,  "term": 30, "logo": "alfabank-v2.png" },
+  { "name": "ВТБ семейная",        "rate": 6.0,  "term": 30, "logo": "vtb-v2.png" },
+  { "name": "ЦентрИнвест семейная","rate": 5.9,  "term": 30, "logo": "centrinvest-v2.png" }
 ]
