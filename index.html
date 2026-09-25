@@ -58,12 +58,15 @@
 
   @font-face {
     font-family: 'RoadRadio';
-    src: url(assets/fonts/RoadRadio-Bold.woff2) format('woff2'),
-         url(assets/fonts/RoadRadio-Bold.ttf) format('truetype');
+    /* Шрифт заголовков заменён с RoadRadio на Stolzl Medium (имя
+       font-family оставлено прежним — 'RoadRadio' — чтобы не менять
+       все селекторы по файлу). */
+    src: url(assets/fonts/Stolzl-Medium.woff) format('woff');
     font-weight: 700;
     font-style: normal;
     font-display: swap;
   }
+
   * { box-sizing: border-box; }
   body {
     margin: 0;
@@ -1356,7 +1359,7 @@
     height: 29.6875rem;
     padding: var(--space-38) var(--space-27_2) 0;
     border-radius: 0.9rem;
-    background: #F7F9FB;
+    background: #F2F3F6;
     overflow: hidden;
     cursor: pointer;
     transition: background-color 0.35s ease, color 0.35s ease;
@@ -1720,7 +1723,7 @@
   .layouts-card {
     display: flex;
     flex-direction: column;
-    background: #F7F9FB;
+    background: #F2F3F6;
     border-radius: 0.9rem;
     padding: var(--space-14_4);
     text-decoration: none;
@@ -2851,13 +2854,16 @@
     --mcalc-accent: var(--accent, #F03D3A);
     position: relative;
     z-index: 4;
-    margin: 0 var(--space-36) var(--space-48);
+    /* По просьбе «внешние и внутренние вертикальные отступы на 20%
+       меньше» — было var(--space-48) (48px). */
+    margin: 0 var(--space-36) var(--space-38_4);
   }
 
   .mcalc-panel {
     background: #ffffff;
     border-radius: 1.44rem;
-    padding: var(--space-80) 0;
+    /* Было var(--space-80) (80px) — тоже -20%. */
+    padding: var(--space-64) 0;
   }
 
   .mcalc-inner {
@@ -2917,7 +2923,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-25_6);
-    background: #F7F9FB;
+    background: #F2F3F6;
     border-radius: 0.9rem;
     padding: var(--space-28);
   }
@@ -3005,7 +3011,7 @@
   .mcalc-tablebox { position: relative; }
 
   .mcalc-tablewrap {
-    background: #F7F9FB;
+    background: #F2F3F6;
     border-radius: 0.9rem;
     /* Верхний паддинг перенесён на саму .mcalc-row.is-head (см. ниже):
        паддинг контейнера скролла не «прикрыт» ничем при прокрутке —
@@ -3043,7 +3049,7 @@
     position: sticky;
     top: 0;
     z-index: 2;
-    background: #F7F9FB;
+    background: #F2F3F6;
   }
 
   .mcalc-row {
@@ -4726,6 +4732,52 @@
       scroll-behavior: auto !important;
     }
   }
+
+  /* Заголовки без капса — обычным регистром, как в исходном тексте
+     разметки, вместо text-transform: uppercase из базовых правил выше. */
+  .stat-card strong,
+  .title,
+  .heading,
+  .scenarios-heading,
+  .scenario-mini-heading,
+  .trust-mini-heading,
+  .offers-heading,
+  .layouts-heading,
+  .walk-heading,
+  .leadgen-content h2,
+  .nearby-heading,
+  .expert-lead__heading,
+  .finish-heading,
+  .mcalc-heading,
+  .addl-heading,
+  .addl-card-body h3,
+  .offices-heading,
+  .news-heading,
+  .footer-col-title {
+    text-transform: none !important;
+  }
+
+  /* Все заголовки (кроме hero) уменьшены на 15% относительно базовых
+     правил выше — по просьбе. */
+  .heading,
+  .scenarios-heading,
+  .scenario-mini-heading,
+  .trust-mini-heading,
+  .offers-heading,
+  .layouts-heading,
+  .walk-heading,
+  .leadgen-content h2,
+  .expert-lead__heading,
+  .finish-heading,
+  .mcalc-heading,
+  .addl-heading,
+  .offices-heading,
+  .news-heading {
+    font-size: 2.39062rem !important;
+  }
+  .nearby-heading { font-size: 2.86875rem !important; }
+  .addl-card-body h3 { font-size: 1.1475rem !important; }
+  .footer-col-title { font-size: 0.612rem !important; }
 
 </style>
 
