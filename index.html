@@ -903,7 +903,10 @@
     z-index: 1;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    /* По просьбе «выровни контент... чтобы отступы сверху и снизу
+       одинаковые были» — было flex-end (контент прижат к низу, отступ
+       сверху намного больше отступа снизу), center уравнивает отступы. */
+    justify-content: center;
     min-height: 38rem;
     padding: var(--space-48) 2.72rem;
     color: #ffffff;
