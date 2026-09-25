@@ -1065,17 +1065,29 @@
     .scenario-mini-content { width: 100%; }
   }
 
-  /* Второй "временный" мини-блок — оставшиеся 2 сценария (Родителям
-     студента / Под аренду и инвестицию) в старом комбинированном виде,
-     пока для них не готовы отдельные референсы-фреймы. Использует те же
-     .scenario-card/.scenarios-heading стили, что и раньше, просто другой
-     класс на обёртке (у .scenarios теперь другая роль — общий фон для
-     этого временного блока не нужен, только затемнённая подложка). */
+  /* Второй мини-блок (сценарий «Родителям студента») — та же вёрстка,
+     что у .scenario-mini, но нужен свой z-index в sticky-стеке: он
+     должен наезжать на первый мини-блок (z=1) при скролле, поэтому
+     z=2. .scenarios-rest (теперь только «Под аренду и инвестицию»)
+     сдвинут с z=2 на z=3, чтобы по-прежнему наезжать сверху всех
+     мини-блоков. */
+  .scenario-mini--2 {
+    z-index: 2;
+  }
+
+  /* Временный блок — оставшийся сценарий («Под аренду и инвестицию») в
+     старом комбинированном виде, пока для него не готов отдельный
+     референс-фрейм. Использует те же .scenario-card/.scenarios-heading
+     стили, что и раньше, просто другой класс на обёртке (у .scenarios
+     теперь другая роль — общий фон для этого временного блока не нужен,
+     только затемнённая подложка). */
   .scenarios-rest {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    z-index: 2;
+    /* было z-index: 2, сдвинут на 3 — см. комментарий у .scenario-mini--2
+       выше: теперь два мини-блока (z=1, z=2) перед этим слоем. */
+    z-index: 3;
     background: url('assets/images/scenarios-bg.jpg') center / cover no-repeat;
     padding: var(--space-80) 0;
     margin: 0 var(--space-36);
@@ -1091,9 +1103,10 @@
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    /* было z-index: 2, но .scenarios теперь распался на два sticky-слоя
-       (.scenario-mini z=1, .scenarios-rest z=2), поэтому блок 4 сдвинут
-       на z=4, блок 5 (.nearby) — на z=5. */
+    /* было z-index: 2, но .scenarios теперь распался на несколько
+       sticky-слоёв (.scenario-mini z=1, .scenario-mini--2 z=2,
+       .scenarios-rest z=3), поэтому блок 4 сдвинут на z=4, блок 5
+       (.nearby) — на z=5. */
     z-index: 4;
     margin: 0 var(--space-36);
     background: #F7F9FB;
@@ -4322,9 +4335,9 @@
 
 <!-- Мини-блок 1 из 3 будущих (сценарий «Семье с детьми») — сверстан по
      присланному референсу (Figma-фрейм). ЛОКАЛЬНО, НЕ ЗАПУШЕНО.
-     Сценарии 2 и 3 («Родителям студента» / «Под аренду и инвестицию»)
-     пока остаются ниже в старом комбинированном виде (.scenarios-rest) —
-     будут переверстаны в такие же мини-блоки следующим шагом. -->
+     Сценарий 3 («Под аренду и инвестицию») пока остаётся ниже в старом
+     комбинированном виде (.scenarios-rest) — будет переверстан в такой
+     же мини-блок следующим шагом. -->
 <section class="scenario-mini">
   <img class="scenario-mini-bg" src="assets/images/scenario-mini-family-bg.jpg" alt="Семья с детьми в квартире ЖК «Жить хорошо»" />
   <div class="scenario-mini-inner">
@@ -4347,22 +4360,34 @@
 
 <div class="block-gap"></div>
 
-<section class="scenarios-rest">
-  <div class="scenarios-inner">
-    <h2 class="scenarios-heading">Ещё два сценария<br />в этом же доме</h2>
-
-    <div class="scenario-card">
-      <div class="scenario-icon"><img src="assets/images/plan-student.jpg" alt="Планировка: родителям студента" /></div>
-      <div class="scenario-body">
-        <h3>Родителям студента</h3>
-        <p>Аграрный университет, Кооперативный институт и Медицинский колледж<br /> — рядом. Четыре года аренды стоят дороже первоначального взноса.</p>
-        <div class="scenario-stats">
-          <div><strong>Формат:</strong> 1 комната</div>
-          <div><strong>Площадь:</strong> от 45 м²</div>
-          <div><strong>Цена:</strong> от 4 099 000 ₽</div>
-        </div>
+<!-- Мини-блок 2 из 3 (сценарий «Родителям студента») — та же вёрстка,
+     что у первого мини-блока, текст и цифры перенесены из старой
+     карточки .scenario-card ниже (теперь удалённой оттуда), фон — фото
+     присланное для этого сценария. ЛОКАЛЬНО, НЕ ЗАПУШЕНО. -->
+<section class="scenario-mini scenario-mini--2">
+  <img class="scenario-mini-bg" src="assets/images/scenario-mini-student-bg.jpg" alt="Родителям студента — комната для учёбы в квартире ЖК «Жить хорошо»" />
+  <div class="scenario-mini-inner">
+    <h2 class="scenario-mini-heading">Родителям студента</h2>
+    <p class="scenario-mini-text">Аграрный университет, Кооперативный институт и Медицинский колледж — рядом.<br />Четыре года аренды стоят дороже первоначального взноса.</p>
+    <div class="scenario-mini-panel">
+      <div class="scenario-mini-plan"><img src="assets/images/plan-student.jpg" alt="Планировка: родителям студента" /></div>
+      <div class="scenario-mini-content">
+        <ul class="scenario-mini-stats">
+          <li><strong>Формат:</strong> 1 комната</li>
+          <li><strong>Площадь:</strong> от 45 м²</li>
+          <li><strong>Цена:</strong> от 4 099 000 ₽</li>
+        </ul>
+        <button type="button" class="addl-btn" onclick="openLeadModal()"><span class="addl-btn-label">Смотреть подробнее</span><span class="icon-circle">→</span></button>
       </div>
     </div>
+  </div>
+</section>
+
+<div class="block-gap"></div>
+
+<section class="scenarios-rest">
+  <div class="scenarios-inner">
+    <h2 class="scenarios-heading">Ещё сценарий<br />в этом же доме</h2>
 
     <div class="scenario-card">
       <div class="scenario-icon"><img src="assets/images/plan-invest.jpg" alt="Планировка: под аренду и инвестицию" /></div>
