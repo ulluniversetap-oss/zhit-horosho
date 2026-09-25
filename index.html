@@ -3087,15 +3087,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #ffffff;
-    border: 1px solid #e4e6ea;
     box-sizing: border-box;
   }
 
   .mcalc-mono img {
-    width: 82%;
-    height: 82%;
-    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .mcalc-cell {
@@ -5712,14 +5710,14 @@
     'use strict';
 
     var FALLBACK_BANKS = [
-      { name: 'Сбербанк базовая',     rate: 15.2, term: 30, logo: 'sberbank.ico' },
-      { name: 'Сбербанк семейная',    rate: 5.0,  term: 30, logo: 'sberbank.ico' },
-      { name: 'Сбербанк IT',          rate: 6.0,  term: 30, logo: 'sberbank.ico' },
-      { name: 'Т-Банк базовая',       rate: 16.9, term: 30, logo: 'tbank.ico' },
-      { name: 'Т-Банк семейная',      rate: 6.0,  term: 30, logo: 'tbank.ico' },
-      { name: 'Альфа-Банк семейная',  rate: 6.0,  term: 30, logo: 'alfabank.ico' },
-      { name: 'ВТБ семейная',         rate: 6.0,  term: 30, logo: 'vtb.ico' },
-      { name: 'ЦентрИнвест семейная', rate: 5.9,  term: 30, logo: 'centrinvest.svg' }
+      { name: 'Сбербанк базовая',     rate: 15.2, term: 30, logo: 'sberbank.png' },
+      { name: 'Сбербанк семейная',    rate: 5.0,  term: 30, logo: 'sberbank.png' },
+      { name: 'Сбербанк IT',          rate: 6.0,  term: 30, logo: 'sberbank.png' },
+      { name: 'Т-Банк базовая',       rate: 16.9, term: 30, logo: 'tbank.png' },
+      { name: 'Т-Банк семейная',      rate: 6.0,  term: 30, logo: 'tbank.png' },
+      { name: 'Альфа-Банк семейная',  rate: 6.0,  term: 30, logo: 'alfabank.png' },
+      { name: 'ВТБ семейная',         rate: 6.0,  term: 30, logo: 'vtb.png' },
+      { name: 'ЦентрИнвест семейная', rate: 5.9,  term: 30, logo: 'centrinvest.png' }
     ];
 
     function initMortgageCalculator(root) {
