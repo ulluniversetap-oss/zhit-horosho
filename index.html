@@ -3939,6 +3939,328 @@
     }
   }
 
+  /* ===== Модалка «Выбор квартиры» (открывается с кнопки «Выбор
+     квартиры» в блоке «Планировки») =====
+     По просьбе сделать инструмент подбора квартиры в духе референса:
+     подъезд → список этажей → план этажа с подсветкой юнита → карточка
+     выбранной квартиры справа. Данные должны тянуться из API застройщика
+     «Макро» (подтверждено пользователем), но доступ к API ещё не
+     передан — пользователь сказал «нужно время, я найду позже».
+     Поэтому сейчас вся разметка и логика работают на моковых данных
+     (см. APT_PICKER_MOCK_UNITS в <script> ниже) с понятной структурой
+     полей (подъезд/этаж/комнатность/площадь/цена/статус), чтобы потом
+     one-to-one заменить buildMockUnits() на реальный fetch() к API —
+     остальной код (рендер списка этажей, план, карточка) трогать не
+     придётся. Схематичный план этажа — сетка из юнитов, а не подлинный
+     чертёж дома (чертежей корпуса по этажам в assets нет, есть только
+     планировки отдельных квартир) — тоже временное решение до того,
+     как из Макро прилетят координаты/изображения поэтажных планов. */
+  .apt-picker-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    background: rgba(10, 14, 25, 0.55);
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-24);
+  }
+
+  .apt-picker-overlay.is-open { display: flex; }
+
+  .apt-picker {
+    position: relative;
+    display: grid;
+    grid-template-columns: 15rem 1fr 19rem;
+    grid-template-rows: auto 1fr;
+    width: min(72rem, 100%);
+    max-height: min(44rem, 90vh);
+    background: #ffffff;
+    border-radius: 1.2rem;
+    overflow: hidden;
+    box-shadow: 0 2rem 4rem rgba(10, 14, 25, 0.3);
+  }
+
+  .apt-picker__header {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: var(--space-20) var(--space-24);
+    border-bottom: 1px solid #ece9e4;
+  }
+
+  .apt-picker__title {
+    margin: 0;
+    font-family: 'Onest', sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #1c1c1a;
+  }
+
+  .apt-picker__close {
+    position: absolute;
+    top: var(--space-12);
+    right: var(--space-12);
+    width: 2.2rem;
+    height: 2.2rem;
+    border: none;
+    border-radius: 50%;
+    background: #F7F9FB;
+    color: #1c1c1a;
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .apt-picker__close:hover { background: #ece9e4; }
+
+  .apt-picker__sidebar {
+    border-right: 1px solid #ece9e4;
+    padding: var(--space-16);
+    overflow-y: auto;
+  }
+
+  .apt-picker__entrances {
+    display: flex;
+    gap: var(--space-8);
+    margin: 0 0 var(--space-16);
+  }
+
+  .apt-picker__entrance-btn {
+    flex: 1;
+    padding: var(--space-8);
+    border: 1px solid #ece9e4;
+    border-radius: 0.6rem;
+    background: #ffffff;
+    color: #1c1c1a;
+    font-family: 'Onest', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .apt-picker__entrance-btn.is-active {
+    background: var(--accent, #F03D3A);
+    border-color: var(--accent, #F03D3A);
+    color: #ffffff;
+  }
+
+  .apt-picker__floor-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .apt-picker__floor-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-8);
+    padding: 0.5rem 0.6rem;
+    border-radius: 0.5rem;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-family: 'Onest', sans-serif;
+    text-align: left;
+  }
+
+  .apt-picker__floor-row:hover { background: #F7F9FB; }
+
+  .apt-picker__floor-row.is-active { background: #E9EEFB; }
+
+  .apt-picker__floor-num {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1c1c1a;
+    flex-shrink: 0;
+  }
+
+  .apt-picker__floor-badges {
+    display: flex;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .apt-picker__badge {
+    font-size: 0.66rem;
+    font-weight: 600;
+    padding: 0.12rem 0.4rem;
+    border-radius: 999px;
+    background: #ece9e4;
+    color: #a9a49a;
+  }
+
+  .apt-picker__badge.is-available.rooms-1 { background: #DCEBFF; color: #2563EB; }
+  .apt-picker__badge.is-available.rooms-2 { background: #DFF5EC; color: #0F9D66; }
+  .apt-picker__badge.is-available.rooms-3 { background: #FDE9D8; color: #C2620B; }
+
+  .apt-picker__plan {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-24);
+    background: #F7F9FB;
+    overflow: auto;
+  }
+
+  .apt-picker__plan-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-12);
+    width: min(22rem, 100%);
+  }
+
+  .apt-picker__unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    aspect-ratio: 1;
+    border: 1.5px solid #d7d3c9;
+    border-radius: 0.6rem;
+    background: #ffffff;
+    color: #1c1c1a;
+    font-family: 'Onest', sans-serif;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .apt-picker__unit strong { font-size: 0.95rem; }
+  .apt-picker__unit span { font-size: 0.72rem; opacity: 0.65; }
+
+  .apt-picker__unit.is-selected {
+    background: #2563EB;
+    border-color: #2563EB;
+    color: #ffffff;
+  }
+
+  .apt-picker__unit.is-selected span { opacity: 0.85; }
+
+  .apt-picker__unit.is-booked,
+  .apt-picker__unit.is-sold {
+    background: #F1F0EC;
+    border-color: #F1F0EC;
+    color: #a9a49a;
+    cursor: not-allowed;
+  }
+
+  .apt-picker__card {
+    padding: var(--space-16);
+    border-left: 1px solid #ece9e4;
+    overflow-y: auto;
+  }
+
+  .apt-picker__card-photo {
+    position: relative;
+    border-radius: 0.6rem;
+    overflow: hidden;
+    background: #F7F9FB;
+    margin: 0 0 var(--space-12);
+  }
+
+  .apt-picker__card-photo img { display: block; width: 100%; height: auto; }
+
+  .apt-picker__card-fav {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 1.8rem;
+    height: 1.8rem;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    color: #a9a49a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .apt-picker__card-title {
+    margin: 0 0 0.2rem;
+    font-family: 'Onest', sans-serif;
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: #1c1c1a;
+  }
+
+  .apt-picker__card-meta {
+    margin: 0 0 var(--space-12);
+    font-size: 0.8rem;
+    color: #8a8a83;
+  }
+
+  .apt-picker__card-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin: 0 0 var(--space-12);
+    padding: var(--space-12) 0;
+    border-top: 1px solid #ece9e4;
+    border-bottom: 1px solid #ece9e4;
+  }
+
+  .apt-picker__card-stat span { display: block; font-size: 0.72rem; color: #a9a49a; }
+  .apt-picker__card-stat strong { display: block; font-size: 0.88rem; color: #1c1c1a; }
+
+  .apt-picker__card-price {
+    margin: 0;
+    font-family: 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: #1c1c1a;
+  }
+
+  .apt-picker__card-price-sub {
+    margin: 0 0 var(--space-16);
+    font-size: 0.78rem;
+    color: #8a8a83;
+  }
+
+  .apt-picker__card-cta {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: var(--space-12);
+    margin: 0 0 var(--space-8);
+    border: none;
+    border-radius: 999px;
+    background: var(--accent, #F03D3A);
+    color: #ffffff;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 0.9rem;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .apt-picker__card-cta:hover { background: #d12d2a; }
+
+  .apt-picker__card-more {
+    display: block;
+    text-align: center;
+    font-size: 0.82rem;
+    color: #5a5a56;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  @media (max-width: 880px) {
+    .apt-picker {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto auto;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .apt-picker__sidebar { border-right: none; border-bottom: 1px solid #ece9e4; }
+    .apt-picker__card { border-left: none; border-top: 1px solid #ece9e4; }
+  }
+
   /* ===== Модальная форма заявки (открывается с hero-кнопки «Подобрать
      квартиру сейчас») — выезжающая справа панель, как в референсе. ===== */
   .lead-modal-overlay {
@@ -4850,6 +5172,10 @@
     <div class="layouts-head">
       <h2 class="layouts-heading">От компактной <span>однушки</span><br />до просторной <span>трёшки</span></h2>
       <p class="layouts-note">162 квартиры · площади от 30,81 до 68,71 м².</p>
+      <button type="button" class="addl-btn layouts-picker-btn" onclick="openApartmentPicker()">
+        <span class="addl-btn-label">Выбор квартиры</span>
+        <span class="icon-circle">→</span>
+      </button>
     </div>
 
     <div class="layouts-grid">
@@ -5358,6 +5684,29 @@
   <img id="layoutsLightboxImg" src="" alt="" onclick="event.stopPropagation()" />
 </div>
 
+<!-- Модалка «Выбор квартиры». Данные — моковые (APT_PICKER_MOCK_UNITS
+     в <script> ниже), в ожидании доступа к API «Макро» — см. комментарий
+     у .apt-picker-overlay в <style>. -->
+<div class="apt-picker-overlay" id="aptPickerOverlay" onclick="closeApartmentPicker(event)">
+  <div class="apt-picker" role="dialog" aria-modal="true" aria-labelledby="aptPickerTitle" onclick="event.stopPropagation()">
+    <div class="apt-picker__header">
+      <h3 id="aptPickerTitle" class="apt-picker__title">Выбор квартиры</h3>
+      <button type="button" class="apt-picker__close" aria-label="Закрыть" onclick="closeApartmentPicker()">&times;</button>
+    </div>
+
+    <div class="apt-picker__sidebar">
+      <div class="apt-picker__entrances" id="aptPickerEntrances"></div>
+      <div class="apt-picker__floor-list" id="aptPickerFloorList"></div>
+    </div>
+
+    <div class="apt-picker__plan">
+      <div class="apt-picker__plan-grid" id="aptPickerPlanGrid"></div>
+    </div>
+
+    <div class="apt-picker__card" id="aptPickerCard"></div>
+  </div>
+</div>
+
 <div class="lead-modal-overlay" id="leadModalOverlay" onclick="closeLeadModal(event)">
   <div class="lead-modal" role="dialog" aria-modal="true" aria-labelledby="leadModalTitle" onclick="event.stopPropagation()">
     <button type="button" class="lead-modal__close" aria-label="Закрыть" onclick="closeLeadModal()">&times;</button>
@@ -5605,6 +5954,181 @@
 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') closeLayoutZoom();
+  });
+</script>
+
+<script>
+  // ===== Модалка «Выбор квартиры» =====
+  // Данные сейчас моковые (buildMockUnits ниже). Когда придёт доступ
+  // к API «Макро», нужно заменить buildMockUnits() на реальный
+  // fetch()/await к их эндпоинту квартир и вернуть массив объектов
+  // ТОЙ ЖЕ формы { id, entrance, floor, rooms, area, price, status,
+  // img } — остальной код (рендер этажей/плана/карточки) не трогать.
+  var APT_PICKER_UNITS = buildMockUnits();
+  var aptPickerState = { entrance: 'A', floor: null, unitId: null };
+
+  function buildMockUnits() {
+    var entrances = ['A', 'B'];
+    var floors = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    var roomTypes = [
+      { rooms: 1, area: 32.71, price: 4099000, img: 'assets/images/plan-1k-32.jpg' },
+      { rooms: 1, area: 40.08, price: 4850000, img: 'assets/images/plan-1k-40.jpg' },
+      { rooms: 2, area: 51.83, price: 6100000, img: 'assets/images/plan-2k-51.jpg' },
+      { rooms: 3, area: 68.71, price: 6958000, img: 'assets/images/plan-3k-68.jpg' }
+    ];
+    var statusPool = ['free', 'free', 'free', 'booked', 'sold'];
+    var units = [];
+    var id = 1;
+    entrances.forEach(function (entrance) {
+      floors.forEach(function (floor) {
+        roomTypes.forEach(function (rt, idx) {
+          units.push({
+            id: 'u' + (id++),
+            entrance: entrance,
+            floor: floor,
+            rooms: rt.rooms,
+            area: rt.area,
+            price: Math.round(rt.price * (1 + floor * 0.01)),
+            status: statusPool[(floor + idx) % statusPool.length],
+            img: rt.img
+          });
+        });
+      });
+    });
+    return units;
+  }
+
+  function aptFormatPrice(n) {
+    return n.toLocaleString('ru-RU') + ' ₽';
+  }
+
+  function aptUnitsFor(entrance, floor) {
+    return APT_PICKER_UNITS.filter(function (u) {
+      return u.entrance === entrance && u.floor === floor;
+    });
+  }
+
+  function openApartmentPicker() {
+    var overlay = document.getElementById('aptPickerOverlay');
+    if (!overlay) return;
+    overlay.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    if (!aptPickerState.floor) {
+      aptPickerState.floor = 5;
+      var firstFree = aptUnitsFor(aptPickerState.entrance, aptPickerState.floor)
+        .find(function (u) { return u.status === 'free'; });
+      aptPickerState.unitId = firstFree ? firstFree.id : null;
+    }
+    renderAptPicker();
+  }
+
+  function closeApartmentPicker(event) {
+    if (event) event.preventDefault();
+    var overlay = document.getElementById('aptPickerOverlay');
+    if (!overlay) return;
+    overlay.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  function aptSelectEntrance(entrance) {
+    aptPickerState.entrance = entrance;
+    var firstFree = aptUnitsFor(entrance, aptPickerState.floor)
+      .find(function (u) { return u.status === 'free'; });
+    aptPickerState.unitId = firstFree ? firstFree.id : null;
+    renderAptPicker();
+  }
+
+  function aptSelectFloor(floor) {
+    aptPickerState.floor = floor;
+    var firstFree = aptUnitsFor(aptPickerState.entrance, floor)
+      .find(function (u) { return u.status === 'free'; });
+    aptPickerState.unitId = firstFree ? firstFree.id : null;
+    renderAptPicker();
+  }
+
+  function aptSelectUnit(unitId) {
+    var unit = APT_PICKER_UNITS.find(function (u) { return u.id === unitId; });
+    if (!unit || unit.status !== 'free') return;
+    aptPickerState.unitId = unitId;
+    renderAptPicker();
+  }
+
+  function renderAptPicker() {
+    var entrances = ['A', 'B'];
+    var entrancesEl = document.getElementById('aptPickerEntrances');
+    entrancesEl.innerHTML = entrances.map(function (e) {
+      var active = e === aptPickerState.entrance ? ' is-active' : '';
+      return '<button type="button" class="apt-picker__entrance-btn' + active + '" onclick="aptSelectEntrance(\'' + e + '\')">Подъезд ' + e + '</button>';
+    }).join('');
+
+    var floorListEl = document.getElementById('aptPickerFloorList');
+    var floors = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+    floorListEl.innerHTML = floors.map(function (floor) {
+      var units = aptUnitsFor(aptPickerState.entrance, floor);
+      var active = floor === aptPickerState.floor ? ' is-active' : '';
+      var badges = [1, 2, 3].map(function (rooms) {
+        var has = units.some(function (u) { return u.rooms === rooms && u.status === 'free'; });
+        return '<span class="apt-picker__badge' + (has ? ' is-available rooms-' + rooms : '') + '">' + rooms + 'к</span>';
+      }).join('');
+      return '<button type="button" class="apt-picker__floor-row' + active + '" onclick="aptSelectFloor(' + floor + ')">' +
+        '<span class="apt-picker__floor-num">' + floor + ' эт.</span>' +
+        '<span class="apt-picker__floor-badges">' + badges + '</span>' +
+        '</button>';
+    }).join('');
+
+    var planGridEl = document.getElementById('aptPickerPlanGrid');
+    var floorUnits = aptUnitsFor(aptPickerState.entrance, aptPickerState.floor);
+    planGridEl.innerHTML = floorUnits.map(function (u) {
+      var cls = 'apt-picker__unit';
+      if (u.id === aptPickerState.unitId) cls += ' is-selected';
+      else if (u.status !== 'free') cls += ' is-' + u.status;
+      return '<button type="button" class="' + cls + '" onclick="aptSelectUnit(\'' + u.id + '\')">' +
+        '<strong>' + u.rooms + 'к</strong><span>' + u.area.toFixed(1).replace('.', ',') + ' м²</span>' +
+        '</button>';
+    }).join('');
+
+    var cardEl = document.getElementById('aptPickerCard');
+    var unit = APT_PICKER_UNITS.find(function (u) { return u.id === aptPickerState.unitId; });
+    if (!unit) {
+      cardEl.innerHTML = '<p style="color:#8a8a83;font-size:0.85rem;">На этом этаже нет свободных квартир — выберите другой.</p>';
+      return;
+    }
+    var pricePerM2 = Math.round(unit.price / unit.area);
+    var netArea = (unit.area * 0.92).toFixed(1).replace('.', ',');
+    cardEl.innerHTML =
+      '<div class="apt-picker__card-photo">' +
+        '<img src="' + unit.img + '" alt="Планировка ' + unit.rooms + '-комнатной квартиры, ' + unit.area.toFixed(2).replace('.', ',') + ' м²" />' +
+        '<button type="button" class="apt-picker__card-fav" aria-label="В избранное">♥</button>' +
+      '</div>' +
+      '<h4 class="apt-picker__card-title">' + unit.rooms + 'к, ' + unit.area.toFixed(2).replace('.', ',') + ' м²</h4>' +
+      '<p class="apt-picker__card-meta">Подъезд ' + unit.entrance + ' · Этаж ' + unit.floor + ' из 10</p>' +
+      '<div class="apt-picker__card-stats">' +
+        '<div class="apt-picker__card-stat"><span>Комнат</span><strong>' + unit.rooms + '</strong></div>' +
+        '<div class="apt-picker__card-stat"><span>Площадь</span><strong>' + unit.area.toFixed(2).replace('.', ',') + ' м²</strong></div>' +
+        '<div class="apt-picker__card-stat"><span>Чистая площадь</span><strong>' + netArea + ' м²</strong></div>' +
+        '<div class="apt-picker__card-stat"><span>Цена за м²</span><strong>' + aptFormatPrice(pricePerM2) + '</strong></div>' +
+      '</div>' +
+      '<p class="apt-picker__card-price">' + aptFormatPrice(unit.price) + '</p>' +
+      '<p class="apt-picker__card-price-sub">Ипотека от 4.4% — рассчитаем платёж в заявке</p>' +
+      '<button type="button" class="apt-picker__card-cta" onclick="closeApartmentPicker(); openLeadModal();">Забронировать</button>' +
+      '<span class="apt-picker__card-more" onclick="aptZoomCardPhoto(event)">Подробнее</span>';
+  }
+
+  function aptZoomCardPhoto(event) {
+    event.preventDefault();
+    var img = document.querySelector('.apt-picker__card-photo img');
+    if (!img) return;
+    var lightbox = document.getElementById('layoutsLightbox');
+    var lightboxImg = document.getElementById('layoutsLightboxImg');
+    if (!lightbox || !lightboxImg) return;
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt;
+    lightbox.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeApartmentPicker();
   });
 </script>
 
