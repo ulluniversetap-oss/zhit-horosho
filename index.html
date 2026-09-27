@@ -68,6 +68,10 @@
   }
 
   * { box-sizing: border-box; }
+  /* Плавный скролл по якорям меню шапки/футера (см. #about-project,
+     #offers и т.д. — раньше ссылки вели на несуществующие /about-project
+     и т.п.). Отключается для prefers-reduced-motion правилом ниже. */
+  html { scroll-behavior: smooth; }
   body {
     margin: 0;
     background: #F6F9FB;
@@ -4933,14 +4937,14 @@
 
       <nav class="nav" aria-label="Основная навигация">
         <ul>
-          <li><a href="/about-project">О проекте</a></li>
-          <li><a href="/offers">Предложения</a></li>
-          <li><a href="/who-its-for">Кому подойдёт</a></li>
-          <li><a href="/location">Локация</a></li>
-          <li><a href="/layouts">Планировки</a></li>
-          <li><a href="/purchase">Покупка</a></li>
-          <li><a href="/contacts">Контакты</a></li>
-          <li><a href="/about">О нас</a></li>
+          <li><a href="#about-project">О проекте</a></li>
+          <li><a href="#offers">Предложения</a></li>
+          <li><a href="#who-its-for">Кому подойдёт</a></li>
+          <li><a href="#location">Локация</a></li>
+          <li><a href="#layouts">Планировки</a></li>
+          <li><a href="#purchase">Покупка</a></li>
+          <li><a href="#contacts">Контакты</a></li>
+          <li><a href="#about-us">О нас</a></li>
         </ul>
       </nav>
 
@@ -4963,14 +4967,14 @@
     <div class="mobile-nav" id="mobileNav">
       <nav aria-label="Мобильная навигация">
         <ul>
-          <li><a href="/about-project">О проекте</a></li>
-          <li><a href="/offers">Предложения</a></li>
-          <li><a href="/who-its-for">Кому подойдёт</a></li>
-          <li><a href="/location">Локация</a></li>
-          <li><a href="/layouts">Планировки</a></li>
-          <li><a href="/purchase">Покупка</a></li>
-          <li><a href="/contacts">Контакты</a></li>
-          <li><a href="/about">О нас</a></li>
+          <li><a href="#about-project">О проекте</a></li>
+          <li><a href="#offers">Предложения</a></li>
+          <li><a href="#who-its-for">Кому подойдёт</a></li>
+          <li><a href="#location">Локация</a></li>
+          <li><a href="#layouts">Планировки</a></li>
+          <li><a href="#purchase">Покупка</a></li>
+          <li><a href="#contacts">Контакты</a></li>
+          <li><a href="#about-us">О нас</a></li>
         </ul>
       </nav>
       <div class="mobile-nav__contacts">
@@ -5018,7 +5022,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section" id="about-project">
 
   <!-- Пустой ряд-отступ перед секцией -->
   <div class="row row--spacer">
@@ -5095,7 +5099,7 @@
 <!-- Мини-блок 1 из 3 (сценарий «Семье с детьми») — сверстан по
      присланному референсу (Figma-фрейм). Все 3 сценария теперь в виде
      одинаковых .scenario-mini-секций. ЛОКАЛЬНО, НЕ ЗАПУШЕНО. -->
-<section class="scenario-mini">
+<section class="scenario-mini" id="who-its-for">
   <img class="scenario-mini-bg" src="assets/images/scenario-mini-family-bg.jpg" alt="Семья с детьми в квартире ЖК «Жить хорошо»" />
   <div class="scenario-mini-inner">
     <h2 class="scenario-mini-heading">Семье с детьми</h2>
@@ -5206,7 +5210,7 @@
 
 <div class="block-gap"></div>
 
-<section class="offers">
+<section class="offers" id="offers">
   <div class="offers-panel">
   <div class="offers-inner">
     <h2 class="offers-heading">Выгодные условия<span>на первый пул квартир</span></h2>
@@ -5351,7 +5355,7 @@
 
 
 
-<section class="walk">
+<section class="walk" id="location">
   <div class="walk-panel">
   <div class="walk-inner">
 
@@ -5547,7 +5551,7 @@
 
 <div class="block-gap"></div>
 
-<section class="layouts">
+<section class="layouts" id="layouts">
   <div class="layouts-panel">
   <div class="layouts-inner">
 
@@ -5752,7 +5756,7 @@
 
 <div class="block-gap"></div>
 
-<section class="mcalc">
+<section class="mcalc" id="purchase">
   <div class="mcalc-panel">
   <div class="mcalc-inner">
 
@@ -5878,7 +5882,7 @@
 
 <div class="block-gap"></div>
 
-<section class="offices">
+<section class="offices" id="contacts">
   <div class="offices-panel">
     <div class="offices-inner">
 
@@ -5980,7 +5984,7 @@
 
 <div class="block-gap"></div>
 
-<footer class="site-footer">
+<footer class="site-footer" id="about-us">
   <div class="footer-inner">
     <div class="footer-grid">
       <div class="footer-brand">
@@ -6013,14 +6017,14 @@
       <div class="footer-col">
         <p class="footer-col-title">Разделы</p>
         <ul class="footer-list">
-          <li><a href="/about-project">О проекте</a></li>
-          <li><a href="/offers">Предложения</a></li>
-          <li><a href="/who-its-for">Кому подойдёт</a></li>
-          <li><a href="/location">Локация</a></li>
-          <li><a href="/layouts">Планировки</a></li>
-          <li><a href="/purchase">Покупка</a></li>
-          <li><a href="/contacts">Контакты</a></li>
-          <li><a href="/about">О нас</a></li>
+          <li><a href="#about-project">О проекте</a></li>
+          <li><a href="#offers">Предложения</a></li>
+          <li><a href="#who-its-for">Кому подойдёт</a></li>
+          <li><a href="#location">Локация</a></li>
+          <li><a href="#layouts">Планировки</a></li>
+          <li><a href="#purchase">Покупка</a></li>
+          <li><a href="#contacts">Контакты</a></li>
+          <li><a href="#about-us">О нас</a></li>
         </ul>
       </div>
 
