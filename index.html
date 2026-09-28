@@ -121,9 +121,11 @@
     transition: background-color 0.15s ease;
   }
 
-  .custom-scrollbar-thumb:hover {
+  @media (hover: hover) and (pointer: fine) {
+.custom-scrollbar-thumb:hover {
     background: rgba(20, 16, 14, 0.5);
   }
+}
 
   html.custom-scrollbar-dragging .custom-scrollbar-thumb {
     background: rgba(20, 16, 14, 0.6);
@@ -218,7 +220,10 @@
     text-decoration: none;
     white-space: nowrap;
   }
-  .nav a:hover { opacity: 0.8; }
+
+  @media (hover: hover) and (pointer: fine) {
+.nav a:hover { opacity: 0.8; }
+}
 
   .contacts { display: flex; align-items: center; gap: var(--space-32); }
 
@@ -231,7 +236,10 @@
 
   .phone { color: #fff; font-weight: 500; font-size: 1.4rem; text-decoration: none; }
   .max-link { color: var(--accent-secondary); font-weight: 500; font-size: 1.05rem; text-decoration: none; }
-  .max-link:hover { text-decoration: underline; }
+
+  @media (hover: hover) and (pointer: fine) {
+.max-link:hover { text-decoration: underline; }
+}
 
   /* Высота кнопки зафиксирована и равна высоте .nav ul (4.22rem) —
      раньше высота считалась от паддинга + 4.5rem-иконки (общий
@@ -335,6 +343,7 @@
   .news-btn::before { width: 2.2rem; height: 2.2rem; }
   .offices-cta::before { width: 2.6rem; height: 2.6rem; }
 
+  @media (hover: hover) and (pointer: fine) {
   .cta:hover,
   .leadgen-submit:hover,
   .contact-btn:hover,
@@ -343,8 +352,7 @@
   .news-btn:hover {
     color: var(--accent, #F03D3A);
   }
-
-  .cta:hover::before,
+.cta:hover::before,
   .leadgen-submit:hover::before,
   .contact-btn:hover::before,
   .addl-btn:hover::before,
@@ -352,8 +360,7 @@
   .news-btn:hover::before {
     transform: translateY(-50%) scale(16);
   }
-
-  /* По просьбе «анимация кнопки не доходит до левого края, надо как у
+/* По просьбе «анимация кнопки не доходит до левого края, надо как у
      всех, чтобы полностью белым закрывало» — .offices-cta намного шире
      остальных кнопок (полноширинная плашка в карточке контактов), а не
      компактная пилюля, поэтому общего scale(16) не хватает, чтобы круг
@@ -361,11 +368,11 @@
   .offices-cta:hover::before {
     transform: translateY(-50%) scale(40);
   }
-
-  /* .news-btn лежит на белой карточке (блок «Новости») — залитая
+/* .news-btn лежит на белой карточке (блок «Новости») — залитая
      белым кнопка на ховере сливается с фоном карточки. Только здесь
      добавляем красную обводку, чтобы граница кнопки не терялась. */
   .news-btn:hover { border-color: var(--accent, #F03D3A); }
+}
 
   /* Stats column */
   /* .hero теряет высоту при сужении окна (clamp 640-900px от 52vw) —
@@ -1387,12 +1394,14 @@
     transition: background-color 0.35s ease, color 0.35s ease;
   }
 
-  /* В статике все карточки нейтральные; фирменный оранжевый —
+  @media (hover: hover) and (pointer: fine) {
+/* В статике все карточки нейтральные; фирменный оранжевый —
      это состояние hover, а не выделение одной карточки. */
   .offers-card:hover {
     background: var(--accent, #F03D3A);
     color: #ffffff;
   }
+}
 
   .offers-card-body {
     position: relative;
@@ -1431,7 +1440,9 @@
     opacity: 0.65;
   }
 
-  .offers-card:hover .offers-note { opacity: 0.85; }
+  @media (hover: hover) and (pointer: fine) {
+.offers-card:hover .offers-note { opacity: 0.85; }
+}
 
   /* Ассеты из Figma — 3D-иконки с альфой, уже обрезанные по краю кадра,
      поэтому сажаем их в правый нижний угол карточки (карточка с
@@ -1467,8 +1478,10 @@
     transition: opacity 0.35s ease;
   }
 
-  .offers-card:hover .offers-icon-default { opacity: 0; }
-  .offers-card:hover .offers-icon-hover { opacity: 1; }
+  @media (hover: hover) and (pointer: fine) {
+.offers-card:hover .offers-icon-default { opacity: 0; }
+.offers-card:hover .offers-icon-hover { opacity: 1; }
+}
 
   .offers-card--1 .offers-icon { height: 20.4rem; }
   .offers-card--2 .offers-icon { height: 19.494rem; }
@@ -1610,10 +1623,12 @@
     transition: background-color 0.3s ease, border-color 0.3s ease;
   }
 
-  .heat-item:hover {
+  @media (hover: hover) and (pointer: fine) {
+.heat-item:hover {
     background: rgba(255, 255, 255, 0.08);
     border-left-color: var(--accent, #F03D3A);
   }
+}
 
   .heat-num {
     flex: none;
@@ -1776,13 +1791,15 @@
     transition: transform 0.35s ease, box-shadow 0.35s ease, background-color 0.35s ease;
   }
 
-  /* Как у карточек блока «Выгодные условия»: при наведении фон
+  @media (hover: hover) and (pointer: fine) {
+/* Как у карточек блока «Выгодные условия»: при наведении фон
      становится фирменным оранжевым, текст — белым. */
   .layouts-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 1.2rem 2.4rem rgba(20, 22, 26, 0.08);
     background: var(--accent, #F03D3A);
   }
+}
 
   .layouts-photo {
     position: relative;
@@ -1826,12 +1843,13 @@
 
   .layouts-zoom svg { width: 1.15rem; height: 1.15rem; }
 
-  .layouts-zoom:hover { background: rgba(28, 28, 26, 0.8); }
-
-  .layouts-photo:hover .layouts-zoom {
+  @media (hover: hover) and (pointer: fine) {
+.layouts-zoom:hover { background: rgba(28, 28, 26, 0.8); }
+.layouts-photo:hover .layouts-zoom {
     opacity: 1;
     transform: scale(1);
   }
+}
 
   .layouts-photo-fallback {
     position: absolute;
@@ -1869,9 +1887,11 @@
     transition: border-color 0.35s ease;
   }
 
-  .layouts-card:hover .layouts-row {
+  @media (hover: hover) and (pointer: fine) {
+.layouts-card:hover .layouts-row {
     border-bottom-color: rgba(255, 255, 255, 0.25);
   }
+}
 
   .layouts-row span:first-child {
     font-size: 0.85rem;
@@ -1891,14 +1911,15 @@
     transition: color 0.35s ease;
   }
 
-  .layouts-card:hover .layouts-row span:first-child {
+  @media (hover: hover) and (pointer: fine) {
+.layouts-card:hover .layouts-row span:first-child {
     color: #ffffff;
     opacity: 0.75;
   }
-
-  .layouts-card:hover .layouts-row span:last-child {
+.layouts-card:hover .layouts-row span:last-child {
     color: #ffffff;
   }
+}
 
   /* Полноширинная светлая кнопка-пилюля, как в блоке акций, только в
      светлых тонах: белый фон, фирменный оранжевый текст — так она
@@ -1981,7 +2002,9 @@
     cursor: pointer;
   }
 
-  .layouts-lightbox-close:hover { background: rgba(255, 255, 255, 0.22); }
+  @media (hover: hover) and (pointer: fine) {
+.layouts-lightbox-close:hover { background: rgba(255, 255, 255, 0.22); }
+}
 
 
 
@@ -2710,7 +2733,10 @@
   }
 
   .expert-lead__contacts a { color: inherit; text-decoration: none; }
-  .expert-lead__contacts a:hover { color: #fff; }
+
+  @media (hover: hover) and (pointer: fine) {
+.expert-lead__contacts a:hover { color: #fff; }
+}
 
   .expert-lead__form {
     position: relative;
@@ -2882,10 +2908,12 @@
     transition: box-shadow 0.3s ease, transform 0.3s ease;
   }
 
-  .finish-feature:hover {
+  @media (hover: hover) and (pointer: fine) {
+.finish-feature:hover {
     box-shadow: 0 0.6rem 1.6rem rgba(20, 22, 26, 0.08);
     transform: translateY(-2px);
   }
+}
 
   .finish-feature-icon {
     flex-shrink: 0;
@@ -3624,10 +3652,12 @@
     height: 1.1rem;
   }
 
-  .offices-social a:hover {
+  @media (hover: hover) and (pointer: fine) {
+.offices-social a:hover {
     background: var(--accent, #F03D3A);
     color: #ffffff;
   }
+}
 
   .offices-map {
     position: relative;
@@ -3921,7 +3951,9 @@
     transition: opacity 0.2s ease, color 0.2s ease;
   }
 
-  .footer-list a:hover { opacity: 1; color: var(--accent, #F03D3A); }
+  @media (hover: hover) and (pointer: fine) {
+.footer-list a:hover { opacity: 1; color: var(--accent, #F03D3A); }
+}
 
   .footer-phone {
     display: block;
@@ -3933,7 +3965,9 @@
     text-decoration: none;
   }
 
-  .footer-phone:hover { color: var(--accent, #F03D3A); }
+  @media (hover: hover) and (pointer: fine) {
+.footer-phone:hover { color: var(--accent, #F03D3A); }
+}
 
   .footer-address {
     margin: 0 0 var(--space-16);
@@ -3967,10 +4001,12 @@
     height: 1.05rem;
   }
 
-  .footer-social a:hover {
+  @media (hover: hover) and (pointer: fine) {
+.footer-social a:hover {
     background: var(--accent, #F03D3A);
     color: #ffffff;
   }
+}
 
   .footer-bottom {
     padding-top: var(--space-24);
@@ -4113,7 +4149,9 @@
     cursor: pointer;
   }
 
-  .apt-picker__close:hover { background: #ece9e4; }
+  @media (hover: hover) and (pointer: fine) {
+.apt-picker__close:hover { background: #ece9e4; }
+}
 
   .apt-picker__sidebar {
     border-right: 1px solid #ece9e4;
@@ -4166,7 +4204,9 @@
     text-align: left;
   }
 
-  .apt-picker__floor-row:hover { background: #F7F9FB; }
+  @media (hover: hover) and (pointer: fine) {
+.apt-picker__floor-row:hover { background: #F7F9FB; }
+}
 
   .apt-picker__floor-row.is-active { background: #E9EEFB; }
 
@@ -4322,7 +4362,9 @@
     cursor: pointer;
   }
 
-  .apt-picker__card-cta:hover { background: #d12d2a; }
+  @media (hover: hover) and (pointer: fine) {
+.apt-picker__card-cta:hover { background: #d12d2a; }
+}
 
   .apt-picker__card-more {
     display: block;
@@ -4386,7 +4428,9 @@
     cursor: pointer;
   }
 
-  .article-modal__close:hover { background: #ffffff; }
+  @media (hover: hover) and (pointer: fine) {
+.article-modal__close:hover { background: #ffffff; }
+}
 
   .article-modal__cover {
     width: 100%;
@@ -4662,7 +4706,9 @@
     cursor: pointer;
   }
 
-  .lead-modal__close:hover { background: #ece9e4; }
+  @media (hover: hover) and (pointer: fine) {
+.lead-modal__close:hover { background: #ece9e4; }
+}
 
   .lead-modal__title {
     /* margin: 0 auto (не "0 0 …") — при фиксированном max-width блок
@@ -4792,7 +4838,9 @@
     transition: background-color 0.2s ease;
   }
 
-  .lead-modal__submit:hover { background: #d12d2a; }
+  @media (hover: hover) and (pointer: fine) {
+.lead-modal__submit:hover { background: #d12d2a; }
+}
 
   .lead-modal__consent {
     display: flex;
