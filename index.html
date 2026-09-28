@@ -2635,27 +2635,52 @@
     .row--spacer { display: none; } /* пустые ряды-отступы нужны только для desktop-ритма */
     .col:empty { display: none; }
     .col { min-width: 0; }
-    .col + .col { border-left: none; border-top: 1px solid #dcdcd8; }
-    .col-media { order: -1; min-height: 0; min-width: 0; width: 100%; aspect-ratio: 4 / 3; }
+    /* На мобильном граница нужна только МЕЖДУ целыми блоками (row —
+       у неё уже есть border-top), а не между текстом и картинкой внутри
+       одного блока — раньше .col+.col рисовала лишнюю линию ровно там,
+       по референсу (Figma-фрейм) её быть не должно. */
+    .col + .col { border-left: none; border-top: none; }
+
+    /* По референсу порядок всегда «заголовок+текст → картинка», как в
+       row--a/row--c. Раньше order:-1 у .col-media выводил картинку
+       ПЕРВОЙ во всех трёх рядах (в т.ч. переворачивая row--b, где в DOM
+       картинка и так уже стоит перед текстом) — теперь порядок задан
+       явно на обоих col, а не относительно DOM. */
+    .col-media {
+      order: 2;
+      min-height: 0;
+      min-width: 0;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      /* Десктопные :first-child/:last-child дают паддинг только с одной
+         стороны (гап на внешнем крае макета, впритык к разделителю
+         колонок) — на мобильном колонка одна, поэтому симметричный
+         паддинг по бокам + снизу (сверху заголовок/текст уже дают
+         отступ через .col-text). */
+      padding: 0 var(--space-24) var(--space-32);
+    }
+    .row > .col-media:first-child,
+    .row > .col-media:last-child { padding: 0 var(--space-24) var(--space-32); }
+    .row > .col-media:first-child .media-frame,
+    .row > .col-media:last-child .media-frame { border-radius: 0.6rem; }
 
     /* Текст на мобильном статичен (см. JS-гвард ROW_FX_MQ) — просто
-       обычный блок под фото, а не absolute-элемент, летающий по
-       скроллу. */
+       обычный блок над фото, а не absolute-элемент, летающий по
+       скроллу. Выравнивание по центру — как на десктопе и в референсе,
+       раньше здесь стоял text-align:left. */
     /* display:block вместо flex-row — иначе .text-inner как flex-item
        отказывается сжиматься уже своего max-content (текст с ручными
        <br/> из десктоп-вёрстки) и вылезает за .row{overflow:hidden},
        обрезаясь по краю экрана. */
-    .col-text { display: block; padding: var(--space-32) var(--space-24); }
+    .col-text { order: 1; display: block; padding: var(--space-32) var(--space-24) var(--space-24); }
     .text-inner {
       position: static;
       width: 100%;
       opacity: 1;
       transform: none;
       padding: 0;
-      text-align: left;
       gap: var(--space-16);
     }
-    .heading, .paragraph { text-align: left; }
     .heading { font-size: 1.9rem; }
     .paragraph { max-width: none; }
     .br-desktop { display: none; } /* ручные переносы под десктопную ширину строки — на мобильном мешают, текст сам переносится по ширине */
