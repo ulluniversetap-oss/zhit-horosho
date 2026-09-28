@@ -669,7 +669,14 @@
     .title { font-size: clamp(2.1rem, 9.5vw, 2.8rem); line-height: 0.95; }
 
     .cta {
-      position: static;
+      /* Было position:static — из-за этого .cta переставала быть
+         containing block для .cta::before (position:absolute, тот
+         самый белый круг заливки), и он позиционировался относительно
+         следующего позиционированного предка выше (.hero__inner),
+         вылезая из-под overflow:hidden кнопки прямо на фон hero.
+         position:relative ведёт себя как static в потоке (offset нулевой,
+         top/left не заданы), но возвращает кнопке роль контейнера. */
+      position: relative;
       width: 100%;
       justify-content: space-between;
       margin-top: var(--space-32);
