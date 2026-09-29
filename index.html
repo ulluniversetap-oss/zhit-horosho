@@ -2243,7 +2243,10 @@
   @media (max-width: 1200px) {
     .walk-grid { grid-template-columns: 1fr; }
     .walk-map {
-      position: static;
+      /* position: relative, не static: иначе .walk-pin (position:absolute)
+         теряет контейнер позиционирования и вылезает поверх контента
+         блока ниже (замечено при добавлении вкладок категорий). */
+      position: relative;
       height: 24rem;
       min-height: 0;
     }
@@ -2253,6 +2256,57 @@
     .walk-heading--oneline { white-space: normal; }
   }
 
+  /* По просьбе «карту и пункты к ней укомплектовать на мобилке, слишком
+     длинно и непонятно» — вместо всех 4 категорий подряд (карта + 15
+     строк) на мобильном показываем вкладки-переключатели и только одну
+     активную категорию за раз. На десктопе (>1200px) вкладки скрыты,
+     видно как раньше — все 4 карточки сразу. */
+  .walk-tabs { display: none; }
+
+  @media (max-width: 1200px) {
+    .walk-tabs {
+      display: flex;
+      gap: var(--space-8);
+      overflow-x: auto;
+      padding-bottom: var(--space-4);
+      margin: 0 0 var(--space-16);
+      -webkit-overflow-scrolling: touch;
+    }
+    .walk-tabs::-webkit-scrollbar { display: none; }
+
+    .walk-tab {
+      flex: none;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-8);
+      padding: var(--space-8) var(--space-16);
+      border: none;
+      border-radius: 999px;
+      background: #F6F9FB;
+      color: #1c1c1a;
+      font-family: 'Onest', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .walk-tab svg {
+      display: block;
+      width: 1rem;
+      height: 1rem;
+      color: inherit;
+    }
+
+    .walk-tab.is-active {
+      background: var(--accent, #F03D3A);
+      color: #ffffff;
+    }
+
+    .walk-card { display: none; }
+    .walk-card.is-active { display: block; }
+  }
+
   @media (max-width: 640px) {
     .walk-inner { padding: 0 var(--space-24); }
     .walk-card { padding: var(--space-22_4) var(--space-20) var(--space-6_4); }
@@ -2260,10 +2314,53 @@
   }
 
 
+  .offers-swipe-hint { display: none; }
+
   @media (max-width: 640px) {
     .offers-inner { padding: 0 var(--space-24); }
-    .offers-grid { grid-template-columns: 1fr; }
-    .offers-card { height: auto; min-height: 15.5rem; padding-bottom: var(--space-72); }
+    /* По просьбе «сделай как слайдер, чтобы листались» — горизонтальный
+       scroll-snap вместо вертикального стека: карточки листаются свайпом,
+       следующая слегка выглядывает справа. */
+    .offers-grid {
+      display: flex;
+      grid-template-columns: none;
+      gap: var(--space-16);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: var(--space-8);
+      margin: 0 calc(-1 * var(--space-24));
+      padding-left: var(--space-24);
+      padding-right: var(--space-24);
+    }
+    .offers-grid::-webkit-scrollbar { display: none; }
+    .offers-card {
+      flex: 0 0 auto;
+      width: 84vw;
+      scroll-snap-align: start;
+    }
+    /* По просьбе «плашки с акциями на мобилке на 25% по высоте
+       увеличь» — было min-height: 15.5rem, padding-bottom: var(--space-72) (4.5rem). */
+    .offers-card { height: auto; min-height: 19.375rem; padding-bottom: 5.625rem; }
+
+    /* Подсказка «Листайте влево» — только на мобильном, сразу после
+       заголовка блока (перед слайдером карточек). */
+    .offers-swipe-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-8);
+      /* По просьбе «расстояние заголовок→плашка→карточки как везде
+         заголовок→контент» — тот же margin, что у .offers-heading
+         (1.92rem), а не отдельный var(--space-16). */
+      margin: 0 0 1.92rem;
+      padding: var(--space-8) var(--space-16);
+      border-radius: 999px;
+      background: rgba(240, 61, 58, 0.1);
+      color: var(--accent, #F03D3A);
+      font-family: 'Onest', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
   }
 
   /* Базовый зазор между обычными (не наезжающими) блоками — единственный
@@ -4975,6 +5072,44 @@
   .addl-card-body h3 { font-size: 1.1475rem !important; }
   .footer-col-title { font-size: 0.612rem !important; }
 
+  /* По просьбе «все блоки с подложками — 95% на ширину экрана на
+     мобилке» — горизонтальный margin в vw вместо фиксированных px,
+     чтобы подложка всегда занимала ровно 95% ширины экрана независимо
+     от размера телефона (100% - 95% = 5%, по 2.5% с каждой стороны). */
+  @media (max-width: 900px) {
+    .scenarios,
+    .scenario-mini,
+    .trust-mini,
+    .offers,
+    .layouts,
+    .leadgen,
+    .nearby,
+    .expert-lead,
+    .mcalc,
+    .offices {
+      margin-left: 2.5vw;
+      margin-right: 2.5vw;
+    }
+
+    /* По просьбе «38.25px сделай 35px [на мобилке]» — было 2.39062rem. */
+    .heading,
+    .scenarios-heading,
+    .scenario-mini-heading,
+    .trust-mini-heading,
+    .offers-heading,
+    .layouts-heading,
+    .walk-heading,
+    .leadgen-content h2,
+    .expert-lead__heading,
+    .finish-heading,
+    .mcalc-heading,
+    .addl-heading,
+    .offices-heading,
+    .news-heading {
+      font-size: 2rem !important;
+    }
+  }
+
 </style>
 
 <body>
@@ -5290,6 +5425,13 @@
   <div class="offers-panel">
   <div class="offers-inner">
     <h2 class="offers-heading">Выгодные условия<span>на первый пул квартир</span></h2>
+    <span class="offers-swipe-hint">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 3l-1.5 1.5M6 6l-1.5 1.5M12 1l-1 1.3"/>
+        <path d="M10 9V6a1.5 1.5 0 0 1 3 0v6m0-4.5a1.5 1.5 0 0 1 3 0V11m0-1a1.5 1.5 0 0 1 3 0v4c0 3.3-2.7 6-6 6h-1c-2 0-3-.6-4.2-2l-3-3.5a1.4 1.4 0 0 1 2-2L9 14"/>
+      </svg>
+      Листайте влево
+    </span>
     <div class="offers-grid">
 
       <div class="offers-card offers-card--1" onclick="openLeadModal()">
@@ -5468,7 +5610,29 @@
 
       <div class="walk-lists">
 
-        <div class="walk-card">
+        <!-- Переключатели категорий — видны только на мобильном
+             (см. .walk-tabs в <style>), на десктопе все 4 карточки
+             показаны сразу и вкладки не нужны. -->
+        <div class="walk-tabs">
+          <button type="button" class="walk-tab is-active" onclick="walkShowCategory(0, this)">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 8.5 12 4l10 4.5-10 4.5L2 8.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M6 10.7V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-5.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            Образование
+          </button>
+          <button type="button" class="walk-tab" onclick="walkShowCategory(1, this)">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="6" width="18" height="14" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M9 6V4.5C9 3.7 9.7 3 10.5 3h3c.8 0 1.5.7 1.5 1.5V6" stroke="currentColor" stroke-width="1.8"/><path d="M12 10v6M9 13h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            Здоровье
+          </button>
+          <button type="button" class="walk-tab" onclick="walkShowCategory(2, this)">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="3" width="16" height="14" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M4 11h16" stroke="currentColor" stroke-width="1.8"/><path d="M7 17v3M17 17v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="8" cy="14" r="1.1" fill="currentColor"/><circle cx="16" cy="14" r="1.1" fill="currentColor"/></svg>
+            Транспорт
+          </button>
+          <button type="button" class="walk-tab" onclick="walkShowCategory(3, this)">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h16l-1.3 12.2a2 2 0 0 1-2 1.8H7.3a2 2 0 0 1-2-1.8L4 7Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.5 7a3.5 3.5 0 0 1 7 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            Каждый день
+          </button>
+        </div>
+
+        <div class="walk-card is-active">
           <div class="walk-card-head">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M2 8.5 12 4l10 4.5-10 4.5L2 8.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
@@ -6886,6 +7050,17 @@
     if (!overlay) return;
     overlay.classList.remove('is-open');
     document.body.style.overflow = '';
+  }
+
+  // Вкладки категорий блока «Всё нужное — в пешей доступности» (только
+  // мобильный/планшетный диапазон, см. .walk-tabs в <style>). На
+  // десктопе разметка та же, просто CSS показывает все .walk-card сразу.
+  function walkShowCategory(index, btn) {
+    document.querySelectorAll('.walk-tab').forEach(function (t) { t.classList.remove('is-active'); });
+    btn.classList.add('is-active');
+    document.querySelectorAll('.walk-card').forEach(function (card, i) {
+      card.classList.toggle('is-active', i === index);
+    });
   }
 
   function formatLeadModalPhone(el) {
