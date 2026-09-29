@@ -2225,19 +2225,23 @@
     gap: var(--space-4);
     padding: var(--space-5_6) var(--space-12);
     border-radius: 999px;
-    background: #F6F9FB;
+    background: #FFE9E8;
     font-family: 'Onest', sans-serif;
     font-size: 0.8rem;
     line-height: 1.2;
     white-space: nowrap;
-    color: #1c1c1a;
-    opacity: 0.75;
+  }
+
+  /* Специфичность .walk-row span (0,1,1) выше, чем у одного класса
+     .walk-time (0,1,0) — красим через более специфичный селектор,
+     иначе цвет чипа перебивается базовым правилом текста строки. */
+  .walk-row .walk-time {
+    color: #F03D3A;
   }
 
   .walk-time b {
     font-weight: 700;
     font-size: 0.95rem;
-    opacity: 1;
   }
 
   @media (max-width: 1200px) {
@@ -2984,18 +2988,22 @@
     text-align: center;
   }
 
-  /* По просьбе видео выровнено по ширине с заголовком/note (а не
-     на всю ширину секции пробоем паддинга) — раньше был full-bleed
-     отрицательными полями, теперь просто в потоке .finish-inner. */
-  .finish-tour {
-    margin: 0 0 var(--space-26);
+  /* По просьбе «видео слева, справа плашки» — двухколоночная раскладка:
+     видео и сетка 2×2 карточек одной высоты (align-items: stretch тянет
+     .finish-tour под реальную высоту .finish-features). */
+  .finish-body {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: var(--space-16);
+    align-items: stretch;
   }
+
+  .finish-tour { margin: 0; height: 100%; }
 
   .iframe-full {
     position: relative;
     width: 100%;
-    height: 0;
-    padding-bottom: 38.5%;
+    height: 100%;
     border-radius: 1.44rem;
     overflow: hidden;
     background: #ece9e4;
@@ -3010,78 +3018,88 @@
   }
 
   .finish-features {
-    /* Тот же приём, что у .finish-tour выше — ряд плашек теперь
-       вписан в ширину .finish-inner, а не пробивает её паддинг. */
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
     gap: var(--space-16);
+    /* По просьбе «по высоте больше на 10%, весь блок, видео и плашки» —
+       было ~22.98rem по факту (контент+паддинги без явной высоты). */
+    min-height: 25.28rem;
   }
 
-  /* Мягкая карточка вместо сплошного цветного блока-«таблетки» —
-     тот же язык, что у .trust-icon: акцент только в самой иконке
-     (лёгкая заливка + обводка-цвет), а не заливает всю плашку. */
+  /* Тёмная карточка с акцентным кругом-иконкой — по референсу. */
   .finish-feature {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+    /* По просьбе «иконка сверху, текст снизу» — иконка прижата к
+       верхнему краю (тот же отступ, что и боковой, var(--space-24)),
+       заголовок+подзаголовок — к нижнему. */
+    justify-content: space-between;
     gap: var(--space-14_4);
-    padding: var(--space-14_4) var(--space-16);
+    padding: var(--space-24);
     background: #ffffff;
     border-radius: 0.9rem;
     transition: box-shadow 0.3s ease, transform 0.3s ease;
   }
 
   @media (hover: hover) and (pointer: fine) {
-.finish-feature:hover {
-    box-shadow: 0 0.6rem 1.6rem rgba(20, 22, 26, 0.08);
-    transform: translateY(-2px);
+    .finish-feature:hover {
+      box-shadow: 0 0.6rem 1.6rem rgba(20, 22, 26, 0.1);
+      transform: translateY(-2px);
+    }
   }
-}
 
   .finish-feature-icon {
     flex-shrink: 0;
-    width: 3rem;
-    height: 3rem;
+    /* По просьбе «шарик с иконкой на 25% меньше» — было 3.2rem. */
+    width: 2.4rem;
+    height: 2.4rem;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: rgba(240, 61, 58, 0.1);
+    background: rgba(240, 61, 58, 0.16);
     color: var(--accent, #F03D3A);
   }
 
-  .finish-feature-icon svg { width: 1.35rem; height: 1.35rem; }
+  .finish-feature-icon svg { width: 1.0875rem; height: 1.0875rem; }
 
   .finish-feature-text { min-width: 0; }
 
   .finish-feature-text strong {
     display: block;
-    font-size: 0.9rem;
+    font-size: 1.05rem;
     font-weight: 700;
     color: #1c1c1a;
   }
 
   .finish-feature-text span {
     display: block;
-    margin-top: var(--space-2_4);
-    font-size: 0.76rem;
-    line-height: 1.3;
+    margin-top: var(--space-4);
+    font-size: 0.85rem;
+    line-height: 1.35;
     color: #1c1c1a;
-    opacity: 0.5;
+    opacity: 0.55;
   }
 
   @media (max-width: 1200px) {
-    .finish-features { grid-template-columns: repeat(3, 1fr); }
     .finish-heading,
     .finish-note {
       white-space: normal;
     }
   }
 
+  @media (max-width: 900px) {
+    .finish-body { grid-template-columns: 1fr; }
+    .iframe-full { height: 0; padding-bottom: 56.25%; }
+    .finish-tour { height: auto; }
+  }
+
   @media (max-width: 640px) {
     .finish-inner { padding: 0 var(--space-24); }
     .finish-note { max-width: none; }
-    .finish-features { grid-template-columns: 1fr; }
-    .iframe-full { padding-bottom: 52.5%; }
+    .finish-features { grid-template-columns: 1fr; grid-template-rows: none; }
   }
 
   /* ===== Блок «Ипотечный калькулятор» =====
@@ -5905,87 +5923,78 @@
       <h2 class="finish-heading">Готовая отделка — <span>заходи и живи</span></h2>
     </div>
 
-    <div class="finish-tour">
-      <div class="iframe-full">
-        <iframe src="https://kinescope.io/embed/9sNYxpy1rLUcgyCgq1h2Ez" loading="lazy" allow="fullscreen; picture-in-picture; encrypted-media;" allowfullscreen title="Видео отделки квартиры"></iframe>
-      </div>
-    </div>
+    <div class="finish-body">
 
-    <div class="finish-features">
-
-      <div class="finish-feature">
-        <div class="finish-feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6.5 3.5v17" />
-            <path d="M6.5 4h9a2.3 2.3 0 0 1 0 4.6h-5" />
-            <path d="M17 12c1.4 0 2.5 1.1 2.5 2.5v.9c0 1-.8 1.8-1.8 1.8h-.1c-.9 0-1.6-.7-1.6-1.6V15" />
-            <circle cx="17.7" cy="18.6" r="1" />
-          </svg>
-        </div>
-        <div class="finish-feature-text">
-          <strong>Стены</strong>
-          <span>обои под покраску</span>
+      <div class="finish-tour">
+        <div class="iframe-full">
+          <iframe src="https://kinescope.io/embed/9sNYxpy1rLUcgyCgq1h2Ez" loading="lazy" allow="fullscreen; picture-in-picture; encrypted-media;" allowfullscreen title="Видео отделки квартиры"></iframe>
         </div>
       </div>
 
-      <div class="finish-feature">
-        <div class="finish-feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3.5" y="4" width="17" height="16" rx="1" />
-            <line x1="9" y1="4" x2="9" y2="20" />
-            <line x1="14.5" y1="4" x2="14.5" y2="20" />
-          </svg>
-        </div>
-        <div class="finish-feature-text">
-          <strong>Пол</strong>
-          <span>ламинат</span>
-        </div>
-      </div>
+      <div class="finish-features">
 
-      <div class="finish-feature">
-        <div class="finish-feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="4" y="3.5" width="16" height="17" rx="1" />
-            <line x1="12" y1="3.5" x2="12" y2="20.5" />
-            <line x1="4" y1="12" x2="20" y2="12" />
-          </svg>
+        <div class="finish-feature">
+          <div class="finish-feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="16" rx="1.6" />
+              <line x1="3" y1="9.3" x2="21" y2="9.3" />
+              <line x1="3" y1="14.7" x2="21" y2="14.7" />
+              <line x1="9" y1="4" x2="9" y2="9.3" />
+              <line x1="15" y1="9.3" x2="15" y2="14.7" />
+              <line x1="9" y1="14.7" x2="9" y2="20" />
+            </svg>
+          </div>
+          <div class="finish-feature-text">
+            <strong>Стены</strong>
+            <span>обои под покраску, <br />ровные стены без дефектов</span>
+          </div>
         </div>
-        <div class="finish-feature-text">
-          <strong>Окна</strong>
-          <span>двухкамерные</span>
-        </div>
-      </div>
 
-      <div class="finish-feature">
-        <div class="finish-feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="8" y1="3.5" x2="8" y2="20.5" />
-            <path d="M6 5.5l2-2 2 2" />
-            <path d="M6 18.5l2 2 2-2" />
-            <line x1="13" y1="6" x2="18" y2="6" />
-            <line x1="13" y1="12" x2="18" y2="12" />
-            <line x1="13" y1="18" x2="18" y2="18" />
-          </svg>
+        <div class="finish-feature">
+          <div class="finish-feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4.5" width="18" height="15" rx="2" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="9" y1="4.5" x2="9" y2="12" />
+              <line x1="15" y1="12" x2="15" y2="19.5" />
+            </svg>
+          </div>
+          <div class="finish-feature-text">
+            <strong>Пол</strong>
+            <span>ламинат с влагостойкой <br />подложкой по всей квартире</span>
+          </div>
         </div>
-        <div class="finish-feature-text">
-          <strong>2,7</strong>
-          <span>высота потолков</span>
-        </div>
-      </div>
 
-      <div class="finish-feature">
-        <div class="finish-feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 10h8a3 3 0 0 1 3 3v1a3 3 0 0 1-3 3H8" />
-            <path d="M15 9V6.5a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2" />
-            <circle cx="8" cy="17.5" r="1" />
-            <path d="M4 10v-.5A1.5 1.5 0 0 1 5.5 8v0A1.5 1.5 0 0 1 7 9.5v.5" />
-          </svg>
+        <div class="finish-feature">
+          <div class="finish-feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="3.5" width="16" height="17" rx="2.2" />
+              <line x1="12" y1="3.5" x2="12" y2="20.5" />
+              <line x1="4" y1="12" x2="20" y2="12" />
+            </svg>
+          </div>
+          <div class="finish-feature-text">
+            <strong>Окна</strong>
+            <span>двухкамерные стеклопакеты <br />с москитной сеткой</span>
+          </div>
         </div>
-        <div class="finish-feature-text">
-          <strong>Сантехника</strong>
-          <span>раковина со смесителем, унитаз, ванна</span>
+
+        <div class="finish-feature">
+          <div class="finish-feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3.5 12.5h17v1.5a5 5 0 0 1-5 5h-7a5 5 0 0 1-5-5v-1.5Z" />
+              <path d="M3.5 12.5V9a2 2 0 0 1 2-2h1" />
+              <circle cx="7.5" cy="7.8" r="0.9" fill="currentColor" stroke="none" />
+              <line x1="7" y1="19.3" x2="7" y2="21" />
+              <line x1="17" y1="19.3" x2="17" y2="21" />
+            </svg>
+          </div>
+          <div class="finish-feature-text">
+            <strong>Сантехника</strong>
+            <span>раковина со смесителем, <br />унитаз, ванна</span>
+          </div>
         </div>
+
       </div>
 
     </div>
