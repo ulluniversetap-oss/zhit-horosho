@@ -473,6 +473,14 @@
     flex-shrink: 0;
   }
 
+  /* Иконка в пилюле вместо точки — по референсу (стилистика hero). */
+  .badge-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+    flex-shrink: 0;
+    color: var(--accent);
+  }
+
   .title {
     margin: 0;
     font-family: 'RoadRadio', 'Onest', sans-serif;
@@ -5236,9 +5244,18 @@
 
     <div class="content">
       <div class="badges">
-        <span class="badge"><span class="badge-dot"></span>Квартиры от 4 099 000 ₽</span>
-        <span class="badge"><span class="badge-dot"></span>Ипотека от 4.4%</span>
-        <span class="badge"><span class="badge-dot"></span>Класс «Комфорт»</span>
+        <span class="badge">
+          <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 4l9 6.5"/><path d="M5 9.5V19a1 1 0 0 0 1 1h4v-5h4v5h4a1 1 0 0 0 1-1V9.5"/></svg>
+          Квартиры от 4 099 000 ₽
+        </span>
+        <span class="badge">
+          <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="7.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+          Ипотека от 4.4%
+        </span>
+        <span class="badge">
+          <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2l6.5 2.6v4.7c0 4.1-2.7 7.4-6.5 8.5-3.8-1.1-6.5-4.4-6.5-8.5V5.8L12 3.2z"/><path d="M9 11.6l2 2 4-4.2"/></svg>
+          Класс «Комфорт»
+        </span>
       </div>
 
       <h1 class="title">Жилой комплекс<br />жить хорошо</h1>
