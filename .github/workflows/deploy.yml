@@ -1,0 +1,148 @@
+name: Deploy static site
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-static-site
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    defaults:
+      run:
+        shell: bash
+
+    env:
+      PROJECT: ${{ vars.PROJECT }}
+      VPS_HOST: ${{ vars.VPS_HOST }}
+      VPS_PORT: ${{ vars.VPS_PORT }}
+      VPS_USER: ${{ vars.VPS_USER }}
+      SITE_URL: ${{ vars.SITE_URL }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Validate configuration
+        run: |
+          set -euo pipefail
+          [[ "$PROJECT" =~ ^[a-z][a-z0-9-]{0,23}$ ]]
+          [[ "$VPS_USER" == "deploy-$PROJECT" ]]
+          [[ "$VPS_HOST" =~ ^[a-zA-Z0-9][a-zA-Z0-9.-]*$ ]]
+          [[ "$VPS_PORT" =~ ^[0-9]{1,5}$ ]]
+          (( 10#$VPS_PORT >= 1 && 10#$VPS_PORT <= 65535 ))
+          [[ "$SITE_URL" == https://* ]]
+
+      - name: Prepare public files
+        run: |
+          set -euo pipefail
+          test -f index.html
+          test -s index.html
+          test -d assets
+          test ! -L index.html
+          test ! -L assets
+          test -z "$(find assets -type l -print -quit)"
+
+          mkdir -p .publish/assets
+          cp index.html .publish/index.html
+          rsync -rlt \
+            --exclude='.git/' \
+            --exclude='.env*' \
+            assets/ .publish/assets/
+
+          printf '%s\n' "$GITHUB_SHA" > .publish/deploy-version.txt
+          test -s .publish/index.html
+
+      - name: Upload and activate release
+        env:
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_KNOWN_HOSTS: ${{ secrets.VPS_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          umask 077
+
+          ssh_dir=$(mktemp -d "$RUNNER_TEMP/deploy-ssh.XXXXXX")
+          trap 'rm -rf -- "$ssh_dir"' EXIT
+
+          printf '%s\n' "$VPS_SSH_KEY" | tr -d '\r' > "$ssh_dir/key"
+          printf '%s\n' "$VPS_KNOWN_HOSTS" | tr -d '\r' > "$ssh_dir/known_hosts"
+          test -s "$ssh_dir/key"
+          test -s "$ssh_dir/known_hosts"
+
+          cat > "$ssh_dir/config" <<EOF
+          Host deploy-vps
+            HostName $VPS_HOST
+            User $VPS_USER
+            Port $VPS_PORT
+            IdentityFile $ssh_dir/key
+            UserKnownHostsFile $ssh_dir/known_hosts
+            IdentitiesOnly yes
+            StrictHostKeyChecking yes
+            BatchMode yes
+            ConnectTimeout 15
+            ServerAliveInterval 15
+            ServerAliveCountMax 3
+          EOF
+
+          release="${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_SHA}"
+          [[ "$release" =~ ^[0-9]+-[0-9]+-[0-9a-f]{40}$ ]]
+          base="/srv/www/$PROJECT"
+
+          ssh -F "$ssh_dir/config" deploy-vps \
+            "mkdir -m 755 '$base/.incoming/$release'"
+
+          rsync -rltp --chmod=D755,F644 \
+            -e "ssh -F $ssh_dir/config" \
+            .publish/ "deploy-vps:$base/.incoming/$release/"
+
+          ssh -F "$ssh_dir/config" deploy-vps \
+            "bash -s -- '$PROJECT' '$release'" <<'REMOTE'
+          set -euo pipefail
+          project=$1
+          release=$2
+
+          [[ "$project" =~ ^[a-z][a-z0-9-]{0,23}$ ]]
+          [[ "$release" =~ ^[0-9]+-[0-9]+-[0-9a-f]{40}$ ]]
+          base="/srv/www/$project"
+
+          exec 9>"$base/.deploy.lock"
+          flock -w 60 9
+
+          test -s "$base/.incoming/$release/index.html"
+          test -s "$base/.incoming/$release/deploy-version.txt"
+          test ! -e "$base/releases/$release"
+
+          mv -T "$base/.incoming/$release" "$base/releases/$release"
+          ln -s "releases/$release" "$base/.current-$release"
+          mv -Tf "$base/.current-$release" "$base/current"
+
+          printf 'Activated: %s\n' "$release"
+          REMOTE
+
+      - name: Verify published version
+        run: |
+          set -euo pipefail
+          site_url="${SITE_URL%/}"
+
+          actual=$(curl --fail --silent --show-error --location \
+            --connect-timeout 10 --max-time 30 \
+            --retry 3 --retry-delay 3 --retry-all-errors \
+            "$site_url/deploy-version.txt?run=$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT")
+
+          [[ "$actual" == "$GITHUB_SHA" ]]
+
+          curl --fail --silent --show-error --location \
+            --connect-timeout 10 --max-time 30 \
+            "$site_url/" > /dev/null
