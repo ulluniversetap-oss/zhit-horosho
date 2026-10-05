@@ -991,6 +991,32 @@
     .scenario-stats { margin-top: var(--space-14_4); }
   }
 
+  /* По просьбе «как-то блок надо назвать» — перед тремя sticky-плашками
+     сценариев не было заголовка вообще (просто пустой отступ). Добавили
+     простой центрированный h2, тем же шрифтом/начертанием, что у
+     остальных заголовков блоков (.nearby-heading и т.п.), но без
+     собственной подложки — просто текст на белом фоне страницы. */
+  .scenarios-title-wrap {
+    padding: var(--space-64) var(--space-24) var(--space-32);
+    text-align: center;
+  }
+
+  .scenarios-title {
+    margin: 0;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 2.8125rem;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #1c1c1a;
+  }
+
+  @media (max-width: 900px) {
+    .scenarios-title-wrap { padding: var(--space-48) var(--space-24) var(--space-24); }
+    .scenarios-title { font-size: 2rem; }
+  }
+
   /* ===== Блок 3, мини-версия сценария «Семье с детьми» (первый из трёх
      будущих мини-блоков, на которые распадётся .scenarios) =====
      ЛОКАЛЬНАЯ ВЕРСТКА ПО РЕФЕРЕНСУ (Figma-фрейм), НЕ ЗАПУШЕНО.
@@ -5340,6 +5366,11 @@
   </div>
 
 </section>
+
+<div class="scenarios-title-wrap">
+  <h2 class="scenarios-title">Сценарии жизни</h2>
+</div>
+
 <div class="sticky-stack">
 
 <!-- Мини-блок 1 из 3 (сценарий «Семье с детьми») — сверстан по
