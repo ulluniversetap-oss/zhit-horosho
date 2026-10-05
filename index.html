@@ -992,29 +992,31 @@
   }
 
   /* По просьбе «как-то блок надо назвать» — перед тремя sticky-плашками
-     сценариев не было заголовка вообще (просто пустой отступ). Добавили
-     простой центрированный h2, тем же шрифтом/начертанием, что у
-     остальных заголовков блоков (.nearby-heading и т.п.), но без
-     собственной подложки — просто текст на белом фоне страницы. */
-  .scenarios-title-wrap {
-    padding: var(--space-64) var(--space-24) var(--space-32);
-    text-align: center;
+     сценариев не было заголовка вообще (просто пустой отступ). Сначала
+     сделали отдельным плоским блоком вне .row-сетки — по следующей
+     просьбе («линии продли до плашки семьи с детьми» + «заголовок должен
+     выезжать из линии, как те, что до него») переделали на обычный .row
+     (.row--scenarios-title ниже) внутри той же .section, чтобы вертикальные
+     линии колонок и scroll-анимация .text-inner не прерывались перед
+     заголовком, а продолжались до самого конца секции. */
+  .row--scenarios-title {
+    /* Высота подобрана так, чтобы при обычной скорости скролла текст
+       успевал полностью проявиться (анимация .text-inner привязана к
+       линии на 55% высоты экрана) и визуально «остановиться» примерно
+       посередине — между верхней линией ряда, откуда он выезжает,
+       и первой sticky-карточкой сразу под ним. */
+    min-height: 34vh;
   }
 
+  /* text-transform не наследуем от .heading — по просьбе «не капсом»:
+     остальные заголовки блока 2 (Семейный дом/Все что нужно/Собственная
+     котельная) показаны капсом, а этот — как напечатан, обычным регистром. */
   .scenarios-title {
-    margin: 0;
-    font-family: 'RoadRadio', 'Onest', sans-serif;
-    font-weight: 700;
-    font-size: 2.8125rem;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    text-transform: uppercase;
-    color: #1c1c1a;
+    text-transform: none;
   }
 
   @media (max-width: 900px) {
-    .scenarios-title-wrap { padding: var(--space-48) var(--space-24) var(--space-24); }
-    .scenarios-title { font-size: 2rem; }
+    .row--scenarios-title { min-height: 0; }
   }
 
   /* ===== Блок 3, мини-версия сценария «Семье с детьми» (первый из трёх
@@ -5365,11 +5367,24 @@
     <div class="col"></div>
   </div>
 
-</section>
+  <!-- Заголовок «Сценарии жизни» — тем же приёмом row/col-text/text-inner,
+       что и ряды A/B/C выше (по просьбе «линии продли до плашки семьи
+       с детьми, до конца» и «заголовок должен выезжать из линии, как те,
+       что до него»): это обычный .row внутри той же .section, поэтому
+       вертикальные линии колонок (.col + .col border-left) и scroll-реакция
+       .text-inner (JS ищет ВСЕ .row на странице) продолжаются без разрыва
+       до самого закрытия section, то есть до первой sticky-карточки. -->
+  <div class="row row--scenarios-title">
+    <div class="col"></div>
+    <div class="col col-text">
+      <div class="text-inner">
+        <h2 class="heading scenarios-title">Сценарии жизни</h2>
+      </div>
+    </div>
+    <div class="col"></div>
+  </div>
 
-<div class="scenarios-title-wrap">
-  <h2 class="scenarios-title">Сценарии жизни</h2>
-</div>
+</section>
 
 <div class="sticky-stack">
 
