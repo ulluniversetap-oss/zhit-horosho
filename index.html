@@ -1008,22 +1008,6 @@
     min-height: 34vh;
   }
 
-  /* По просьбе «пусть тут останавливается, не уходит полностью за
-     плашки» — в остальных рядах .text-inner анимируется скроллом (JS)
-     и к низу ряда укатывается под следующий непрозрачный блок. Для
-     этого ряда JS-анимацию отключили (см. updateRow в скрипте ниже) и
-     зафиксировали текст статично по центру ряда — просто обычный блок,
-     который не трогается скроллом и не прячется под карточками. */
-  .row--scenarios-title .text-inner {
-    position: static;
-    opacity: 1;
-    transform: none;
-  }
-
-  .row--scenarios-title .col-text {
-    align-items: center;
-  }
-
   /* text-transform не наследуем от .heading — по просьбе «не капсом»:
      остальные заголовки блока 2 (Семейный дом/Все что нужно/Собственная
      котельная) показаны капсом, а этот — как напечатан, обычным регистром. */
@@ -7387,23 +7371,26 @@
 
   const ROW_FX_MQ = window.matchMedia('(max-width: 900px)');
 
+  // .row--scenarios-title — по просьбе «он должен выезжать из линии и
+  // останавливаться на середине»: обычные ряды доезжают до нижней границы
+  // и «проглатываются» следующим непрозрачным блоком (localFrac идёт
+  // 0→1→1+OVERSHOOT). Этот ряд ведёт себя так же на входе (тот же выезд
+  // из верхней линии с фейдом), но прогресс зажимается на STOP_FRAC —
+  // дальше localFrac не отпускаем, поэтому текст доезжает до середины
+  // ряда и дальше просто остаётся на месте, не уезжая под карточку.
+  const STOP_FRAC = 0.5;
+
   function updateRow(row) {
     // На мобильном текст не анимируем скроллом — он стоит статично под/над
     // фото (см. CSS-брейкпоинт .text-inner) и всегда полностью виден.
     // JS-transform/opacity здесь просто не нужны и мешали бы CSS.
-    //
-    // .row--scenarios-title — по просьбе «пусть тут останавливается, не
-    // уходит полностью за плашки»: этот ряд не несёт фото, сразу за ним
-    // идёт первая sticky-карточка, и обычное поведение (текст доезжает до
-    // нижней границы ряда и «проглатывается» следующим непрозрачным фоном)
-    // здесь означало, что заголовок укатывается под карточку и пропадает.
-    // Тут текст не анимируем вообще — он просто стоит на месте
-    // (position:static, opacity:1 заданы в CSS для этого ряда).
-    if (ROW_FX_MQ.matches || row.classList.contains('row--scenarios-title')) {
+    if (ROW_FX_MQ.matches) {
       const textInner = row.querySelector('.text-inner');
       if (textInner) { textInner.style.transform = ''; textInner.style.opacity = ''; }
       return;
     }
+
+    const isTitleRow = row.classList.contains('row--scenarios-title');
 
     const rect = row.getBoundingClientRect();
     const vh = window.innerHeight;
@@ -7416,7 +7403,10 @@
     // fades — they can no longer drift out of sync with each other.
     const triggerY = vh * 0.55;
     const rowH = rect.height;
-    const localFrac = (triggerY - rect.top) / rowH;
+    const rawFrac = (triggerY - rect.top) / rowH;
+    // Для .row--scenarios-title прогресс не может уйти дальше STOP_FRAC —
+    // дальнейший скролл просто больше не двигает и не гасит текст.
+    const localFrac = isTitleRow ? Math.min(rawFrac, STOP_FRAC) : rawFrac;
 
     const FADE_PX = 90; // px of scroll (in row-local terms) spent fading in/out
     const fadeFrac = FADE_PX / rowH;
@@ -7424,7 +7414,7 @@
     let opacity;
     if (localFrac < 0) {
       opacity = 1 - Math.min(1, -localFrac / fadeFrac);
-    } else if (localFrac > 1) {
+    } else if (!isTitleRow && localFrac > 1) {
       opacity = 1 - Math.min(1, (localFrac - 1) / fadeFrac);
     } else {
       opacity = 1;
@@ -7432,8 +7422,11 @@
     opacity = ease(Math.min(1, Math.max(0, opacity)));
 
     // extend a little past [0,1] so the text keeps sliding beyond the
-    // line rather than stopping dead exactly at the edge
-    const extFrac = Math.max(-OVERSHOOT, Math.min(1 + OVERSHOOT, localFrac));
+    // line rather than stopping dead exactly at the edge — не актуально
+    // для .row--scenarios-title, там localFrac и так не выходит за STOP_FRAC.
+    const extFrac = isTitleRow
+      ? Math.max(-OVERSHOOT, localFrac)
+      : Math.max(-OVERSHOOT, Math.min(1 + OVERSHOOT, localFrac));
 
     const textInner = row.querySelector('.text-inner');
     if (textInner) {
