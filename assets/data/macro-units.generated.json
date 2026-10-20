@@ -1,0 +1,1332 @@
+[
+  {
+    "id": "m7302006",
+    "entrance": "1",
+    "floor": 2,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4546690,
+    "status": "booked",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228191/ykcU42KaCGI3EY_76RSxcIAnuIjeiPIm5vlINaRQdg0eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTkxLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-32_71-1-32.71.jpg"
+  },
+  {
+    "id": "m7302007",
+    "entrance": "1",
+    "floor": 2,
+    "rooms": 2,
+    "area": 53.18,
+    "price": 7124780,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227738/tGDL5CW3cxRuq2ywsQzjdD30d_rfKhR6Ru4ODaVCV0seyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzM4LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-53_18-1-1-53.18.jpg"
+  },
+  {
+    "id": "m7302008",
+    "entrance": "1",
+    "floor": 2,
+    "rooms": 2,
+    "area": 51.83,
+    "price": 6788420,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227731/Z6LF8H_aiB7SB3ibAZN8qCYl2SIlc-B9kJEorMeG6kEeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzMxLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-51_83-1-51.83.jpg"
+  },
+  {
+    "id": "m7302013",
+    "entrance": "1",
+    "floor": 2,
+    "rooms": 2,
+    "area": 53.45,
+    "price": 7160960,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227740/a5SrnXzXIA0_sg2XZnRaj6DFQtInoCI5rXlzLmQGQxUeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzQwLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-53_45-1-1-53.45.jpg"
+  },
+  {
+    "id": "m7302015",
+    "entrance": "1",
+    "floor": 3,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4579400,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227943/MfAK6i-iqXFb_36133ezin1aAjfEs5euOLsUx3xlaGkeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3OTQzLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-32_71-3-32.71.jpg"
+  },
+  {
+    "id": "m7302016",
+    "entrance": "1",
+    "floor": 3,
+    "rooms": 2,
+    "area": 53.18,
+    "price": 7179300,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227739/Qa-Om4xWkMEMDh6Nkk3A9Ut3IFAJISGEgQwSQE6TRvYeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzM5LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-53_18-1-2-53.18.jpg"
+  },
+  {
+    "id": "m7302017",
+    "entrance": "1",
+    "floor": 3,
+    "rooms": 2,
+    "area": 51.83,
+    "price": 6997050,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227732/198OGWcKLlEcIMx5R9UJrwmA0O3BNlvkhm5jctTVRPceyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzMyLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-51_83-1-2-51.83.jpg"
+  },
+  {
+    "id": "m7302020",
+    "entrance": "1",
+    "floor": 3,
+    "rooms": 1,
+    "area": 31.29,
+    "price": 4224150,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227830/AH1gI9i0qK3GQkwxfZz-mdJguoGn96osPuJQsw8ZEC0eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODMwLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-31_29-1-2-31.29.jpg"
+  },
+  {
+    "id": "m7302022",
+    "entrance": "1",
+    "floor": 3,
+    "rooms": 2,
+    "area": 53.45,
+    "price": 7215750,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227741/DfDodDtcr7unkUaO-nRPo6qde8AOZ16BJZrYKl8OAfIeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzQxLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-53_45-1-2-53.45.jpg"
+  },
+  {
+    "id": "m7302023",
+    "entrance": "1",
+    "floor": 3,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4579400,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227838/vINJUy4eFqjlnUbRiisVa5cSV3uIf9xfanFU0Sr4QD8eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODM4LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-32_71-1-32.71.jpg"
+  },
+  {
+    "id": "m7302024",
+    "entrance": "1",
+    "floor": 4,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 5462570,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227943/MfAK6i-iqXFb_36133ezin1aAjfEs5euOLsUx3xlaGkeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3OTQzLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-32_71-3-32.71.jpg"
+  },
+  {
+    "id": "m7302025",
+    "entrance": "1",
+    "floor": 4,
+    "rooms": 2,
+    "area": 53.18,
+    "price": 8615160,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227739/Qa-Om4xWkMEMDh6Nkk3A9Ut3IFAJISGEgQwSQE6TRvYeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzM5LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-53_18-1-2-53.18.jpg"
+  },
+  {
+    "id": "m7302029",
+    "entrance": "1",
+    "floor": 4,
+    "rooms": 1,
+    "area": 31.29,
+    "price": 5068980,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227830/AH1gI9i0qK3GQkwxfZz-mdJguoGn96osPuJQsw8ZEC0eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODMwLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-31_29-1-2-31.29.jpg"
+  },
+  {
+    "id": "m7302030",
+    "entrance": "1",
+    "floor": 4,
+    "rooms": 1,
+    "area": 40.08,
+    "price": 6452880,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227832/qNWqSh_xVSu3I0ZFQHCJlzZoq3rg-mKKwIFDOShTpcAeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODMyLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-40.08-1-0.jpg"
+  },
+  {
+    "id": "m7302033",
+    "entrance": "1",
+    "floor": 5,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 5462570,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227943/MfAK6i-iqXFb_36133ezin1aAjfEs5euOLsUx3xlaGkeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3OTQzLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-32_71-3-32.71.jpg"
+  },
+  {
+    "id": "m7302034",
+    "entrance": "1",
+    "floor": 5,
+    "rooms": 2,
+    "area": 53.18,
+    "price": 8615160,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227739/Qa-Om4xWkMEMDh6Nkk3A9Ut3IFAJISGEgQwSQE6TRvYeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzM5LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-53_18-1-2-53.18.jpg"
+  },
+  {
+    "id": "m7302035",
+    "entrance": "1",
+    "floor": 5,
+    "rooms": 2,
+    "area": 51.83,
+    "price": 8292800,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227732/198OGWcKLlEcIMx5R9UJrwmA0O3BNlvkhm5jctTVRPceyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzMyLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-51_83-1-2-51.83.jpg"
+  },
+  {
+    "id": "m7302036",
+    "entrance": "1",
+    "floor": 5,
+    "rooms": 1,
+    "area": 30.93,
+    "price": 5258100,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227823/X_wswV72vo4a9ber1_1eEwPzlRWCvIK_fyIrVJ8GwK4eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODIzLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-30_93-1-2-30.93.jpg"
+  },
+  {
+    "id": "m7302037",
+    "entrance": "1",
+    "floor": 5,
+    "rooms": 1,
+    "area": 30.81,
+    "price": 5237700,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227826/e3AYeV2Er3xcCVKVjKaSvaajM3NJxMLZjI7yDe-ZtcAeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODI2LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-30_81-1-2-30.81.jpg"
+  },
+  {
+    "id": "m7302039",
+    "entrance": "1",
+    "floor": 5,
+    "rooms": 1,
+    "area": 40.08,
+    "price": 6452880,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227832/qNWqSh_xVSu3I0ZFQHCJlzZoq3rg-mKKwIFDOShTpcAeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODMyLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-40.08-1-0.jpg"
+  },
+  {
+    "id": "m7302040",
+    "entrance": "1",
+    "floor": 5,
+    "rooms": 2,
+    "area": 53.45,
+    "price": 8658900,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227741/DfDodDtcr7unkUaO-nRPo6qde8AOZ16BJZrYKl8OAfIeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzQxLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-53_45-1-2-53.45.jpg"
+  },
+  {
+    "id": "m7302041",
+    "entrance": "1",
+    "floor": 5,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 5658830,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227838/vINJUy4eFqjlnUbRiisVa5cSV3uIf9xfanFU0Sr4QD8eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODM4LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-32_71-1-32.71.jpg"
+  },
+  {
+    "id": "m7302042",
+    "entrance": "1",
+    "floor": 6,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 5462570,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227943/MfAK6i-iqXFb_36133ezin1aAjfEs5euOLsUx3xlaGkeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3OTQzLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-32_71-3-32.71.jpg"
+  },
+  {
+    "id": "m7302043",
+    "entrance": "1",
+    "floor": 6,
+    "rooms": 2,
+    "area": 53.18,
+    "price": 8615160,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227739/Qa-Om4xWkMEMDh6Nkk3A9Ut3IFAJISGEgQwSQE6TRvYeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzM5LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-53_18-1-2-53.18.jpg"
+  },
+  {
+    "id": "m7302044",
+    "entrance": "1",
+    "floor": 6,
+    "rooms": 2,
+    "area": 51.83,
+    "price": 8292800,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227732/198OGWcKLlEcIMx5R9UJrwmA0O3BNlvkhm5jctTVRPceyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzMyLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-51_83-1-2-51.83.jpg"
+  },
+  {
+    "id": "m7302045",
+    "entrance": "1",
+    "floor": 6,
+    "rooms": 1,
+    "area": 30.93,
+    "price": 5258100,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227823/X_wswV72vo4a9ber1_1eEwPzlRWCvIK_fyIrVJ8GwK4eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODIzLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-30_93-1-2-30.93.jpg"
+  },
+  {
+    "id": "m7302046",
+    "entrance": "1",
+    "floor": 6,
+    "rooms": 1,
+    "area": 30.81,
+    "price": 5237700,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227826/e3AYeV2Er3xcCVKVjKaSvaajM3NJxMLZjI7yDe-ZtcAeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODI2LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-30_81-1-2-30.81.jpg"
+  },
+  {
+    "id": "m7302047",
+    "entrance": "1",
+    "floor": 6,
+    "rooms": 1,
+    "area": 31.29,
+    "price": 5068980,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227830/AH1gI9i0qK3GQkwxfZz-mdJguoGn96osPuJQsw8ZEC0eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODMwLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-31_29-1-2-31.29.jpg"
+  },
+  {
+    "id": "m7302048",
+    "entrance": "1",
+    "floor": 6,
+    "rooms": 1,
+    "area": 40.08,
+    "price": 6452880,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227832/qNWqSh_xVSu3I0ZFQHCJlzZoq3rg-mKKwIFDOShTpcAeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODMyLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-40.08-1-0.jpg"
+  },
+  {
+    "id": "m7302049",
+    "entrance": "1",
+    "floor": 6,
+    "rooms": 2,
+    "area": 53.45,
+    "price": 8658900,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227741/DfDodDtcr7unkUaO-nRPo6qde8AOZ16BJZrYKl8OAfIeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzQxLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-53_45-1-2-53.45.jpg"
+  },
+  {
+    "id": "m7302050",
+    "entrance": "1",
+    "floor": 6,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 5658830,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227838/vINJUy4eFqjlnUbRiisVa5cSV3uIf9xfanFU0Sr4QD8eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODM4LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-32_71-1-32.71.jpg"
+  },
+  {
+    "id": "m7302052",
+    "entrance": "1",
+    "floor": 7,
+    "rooms": 2,
+    "area": 53.18,
+    "price": 8615160,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227739/Qa-Om4xWkMEMDh6Nkk3A9Ut3IFAJISGEgQwSQE6TRvYeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzM5LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-53_18-1-2-53.18.jpg"
+  },
+  {
+    "id": "m7302053",
+    "entrance": "1",
+    "floor": 7,
+    "rooms": 2,
+    "area": 51.83,
+    "price": 8292800,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227732/198OGWcKLlEcIMx5R9UJrwmA0O3BNlvkhm5jctTVRPceyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzMyLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-51_83-1-2-51.83.jpg"
+  },
+  {
+    "id": "m7302056",
+    "entrance": "1",
+    "floor": 7,
+    "rooms": 1,
+    "area": 31.29,
+    "price": 5068980,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227830/AH1gI9i0qK3GQkwxfZz-mdJguoGn96osPuJQsw8ZEC0eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODMwLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-31_29-1-2-31.29.jpg"
+  },
+  {
+    "id": "m7302057",
+    "entrance": "1",
+    "floor": 7,
+    "rooms": 1,
+    "area": 40.08,
+    "price": 6452880,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227832/qNWqSh_xVSu3I0ZFQHCJlzZoq3rg-mKKwIFDOShTpcAeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODMyLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-40.08-1-0.jpg"
+  },
+  {
+    "id": "m7302058",
+    "entrance": "1",
+    "floor": 7,
+    "rooms": 2,
+    "area": 53.45,
+    "price": 8658900,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227741/DfDodDtcr7unkUaO-nRPo6qde8AOZ16BJZrYKl8OAfIeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzQxLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-53_45-1-2-53.45.jpg"
+  },
+  {
+    "id": "m7302060",
+    "entrance": "1",
+    "floor": 8,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4579400,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227943/MfAK6i-iqXFb_36133ezin1aAjfEs5euOLsUx3xlaGkeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3OTQzLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-32_71-3-32.71.jpg"
+  },
+  {
+    "id": "m7302061",
+    "entrance": "1",
+    "floor": 8,
+    "rooms": 2,
+    "area": 53.18,
+    "price": 7259070,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227739/Qa-Om4xWkMEMDh6Nkk3A9Ut3IFAJISGEgQwSQE6TRvYeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzM5LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-53_18-1-2-53.18.jpg"
+  },
+  {
+    "id": "m7302062",
+    "entrance": "1",
+    "floor": 8,
+    "rooms": 2,
+    "area": 51.83,
+    "price": 7048880,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227732/198OGWcKLlEcIMx5R9UJrwmA0O3BNlvkhm5jctTVRPceyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzMyLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-51_83-1-2-51.83.jpg"
+  },
+  {
+    "id": "m7302063",
+    "entrance": "1",
+    "floor": 8,
+    "rooms": 1,
+    "area": 30.93,
+    "price": 4268340,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227823/X_wswV72vo4a9ber1_1eEwPzlRWCvIK_fyIrVJ8GwK4eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODIzLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-30_93-1-2-30.93.jpg"
+  },
+  {
+    "id": "m7302064",
+    "entrance": "1",
+    "floor": 8,
+    "rooms": 1,
+    "area": 30.81,
+    "price": 4251780,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227826/e3AYeV2Er3xcCVKVjKaSvaajM3NJxMLZjI7yDe-ZtcAeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODI2LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-30_81-1-2-30.81.jpg"
+  },
+  {
+    "id": "m7302065",
+    "entrance": "1",
+    "floor": 8,
+    "rooms": 1,
+    "area": 31.29,
+    "price": 4224150,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227830/AH1gI9i0qK3GQkwxfZz-mdJguoGn96osPuJQsw8ZEC0eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODMwLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-31_29-1-2-31.29.jpg"
+  },
+  {
+    "id": "m7302066",
+    "entrance": "1",
+    "floor": 8,
+    "rooms": 1,
+    "area": 40.08,
+    "price": 5450880,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227832/qNWqSh_xVSu3I0ZFQHCJlzZoq3rg-mKKwIFDOShTpcAeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODMyLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-40.08-1-0.jpg"
+  },
+  {
+    "id": "m7302067",
+    "entrance": "1",
+    "floor": 8,
+    "rooms": 2,
+    "area": 53.45,
+    "price": 7295925,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227741/DfDodDtcr7unkUaO-nRPo6qde8AOZ16BJZrYKl8OAfIeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzQxLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-53_45-1-2-53.45.jpg"
+  },
+  {
+    "id": "m7302068",
+    "entrance": "1",
+    "floor": 8,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4579400,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227838/vINJUy4eFqjlnUbRiisVa5cSV3uIf9xfanFU0Sr4QD8eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODM4LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-32_71-1-32.71.jpg"
+  },
+  {
+    "id": "m7302069",
+    "entrance": "1",
+    "floor": 9,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4579400,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227943/MfAK6i-iqXFb_36133ezin1aAjfEs5euOLsUx3xlaGkeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3OTQzLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-32_71-3-32.71.jpg"
+  },
+  {
+    "id": "m7302070",
+    "entrance": "1",
+    "floor": 9,
+    "rooms": 2,
+    "area": 53.18,
+    "price": 7259070,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227739/Qa-Om4xWkMEMDh6Nkk3A9Ut3IFAJISGEgQwSQE6TRvYeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzM5LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-53_18-1-2-53.18.jpg"
+  },
+  {
+    "id": "m7302071",
+    "entrance": "1",
+    "floor": 9,
+    "rooms": 2,
+    "area": 51.83,
+    "price": 7048880,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227732/198OGWcKLlEcIMx5R9UJrwmA0O3BNlvkhm5jctTVRPceyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzMyLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-51_83-1-2-51.83.jpg"
+  },
+  {
+    "id": "m7302072",
+    "entrance": "1",
+    "floor": 9,
+    "rooms": 1,
+    "area": 30.93,
+    "price": 4268340,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227823/X_wswV72vo4a9ber1_1eEwPzlRWCvIK_fyIrVJ8GwK4eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODIzLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-30_93-1-2-30.93.jpg"
+  },
+  {
+    "id": "m7302073",
+    "entrance": "1",
+    "floor": 9,
+    "rooms": 1,
+    "area": 30.81,
+    "price": 4251780,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227826/e3AYeV2Er3xcCVKVjKaSvaajM3NJxMLZjI7yDe-ZtcAeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODI2LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-30_81-1-2-30.81.jpg"
+  },
+  {
+    "id": "m7302074",
+    "entrance": "1",
+    "floor": 9,
+    "rooms": 1,
+    "area": 31.29,
+    "price": 4224150,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227830/AH1gI9i0qK3GQkwxfZz-mdJguoGn96osPuJQsw8ZEC0eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODMwLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-31_29-1-2-31.29.jpg"
+  },
+  {
+    "id": "m7302075",
+    "entrance": "1",
+    "floor": 9,
+    "rooms": 1,
+    "area": 40.08,
+    "price": 5450880,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227832/qNWqSh_xVSu3I0ZFQHCJlzZoq3rg-mKKwIFDOShTpcAeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODMyLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-40.08-1-0.jpg"
+  },
+  {
+    "id": "m7302076",
+    "entrance": "1",
+    "floor": 9,
+    "rooms": 2,
+    "area": 53.45,
+    "price": 7295925,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227741/DfDodDtcr7unkUaO-nRPo6qde8AOZ16BJZrYKl8OAfIeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzQxLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-53_45-1-2-53.45.jpg"
+  },
+  {
+    "id": "m7302077",
+    "entrance": "1",
+    "floor": 9,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4579400,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227838/vINJUy4eFqjlnUbRiisVa5cSV3uIf9xfanFU0Sr4QD8eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODM4LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-32_71-1-32.71.jpg"
+  },
+  {
+    "id": "m7302078",
+    "entrance": "1",
+    "floor": 10,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4579400,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227943/MfAK6i-iqXFb_36133ezin1aAjfEs5euOLsUx3xlaGkeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3OTQzLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-32_71-3-32.71.jpg"
+  },
+  {
+    "id": "m7302079",
+    "entrance": "1",
+    "floor": 10,
+    "rooms": 2,
+    "area": 53.18,
+    "price": 7259070,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227739/Qa-Om4xWkMEMDh6Nkk3A9Ut3IFAJISGEgQwSQE6TRvYeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzM5LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-53_18-1-2-53.18.jpg"
+  },
+  {
+    "id": "m7302080",
+    "entrance": "1",
+    "floor": 10,
+    "rooms": 2,
+    "area": 51.83,
+    "price": 7048880,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227732/198OGWcKLlEcIMx5R9UJrwmA0O3BNlvkhm5jctTVRPceyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzMyLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-51_83-1-2-51.83.jpg"
+  },
+  {
+    "id": "m7302081",
+    "entrance": "1",
+    "floor": 10,
+    "rooms": 1,
+    "area": 30.93,
+    "price": 4268340,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227823/X_wswV72vo4a9ber1_1eEwPzlRWCvIK_fyIrVJ8GwK4eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODIzLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-30_93-1-2-30.93.jpg"
+  },
+  {
+    "id": "m7302082",
+    "entrance": "1",
+    "floor": 10,
+    "rooms": 1,
+    "area": 30.81,
+    "price": 4251780,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227826/e3AYeV2Er3xcCVKVjKaSvaajM3NJxMLZjI7yDe-ZtcAeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODI2LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-30_81-1-2-30.81.jpg"
+  },
+  {
+    "id": "m7302083",
+    "entrance": "1",
+    "floor": 10,
+    "rooms": 1,
+    "area": 31.29,
+    "price": 4224150,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227830/AH1gI9i0qK3GQkwxfZz-mdJguoGn96osPuJQsw8ZEC0eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODMwLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-31_29-1-2-31.29.jpg"
+  },
+  {
+    "id": "m7302084",
+    "entrance": "1",
+    "floor": 10,
+    "rooms": 1,
+    "area": 40.08,
+    "price": 5450880,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227832/qNWqSh_xVSu3I0ZFQHCJlzZoq3rg-mKKwIFDOShTpcAeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODMyLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-40.08-1-0.jpg"
+  },
+  {
+    "id": "m7302085",
+    "entrance": "1",
+    "floor": 10,
+    "rooms": 2,
+    "area": 53.45,
+    "price": 7295925,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227741/DfDodDtcr7unkUaO-nRPo6qde8AOZ16BJZrYKl8OAfIeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzQxLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-53_45-1-2-53.45.jpg"
+  },
+  {
+    "id": "m7302086",
+    "entrance": "1",
+    "floor": 10,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4579400,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227838/vINJUy4eFqjlnUbRiisVa5cSV3uIf9xfanFU0Sr4QD8eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3ODM4LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-32_71-1-32.71.jpg"
+  },
+  {
+    "id": "m7302087",
+    "entrance": "2",
+    "floor": 2,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4546690,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227697/iVjSHl_jUfFF5K9lob9JTOfNCZNWZdFt4BBVK5yZRL8eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3Njk3LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-32_71-2-32.71.jpg"
+  },
+  {
+    "id": "m7302088",
+    "entrance": "2",
+    "floor": 2,
+    "rooms": 2,
+    "area": 53.45,
+    "price": 7162300,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227760/-EWuvio0TibuHjW4s6TXU8jRst8QEiBlrB6fXMIlJEUeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzYwLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k2-53_45-2-53.45.jpg"
+  },
+  {
+    "id": "m7302089",
+    "entrance": "2",
+    "floor": 2,
+    "rooms": 1,
+    "area": 40.08,
+    "price": 5330640,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227706/tE_gVFWskIdB-p-M88ERla4jA3617QpszMPI8v-jJjEeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzA2LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-40_08-2-40.08.jpg"
+  },
+  {
+    "id": "m7302094",
+    "entrance": "2",
+    "floor": 2,
+    "rooms": 3,
+    "area": 68.71,
+    "price": 9069720,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227744/xhNjMp7CWmQ4iEDZekHazuPwk_mYYOofHrcH3qZftKEeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzQ0LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k3-68_71-2-1-68.71.jpg"
+  },
+  {
+    "id": "m7302095",
+    "entrance": "2",
+    "floor": 2,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4546690,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228186/kQczJtgNKKJtm33ag3uh2u4UpGdNxmpjPbYTCg3x4nAeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTg2LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-32.71-1-1-0.jpg"
+  },
+  {
+    "id": "m7302096",
+    "entrance": "2",
+    "floor": 3,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4579400,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228171/BvdWB10CZYZiok5DCbZP76SIf8wjPNwu8VeuPWeu-2EeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTcxLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-32.71-2-0.jpg"
+  },
+  {
+    "id": "m7302097",
+    "entrance": "2",
+    "floor": 3,
+    "rooms": 2,
+    "area": 53.45,
+    "price": 7215750,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228174/viDmxv9wKoWFT35fC--TpsMnMMiWFJrvx1Zk4cud9qMeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTc0LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-53.45-2-0.jpg"
+  },
+  {
+    "id": "m7302099",
+    "entrance": "2",
+    "floor": 3,
+    "rooms": 1,
+    "area": 31.29,
+    "price": 4224150,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228057/eDOcBXnqb9qlNJmjUXTyLLpigom5dDnOQ5VqbysT694eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MDU3LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-31.29-1-0.jpg"
+  },
+  {
+    "id": "m7302101",
+    "entrance": "2",
+    "floor": 3,
+    "rooms": 1,
+    "area": 30.93,
+    "price": 4237410,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227701/KMsqZc-VlC9G9ZFbjkxDDS50O59xybdUKNrnjPt09OkeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzAxLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-30_93-2-30.93.jpg"
+  },
+  {
+    "id": "m7302102",
+    "entrance": "2",
+    "floor": 3,
+    "rooms": 1,
+    "area": 36.74,
+    "price": 5327300,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228182/_CIg2F70OBS-zgvIH3hCe98XVK8xFAYgHvm9I_S0Ka0eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTgyLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-36.74-1-0.jpg"
+  },
+  {
+    "id": "m7302103",
+    "entrance": "2",
+    "floor": 3,
+    "rooms": 3,
+    "area": 68.71,
+    "price": 9207140,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227745/sqJYYWOo4f8In-ffKi88m27H2SgFTlgI-YJ7aPRPuYceyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzQ1LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k3-68_71-2-2-68.71.jpg"
+  },
+  {
+    "id": "m7302104",
+    "entrance": "2",
+    "floor": 3,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4579400,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228187/berXpRw2GwIz0Gp_wYvpzlyXhNewHXirI4rrmtTCIuceyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTg3LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-32_71-1-2-32.71.jpg"
+  },
+  {
+    "id": "m7302106",
+    "entrance": "2",
+    "floor": 4,
+    "rooms": 2,
+    "area": 53.45,
+    "price": 7215750,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228174/viDmxv9wKoWFT35fC--TpsMnMMiWFJrvx1Zk4cud9qMeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTc0LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-53.45-2-0.jpg"
+  },
+  {
+    "id": "m7302107",
+    "entrance": "2",
+    "floor": 4,
+    "rooms": 1,
+    "area": 40.08,
+    "price": 5410800,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228179/8S6lgU9fDQM8UbhHA8ADDX2xSxmfLWbZ9wsEffE2crkeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTc5LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-40_08-2-40.08.jpg"
+  },
+  {
+    "id": "m7302108",
+    "entrance": "2",
+    "floor": 4,
+    "rooms": 1,
+    "area": 31.29,
+    "price": 4224150,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228057/eDOcBXnqb9qlNJmjUXTyLLpigom5dDnOQ5VqbysT694eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MDU3LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-31.29-1-0.jpg"
+  },
+  {
+    "id": "m7302109",
+    "entrance": "2",
+    "floor": 4,
+    "rooms": 1,
+    "area": 30.81,
+    "price": 4220970,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228180/Gl3slFq_2bkjFvdjbfHRDFtsOd7ED8UKu_en3gptxZgeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTgwLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-30.81-2-0.jpg"
+  },
+  {
+    "id": "m7302110",
+    "entrance": "2",
+    "floor": 4,
+    "rooms": 1,
+    "area": 30.93,
+    "price": 4237410,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227701/KMsqZc-VlC9G9ZFbjkxDDS50O59xybdUKNrnjPt09OkeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzAxLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-30_93-2-30.93.jpg"
+  },
+  {
+    "id": "m7302112",
+    "entrance": "2",
+    "floor": 4,
+    "rooms": 3,
+    "area": 68.71,
+    "price": 9207140,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227745/sqJYYWOo4f8In-ffKi88m27H2SgFTlgI-YJ7aPRPuYceyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzQ1LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k3-68_71-2-2-68.71.jpg"
+  },
+  {
+    "id": "m7302113",
+    "entrance": "2",
+    "floor": 4,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4579400,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228187/berXpRw2GwIz0Gp_wYvpzlyXhNewHXirI4rrmtTCIuceyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTg3LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-32_71-1-2-32.71.jpg"
+  },
+  {
+    "id": "m7302114",
+    "entrance": "2",
+    "floor": 5,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4579400,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228171/BvdWB10CZYZiok5DCbZP76SIf8wjPNwu8VeuPWeu-2EeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTcxLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-32.71-2-0.jpg"
+  },
+  {
+    "id": "m7302115",
+    "entrance": "2",
+    "floor": 5,
+    "rooms": 2,
+    "area": 53.45,
+    "price": 7215750,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228174/viDmxv9wKoWFT35fC--TpsMnMMiWFJrvx1Zk4cud9qMeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTc0LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-53.45-2-0.jpg"
+  },
+  {
+    "id": "m7302117",
+    "entrance": "2",
+    "floor": 5,
+    "rooms": 1,
+    "area": 31.29,
+    "price": 4224150,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228057/eDOcBXnqb9qlNJmjUXTyLLpigom5dDnOQ5VqbysT694eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MDU3LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-31.29-1-0.jpg"
+  },
+  {
+    "id": "m7302118",
+    "entrance": "2",
+    "floor": 5,
+    "rooms": 1,
+    "area": 30.81,
+    "price": 4220970,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228180/Gl3slFq_2bkjFvdjbfHRDFtsOd7ED8UKu_en3gptxZgeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTgwLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-30.81-2-0.jpg"
+  },
+  {
+    "id": "m7302119",
+    "entrance": "2",
+    "floor": 5,
+    "rooms": 1,
+    "area": 30.93,
+    "price": 4237410,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227701/KMsqZc-VlC9G9ZFbjkxDDS50O59xybdUKNrnjPt09OkeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzAxLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-30_93-2-30.93.jpg"
+  },
+  {
+    "id": "m7302121",
+    "entrance": "2",
+    "floor": 5,
+    "rooms": 3,
+    "area": 68.71,
+    "price": 9207140,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227745/sqJYYWOo4f8In-ffKi88m27H2SgFTlgI-YJ7aPRPuYceyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzQ1LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k3-68_71-2-2-68.71.jpg"
+  },
+  {
+    "id": "m7302122",
+    "entrance": "2",
+    "floor": 5,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4579400,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228187/berXpRw2GwIz0Gp_wYvpzlyXhNewHXirI4rrmtTCIuceyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTg3LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-32_71-1-2-32.71.jpg"
+  },
+  {
+    "id": "m7302123",
+    "entrance": "2",
+    "floor": 6,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4579400,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228171/BvdWB10CZYZiok5DCbZP76SIf8wjPNwu8VeuPWeu-2EeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTcxLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-32.71-2-0.jpg"
+  },
+  {
+    "id": "m7302124",
+    "entrance": "2",
+    "floor": 6,
+    "rooms": 2,
+    "area": 53.45,
+    "price": 7295925,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228174/viDmxv9wKoWFT35fC--TpsMnMMiWFJrvx1Zk4cud9qMeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTc0LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-53.45-2-0.jpg"
+  },
+  {
+    "id": "m7302125",
+    "entrance": "2",
+    "floor": 6,
+    "rooms": 1,
+    "area": 40.08,
+    "price": 5450880,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228179/8S6lgU9fDQM8UbhHA8ADDX2xSxmfLWbZ9wsEffE2crkeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTc5LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-40_08-2-40.08.jpg"
+  },
+  {
+    "id": "m7302126",
+    "entrance": "2",
+    "floor": 6,
+    "rooms": 1,
+    "area": 31.29,
+    "price": 4224150,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228057/eDOcBXnqb9qlNJmjUXTyLLpigom5dDnOQ5VqbysT694eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MDU3LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-31.29-1-0.jpg"
+  },
+  {
+    "id": "m7302127",
+    "entrance": "2",
+    "floor": 6,
+    "rooms": 1,
+    "area": 30.81,
+    "price": 4251780,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228180/Gl3slFq_2bkjFvdjbfHRDFtsOd7ED8UKu_en3gptxZgeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTgwLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-30.81-2-0.jpg"
+  },
+  {
+    "id": "m7302128",
+    "entrance": "2",
+    "floor": 6,
+    "rooms": 1,
+    "area": 30.93,
+    "price": 4268340,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227701/KMsqZc-VlC9G9ZFbjkxDDS50O59xybdUKNrnjPt09OkeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzAxLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-30_93-2-30.93.jpg"
+  },
+  {
+    "id": "m7302129",
+    "entrance": "2",
+    "floor": 6,
+    "rooms": 1,
+    "area": 36.74,
+    "price": 5327300,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228182/_CIg2F70OBS-zgvIH3hCe98XVK8xFAYgHvm9I_S0Ka0eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTgyLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-36.74-1-0.jpg"
+  },
+  {
+    "id": "m7302130",
+    "entrance": "2",
+    "floor": 6,
+    "rooms": 3,
+    "area": 68.71,
+    "price": 9275850,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227745/sqJYYWOo4f8In-ffKi88m27H2SgFTlgI-YJ7aPRPuYceyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzQ1LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k3-68_71-2-2-68.71.jpg"
+  },
+  {
+    "id": "m7302131",
+    "entrance": "2",
+    "floor": 6,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4579400,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228187/berXpRw2GwIz0Gp_wYvpzlyXhNewHXirI4rrmtTCIuceyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTg3LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-32_71-1-2-32.71.jpg"
+  },
+  {
+    "id": "m7302132",
+    "entrance": "2",
+    "floor": 7,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4579400,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228171/BvdWB10CZYZiok5DCbZP76SIf8wjPNwu8VeuPWeu-2EeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTcxLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-32.71-2-0.jpg"
+  },
+  {
+    "id": "m7302133",
+    "entrance": "2",
+    "floor": 7,
+    "rooms": 2,
+    "area": 53.45,
+    "price": 7295925,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228174/viDmxv9wKoWFT35fC--TpsMnMMiWFJrvx1Zk4cud9qMeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTc0LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-53.45-2-0.jpg"
+  },
+  {
+    "id": "m7302135",
+    "entrance": "2",
+    "floor": 7,
+    "rooms": 1,
+    "area": 40.08,
+    "price": 5450880,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228179/8S6lgU9fDQM8UbhHA8ADDX2xSxmfLWbZ9wsEffE2crkeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTc5LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-40_08-2-40.08.jpg"
+  },
+  {
+    "id": "m7302136",
+    "entrance": "2",
+    "floor": 7,
+    "rooms": 1,
+    "area": 31.29,
+    "price": 4224150,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228057/eDOcBXnqb9qlNJmjUXTyLLpigom5dDnOQ5VqbysT694eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MDU3LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-31.29-1-0.jpg"
+  },
+  {
+    "id": "m7302137",
+    "entrance": "2",
+    "floor": 7,
+    "rooms": 1,
+    "area": 30.81,
+    "price": 4251780,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228180/Gl3slFq_2bkjFvdjbfHRDFtsOd7ED8UKu_en3gptxZgeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTgwLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-30.81-2-0.jpg"
+  },
+  {
+    "id": "m7302138",
+    "entrance": "2",
+    "floor": 7,
+    "rooms": 1,
+    "area": 30.93,
+    "price": 4268340,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227701/KMsqZc-VlC9G9ZFbjkxDDS50O59xybdUKNrnjPt09OkeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzAxLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-30_93-2-30.93.jpg"
+  },
+  {
+    "id": "m7302139",
+    "entrance": "2",
+    "floor": 7,
+    "rooms": 1,
+    "area": 36.74,
+    "price": 5327300,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228182/_CIg2F70OBS-zgvIH3hCe98XVK8xFAYgHvm9I_S0Ka0eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTgyLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-36.74-1-0.jpg"
+  },
+  {
+    "id": "m7302140",
+    "entrance": "2",
+    "floor": 7,
+    "rooms": 3,
+    "area": 68.71,
+    "price": 9275850,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227745/sqJYYWOo4f8In-ffKi88m27H2SgFTlgI-YJ7aPRPuYceyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzQ1LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k3-68_71-2-2-68.71.jpg"
+  },
+  {
+    "id": "m7302141",
+    "entrance": "2",
+    "floor": 7,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4579400,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228187/berXpRw2GwIz0Gp_wYvpzlyXhNewHXirI4rrmtTCIuceyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTg3LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-32_71-1-2-32.71.jpg"
+  },
+  {
+    "id": "m7302142",
+    "entrance": "2",
+    "floor": 8,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4579400,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228171/BvdWB10CZYZiok5DCbZP76SIf8wjPNwu8VeuPWeu-2EeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTcxLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-32.71-2-0.jpg"
+  },
+  {
+    "id": "m7302143",
+    "entrance": "2",
+    "floor": 8,
+    "rooms": 2,
+    "area": 53.45,
+    "price": 7295925,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228174/viDmxv9wKoWFT35fC--TpsMnMMiWFJrvx1Zk4cud9qMeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTc0LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-53.45-2-0.jpg"
+  },
+  {
+    "id": "m7302144",
+    "entrance": "2",
+    "floor": 8,
+    "rooms": 1,
+    "area": 40.08,
+    "price": 5450880,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228179/8S6lgU9fDQM8UbhHA8ADDX2xSxmfLWbZ9wsEffE2crkeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTc5LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-40_08-2-40.08.jpg"
+  },
+  {
+    "id": "m7302145",
+    "entrance": "2",
+    "floor": 8,
+    "rooms": 1,
+    "area": 31.29,
+    "price": 4224150,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228057/eDOcBXnqb9qlNJmjUXTyLLpigom5dDnOQ5VqbysT694eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MDU3LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-31.29-1-0.jpg"
+  },
+  {
+    "id": "m7302146",
+    "entrance": "2",
+    "floor": 8,
+    "rooms": 1,
+    "area": 30.81,
+    "price": 4251780,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228180/Gl3slFq_2bkjFvdjbfHRDFtsOd7ED8UKu_en3gptxZgeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTgwLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-30.81-2-0.jpg"
+  },
+  {
+    "id": "m7302147",
+    "entrance": "2",
+    "floor": 8,
+    "rooms": 1,
+    "area": 30.93,
+    "price": 4268340,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227701/KMsqZc-VlC9G9ZFbjkxDDS50O59xybdUKNrnjPt09OkeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzAxLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-30_93-2-30.93.jpg"
+  },
+  {
+    "id": "m7302149",
+    "entrance": "2",
+    "floor": 8,
+    "rooms": 3,
+    "area": 68.71,
+    "price": 9275850,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227745/sqJYYWOo4f8In-ffKi88m27H2SgFTlgI-YJ7aPRPuYceyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzQ1LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k3-68_71-2-2-68.71.jpg"
+  },
+  {
+    "id": "m7302150",
+    "entrance": "2",
+    "floor": 8,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4579400,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228187/berXpRw2GwIz0Gp_wYvpzlyXhNewHXirI4rrmtTCIuceyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTg3LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-32_71-1-2-32.71.jpg"
+  },
+  {
+    "id": "m7302151",
+    "entrance": "2",
+    "floor": 9,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4579400,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228171/BvdWB10CZYZiok5DCbZP76SIf8wjPNwu8VeuPWeu-2EeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTcxLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-32.71-2-0.jpg"
+  },
+  {
+    "id": "m7302152",
+    "entrance": "2",
+    "floor": 9,
+    "rooms": 2,
+    "area": 53.45,
+    "price": 7295925,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228174/viDmxv9wKoWFT35fC--TpsMnMMiWFJrvx1Zk4cud9qMeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTc0LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-53.45-2-0.jpg"
+  },
+  {
+    "id": "m7302153",
+    "entrance": "2",
+    "floor": 9,
+    "rooms": 1,
+    "area": 40.08,
+    "price": 5450880,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228179/8S6lgU9fDQM8UbhHA8ADDX2xSxmfLWbZ9wsEffE2crkeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTc5LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-40_08-2-40.08.jpg"
+  },
+  {
+    "id": "m7302154",
+    "entrance": "2",
+    "floor": 9,
+    "rooms": 1,
+    "area": 31.29,
+    "price": 4224150,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228057/eDOcBXnqb9qlNJmjUXTyLLpigom5dDnOQ5VqbysT694eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MDU3LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-31.29-1-0.jpg"
+  },
+  {
+    "id": "m7302155",
+    "entrance": "2",
+    "floor": 9,
+    "rooms": 1,
+    "area": 30.81,
+    "price": 4251780,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228180/Gl3slFq_2bkjFvdjbfHRDFtsOd7ED8UKu_en3gptxZgeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTgwLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-30.81-2-0.jpg"
+  },
+  {
+    "id": "m7302156",
+    "entrance": "2",
+    "floor": 9,
+    "rooms": 1,
+    "area": 30.93,
+    "price": 4268340,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227701/KMsqZc-VlC9G9ZFbjkxDDS50O59xybdUKNrnjPt09OkeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzAxLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-30_93-2-30.93.jpg"
+  },
+  {
+    "id": "m7302157",
+    "entrance": "2",
+    "floor": 9,
+    "rooms": 1,
+    "area": 36.74,
+    "price": 5327300,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228182/_CIg2F70OBS-zgvIH3hCe98XVK8xFAYgHvm9I_S0Ka0eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTgyLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-36.74-1-0.jpg"
+  },
+  {
+    "id": "m7302158",
+    "entrance": "2",
+    "floor": 9,
+    "rooms": 3,
+    "area": 68.71,
+    "price": 9275850,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227745/sqJYYWOo4f8In-ffKi88m27H2SgFTlgI-YJ7aPRPuYceyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzQ1LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k3-68_71-2-2-68.71.jpg"
+  },
+  {
+    "id": "m7302159",
+    "entrance": "2",
+    "floor": 9,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4579400,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228187/berXpRw2GwIz0Gp_wYvpzlyXhNewHXirI4rrmtTCIuceyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTg3LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-32_71-1-2-32.71.jpg"
+  },
+  {
+    "id": "m7302160",
+    "entrance": "2",
+    "floor": 10,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4579400,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228171/BvdWB10CZYZiok5DCbZP76SIf8wjPNwu8VeuPWeu-2EeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTcxLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-32.71-2-0.jpg"
+  },
+  {
+    "id": "m7302161",
+    "entrance": "2",
+    "floor": 10,
+    "rooms": 2,
+    "area": 53.45,
+    "price": 7295925,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228174/viDmxv9wKoWFT35fC--TpsMnMMiWFJrvx1Zk4cud9qMeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTc0LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-53.45-2-0.jpg"
+  },
+  {
+    "id": "m7302162",
+    "entrance": "2",
+    "floor": 10,
+    "rooms": 1,
+    "area": 40.08,
+    "price": 5450880,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228179/8S6lgU9fDQM8UbhHA8ADDX2xSxmfLWbZ9wsEffE2crkeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTc5LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-40_08-2-40.08.jpg"
+  },
+  {
+    "id": "m7302163",
+    "entrance": "2",
+    "floor": 10,
+    "rooms": 1,
+    "area": 31.29,
+    "price": 4224150,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228057/eDOcBXnqb9qlNJmjUXTyLLpigom5dDnOQ5VqbysT694eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MDU3LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-31.29-1-0.jpg"
+  },
+  {
+    "id": "m7302164",
+    "entrance": "2",
+    "floor": 10,
+    "rooms": 1,
+    "area": 30.81,
+    "price": 4251780,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228180/Gl3slFq_2bkjFvdjbfHRDFtsOd7ED8UKu_en3gptxZgeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTgwLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-30.81-2-0.jpg"
+  },
+  {
+    "id": "m7302165",
+    "entrance": "2",
+    "floor": 10,
+    "rooms": 1,
+    "area": 30.93,
+    "price": 4268340,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227701/KMsqZc-VlC9G9ZFbjkxDDS50O59xybdUKNrnjPt09OkeyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzAxLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-30_93-2-30.93.jpg"
+  },
+  {
+    "id": "m7302166",
+    "entrance": "2",
+    "floor": 10,
+    "rooms": 1,
+    "area": 36.74,
+    "price": 5327300,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228182/_CIg2F70OBS-zgvIH3hCe98XVK8xFAYgHvm9I_S0Ka0eyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTgyLjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-36.74-1-0.jpg"
+  },
+  {
+    "id": "m7302167",
+    "entrance": "2",
+    "floor": 10,
+    "rooms": 3,
+    "area": 68.71,
+    "price": 9275850,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4227745/sqJYYWOo4f8In-ffKi88m27H2SgFTlgI-YJ7aPRPuYceyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI3NzQ1LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k3-68_71-2-2-68.71.jpg"
+  },
+  {
+    "id": "m7302168",
+    "entrance": "2",
+    "floor": 10,
+    "rooms": 1,
+    "area": 32.71,
+    "price": 4579400,
+    "status": "free",
+    "img": "https://macro.sbercrm.com/estate/files/tmp/7280109/4228187/berXpRw2GwIz0Gp_wYvpzlyXhNewHXirI4rrmtTCIuceyJ2IjoxLCJwIjoiZXN0YXRlLWZpbGUiLCJzIjoiNzI4MDEwOS40MjI4MTg3LjAiLCJlIjoxNzkyNzY3NjAwfQ/planirovka_k1-p2-32_71-1-2-32.71.jpg"
+  }
+]

@@ -4,6 +4,14 @@ on:
   push:
     branches: [master]
   workflow_dispatch:
+  # Переопубликовывает сайт дважды в день даже без новых коммитов —
+  # нужно из-за интеграции с Macro CRM (см. "Fetch live Macro units"
+  # ниже): ссылки на картинки планировок (planImage) в их API временные
+  # и протухают через несколько дней, цены/статусы лотов тоже меняются
+  # сами по себе, без правок в этом репозитории.
+  schedule:
+    - cron: '0 5 * * *'  # 8:00 МСК (UTC+3)
+    - cron: '0 10 * * *' # 13:00 МСК
 
 permissions:
   contents: read
@@ -34,6 +42,22 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+
+      # Живые данные по квартирам из Macro CRM — опционально. Пока
+      # репозиторий не настроен (см. MACRO_API_KEY/MACRO_HOST/
+      # MACRO_COMPLEX_ID ниже), скрипт молча завершается и сайт
+      # работает на моковых данных (scripts/fetch-macro-units.mjs,
+      # сохраняет result в assets/data/macro-units.generated.json,
+      # который подхватывает модалка «Выбор квартиры» в index.html).
+      # Сбой API/сети не должен ронять деплой — скрипт сам это
+      # гарантирует (exit 0 во всех ветках), поэтому отдельный || true
+      # здесь не нужен и маскировал бы реальные ошибки скрипта.
+      - name: Fetch live Macro units (optional)
+        env:
+          MACRO_API_KEY: ${{ secrets.MACRO_API_KEY }}
+          MACRO_HOST: ${{ vars.MACRO_HOST }}
+          MACRO_COMPLEX_ID: ${{ vars.MACRO_COMPLEX_ID }}
+        run: node scripts/fetch-macro-units.mjs
 
       - name: Validate configuration
         run: |
