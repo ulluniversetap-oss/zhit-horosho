@@ -4598,7 +4598,14 @@
 
   .apt-picker__plan {
     display: flex;
-    align-items: center;
+    /* align-items: flex-start, не center: с center при переполнении
+       (этажи с 7-9 квартирами выше, чем видимая высота панели) сетка
+       обрезается СВЕРХУ и не прокручивается туда — это стандартный
+       баг центрирования flex-ребёнка с overflow, scrollTop физически
+       не может уйти в отрицательные значения, чтобы докрутить до
+       верхних рядов. flex-start убирает баг: сетка стартует от верха
+       и спокойно прокручивается вниз на любую высоту. */
+    align-items: flex-start;
     justify-content: center;
     padding: var(--space-24);
     background: #F7F9FB;
@@ -4610,6 +4617,16 @@
     grid-template-columns: repeat(2, 1fr);
     gap: var(--space-12);
     width: min(22rem, 100%);
+  }
+
+  /* По просьбе «на этажах, где много квартир, сделаем по 3 в ряду» —
+     применяется в JS (renderAptPicker), когда на этаже > 6 квартир
+     (сейчас с реальными данными Macro максимум 9 на этаж/подъезд,
+     это 5 рядов по 2 или всего 3 ряда по 3 — заметно компактнее,
+     реже требует скролла). Ширина сетки чуть больше под 3 колонки. */
+  .apt-picker__plan-grid--dense {
+    grid-template-columns: repeat(3, 1fr);
+    width: min(28rem, 100%);
   }
 
   .apt-picker__unit {
@@ -7029,6 +7046,7 @@
 
     var planGridEl = document.getElementById('aptPickerPlanGrid');
     var floorUnits = aptUnitsFor(aptPickerState.entrance, aptPickerState.floor);
+    planGridEl.classList.toggle('apt-picker__plan-grid--dense', floorUnits.length > 6);
     planGridEl.innerHTML = floorUnits.map(function (u) {
       var cls = 'apt-picker__unit';
       if (u.id === aptPickerState.unitId) cls += ' is-selected';
