@@ -2211,8 +2211,8 @@
   .walk-chip em { font-style: normal; opacity: 0.4; font-variant-numeric: tabular-nums; }
 
   .walk-chip.is-active {
-    background: #1c1c1a;
-    border-color: #1c1c1a;
+    background: var(--accent, #F03D3A);
+    border-color: var(--accent, #F03D3A);
     color: #ffffff;
   }
 
@@ -2436,7 +2436,7 @@
 
   @media (hover: hover) {
     .walk-chip:hover { border-color: rgba(28, 28, 26, 0.35); }
-    .walk-chip.is-active:hover { border-color: #1c1c1a; }
+    .walk-chip.is-active:hover { border-color: var(--accent, #F03D3A); }
     .walk-item:hover { background: rgba(28, 28, 26, 0.05); }
     .walk-item.is-active:hover { background: rgba(240, 61, 58, 0.07); }
   }
