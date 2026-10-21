@@ -6022,8 +6022,9 @@
           <div class="layouts-row"><span>Тип</span><span>1-комнатная</span></div>
           <div class="layouts-row"><span>Площадь</span><span>32,71 м²</span></div>
           <div class="layouts-row"><span>Этаж</span><span>2 из 10</span></div>
+          <div class="layouts-row"><span>Цена</span><span>4 099 000 ₽</span></div>
         </div>
-        <div class="layouts-more" onclick="event.preventDefault(); event.stopPropagation(); openApartmentPicker();">Смотреть подробнее</div>
+        <div class="layouts-more" onclick="event.preventDefault(); event.stopPropagation(); openApartmentPicker(1, 32.71);">Смотреть подробнее</div>
       </a>
 
       <a class="layouts-card" href="/layouts/2k-51">
@@ -6037,8 +6038,9 @@
           <div class="layouts-row"><span>Тип</span><span>2-комнатная</span></div>
           <div class="layouts-row"><span>Площадь</span><span>51,83 м²</span></div>
           <div class="layouts-row"><span>Этаж</span><span>5 из 10</span></div>
+          <div class="layouts-row"><span>Цена</span><span>6 100 000 ₽</span></div>
         </div>
-        <div class="layouts-more" onclick="event.preventDefault(); event.stopPropagation(); openApartmentPicker();">Смотреть подробнее</div>
+        <div class="layouts-more" onclick="event.preventDefault(); event.stopPropagation(); openApartmentPicker(2, 51.83);">Смотреть подробнее</div>
       </a>
 
       <a class="layouts-card" href="/layouts/3k-68">
@@ -6052,8 +6054,9 @@
           <div class="layouts-row"><span>Тип</span><span>3-комнатная</span></div>
           <div class="layouts-row"><span>Площадь</span><span>68,71 м²</span></div>
           <div class="layouts-row"><span>Этаж</span><span>8 из 10</span></div>
+          <div class="layouts-row"><span>Цена</span><span>6 958 000 ₽</span></div>
         </div>
-        <div class="layouts-more" onclick="event.preventDefault(); event.stopPropagation(); openApartmentPicker();">Смотреть подробнее</div>
+        <div class="layouts-more" onclick="event.preventDefault(); event.stopPropagation(); openApartmentPicker(3, 68.71);">Смотреть подробнее</div>
       </a>
 
       <a class="layouts-card" href="/layouts/1k-40">
@@ -6067,8 +6070,9 @@
           <div class="layouts-row"><span>Тип</span><span>1-комнатная</span></div>
           <div class="layouts-row"><span>Площадь</span><span>40,08 м²</span></div>
           <div class="layouts-row"><span>Этаж</span><span>8 из 10</span></div>
+          <div class="layouts-row"><span>Цена</span><span>4 850 000 ₽</span></div>
         </div>
-        <div class="layouts-more" onclick="event.preventDefault(); event.stopPropagation(); openApartmentPicker();">Смотреть подробнее</div>
+        <div class="layouts-more" onclick="event.preventDefault(); event.stopPropagation(); openApartmentPicker(1, 40.08);">Смотреть подробнее</div>
       </a>
 
     </div>
@@ -6915,11 +6919,35 @@
     });
   }
 
-  function openApartmentPicker() {
+  // rooms/area — опциональные: карточки блока «Выберите свою квартиру»
+  // (layouts-grid) показывают конкретную планировку (комнаты + площадь),
+  // и кнопка «Смотреть подробнее» должна открывать модалку сразу на
+  // ней, а не на дефолтном подъезде/этаже, как раньше. Остальные
+  // вызовы openApartmentPicker() по сайту (без аргументов) ведут себя
+  // как и раньше — просто открывают модалку на дефолтных значениях.
+  function openApartmentPicker(rooms, area) {
     var overlay = document.getElementById('aptPickerOverlay');
     if (!overlay) return;
     overlay.classList.add('is-open');
     document.body.style.overflow = 'hidden';
+
+    if (rooms != null && area != null) {
+      var matches = APT_PICKER_UNITS.filter(function (u) {
+        return u.rooms === rooms && Math.abs(u.area - area) < 0.01;
+      });
+      // Среди совпадений по площади предпочитаем свободную — если все
+      // заняты/забронированы, всё равно откроем тот же подъезд/этаж
+      // (пользователь увидит «нет свободных» и сможет переключиться).
+      var match = matches.find(function (u) { return u.status === 'free'; }) || matches[0];
+      if (match) {
+        aptPickerState.entrance = match.entrance;
+        aptPickerState.floor = match.floor;
+        aptPickerState.unitId = match.status === 'free' ? match.id : null;
+        renderAptPicker();
+        return;
+      }
+    }
+
     if (!aptPickerState.entrance || !aptPickerState.floor) aptResetState();
     renderAptPicker();
   }
