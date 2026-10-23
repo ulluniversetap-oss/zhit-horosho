@@ -529,6 +529,15 @@
      мобильном текст сам переносится нормально, мешают только на
      макбучных ширинах. */
   .br-mac { display: none; }
+  /* Перенос только на мобильном (обратная логика .br-mac выше) — для
+     ручных разбивок строки, которые имеют смысл лишь на узком экране,
+     где заголовок иначе переполняет панель по горизонтали (см. блок
+     «Выберите свою квартиру»). На десктопе/планшете текст сам
+     переносится по ширине контейнера — там этот <br> не нужен. */
+  .br-mobile { display: none; }
+  @media (max-width: 640px) {
+    .br-mobile { display: block; }
+  }
   @media (max-width: 1600px) and (min-width: 901px) {
     .br-mac { display: block; }
     /* Карточки блока «Ещё возможности» (.addl-card) — их «десктопный»
@@ -1990,9 +1999,51 @@
     }
   }
 
+  /* Подсказка «Листайте влево» — виден только на мобильном (включается
+     в медиа-запросе ниже), тот же паттерн, что у .offers-swipe-hint
+     в блоке «Выгодные условия». */
+  .layouts-swipe-hint { display: none; }
+
   @media (max-width: 640px) {
     .layouts-inner { padding: 0 var(--space-24); }
-    .layouts-grid { grid-template-columns: 1fr; }
+    /* По просьбе «слайдер сделай, как в блоке акций» — тот же приём,
+       что у .offers-grid: горизонтальный scroll-snap вместо вертикального
+       стека в одну колонку, карточки листаются свайпом, следующая слегка
+       выглядывает справа. */
+    .layouts-grid {
+      display: flex;
+      grid-template-columns: none;
+      gap: var(--space-16);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: var(--space-8);
+      margin: 0 calc(-1 * var(--space-24));
+      padding-left: var(--space-24);
+      padding-right: var(--space-24);
+    }
+    .layouts-grid::-webkit-scrollbar { display: none; }
+    .layouts-card {
+      flex: 0 0 auto;
+      width: 84vw;
+      scroll-snap-align: start;
+    }
+
+    .layouts-swipe-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-8);
+      /* Тот же отступ заголовок→подсказка→карточки, что у .offers —
+         margin заголовка (1.92rem), не отдельный токен. */
+      margin: 0 0 1.92rem;
+      padding: var(--space-8) var(--space-16);
+      border-radius: 999px;
+      background: rgba(240, 61, 58, 0.1);
+      color: var(--accent, #F03D3A);
+      font-family: 'Onest', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
   }
 
   /* На тач-устройствах ховера нет — держим лупу всегда видимой,
@@ -6017,8 +6068,16 @@
   <div class="layouts-inner">
 
     <div class="layouts-head">
-      <h2 class="layouts-heading">Выберите свою квартиру<br /><span>по площади, этажу и бюджету</span></h2>
+      <h2 class="layouts-heading">Выберите<br class="br-mobile" /> свою квартиру<br /><span>по площади,<br class="br-mobile" /> этажу и бюджету</span></h2>
     </div>
+
+    <span class="layouts-swipe-hint">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 3l-1.5 1.5M6 6l-1.5 1.5M12 1l-1 1.3"/>
+        <path d="M10 9V6a1.5 1.5 0 0 1 3 0v6m0-4.5a1.5 1.5 0 0 1 3 0V11m0-1a1.5 1.5 0 0 1 3 0v4c0 3.3-2.7 6-6 6h-1c-2 0-3-.6-4.2-2l-3-3.5a1.4 1.4 0 0 1 2-2L9 14"/>
+      </svg>
+      Листайте влево
+    </span>
 
     <div class="layouts-grid">
 
