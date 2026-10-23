@@ -6832,6 +6832,17 @@
   var APT_PICKER_UNITS = buildMockUnits();
   var aptPickerState = { entrance: null, floor: null, unitId: null };
 
+  /* Картинка планировки в карточке — один постоянный DOM-узел, а не
+     часть cardEl.innerHTML: при переключении подъезда/этажа/квартиры
+     renderAptPicker() перестраивает всю карточку текстом (это мгновенно,
+     не мерцает), но если бы <img> создавался заново при каждом рендере,
+     старый кадр уничтожался бы сразу, а новый начинал грузиться с нуля —
+     пока картинка (с Macro, не из нашего кэша) не успела подгрузиться,
+     виден пустой кадр. Тот же <img>-узел, перевешенный в новый контейнер,
+     браузер не перезагружает и не передекодирует — старое изображение
+     остаётся на экране до готовности нового, мерцания нет. */
+  var aptCardImg = document.createElement('img');
+
   function aptDeriveEntrances() {
     var seen = {};
     var out = [];
@@ -7037,9 +7048,7 @@
     var pricePerM2 = Math.round(unit.price / unit.area);
     var netArea = (unit.area * 0.92).toFixed(1).replace('.', ',');
     cardEl.innerHTML =
-      '<div class="apt-picker__card-photo">' +
-        '<img src="' + unit.img + '" alt="Планировка ' + unit.rooms + '-комнатной квартиры, ' + unit.area.toFixed(2).replace('.', ',') + ' м²" />' +
-      '</div>' +
+      '<div class="apt-picker__card-photo"></div>' +
       '<h4 class="apt-picker__card-title">' + unit.rooms + 'к, ' + unit.area.toFixed(2).replace('.', ',') + ' м²</h4>' +
       '<p class="apt-picker__card-meta">Подъезд ' + unit.entrance + ' · Этаж ' + unit.floor + ' из 10</p>' +
       '<div class="apt-picker__card-stats">' +
@@ -7052,6 +7061,12 @@
       '<p class="apt-picker__card-price-sub">Ипотека от 4.4% —<br />рассчитаем платёж в заявке</p>' +
       '<button type="button" class="apt-picker__card-cta" onclick="closeApartmentPicker(); openLeadModal();">Забронировать</button>' +
       '<span class="apt-picker__card-more" onclick="aptZoomCardPhoto(event)">Подробнее</span>';
+
+    /* aptCardImg — тот же узел на каждый рендер (см. комментарий у его
+       создания выше) — перевешивается сюда, а не создаётся заново. */
+    aptCardImg.alt = 'Планировка ' + unit.rooms + '-комнатной квартиры, ' + unit.area.toFixed(2).replace('.', ',') + ' м²';
+    aptCardImg.src = unit.img;
+    cardEl.querySelector('.apt-picker__card-photo').appendChild(aptCardImg);
   }
 
   function aptZoomCardPhoto(event) {
