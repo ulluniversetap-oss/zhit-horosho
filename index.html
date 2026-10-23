@@ -3645,6 +3645,44 @@
 
   @media (max-width: 640px) {
     .mcalc-inner { padding: 0 var(--space-24); }
+
+    /* По просьбе «фильтры упаковать аккуратно на мобилке» — раньше
+       каждое поле занимало 3 «этажа» (подпись сверху, под ней крупная
+       белая таблетка со значением на всю ширину, под ней слайдер) —
+       на телефоне это растягивало всю карточку. Подпись и значение
+       теперь в одной строке (как обычный фильтр в мобильном UI),
+       слайдер — сразу под ней, на всю ширину. */
+    .mcalc-sliders { padding: var(--space-22_4); gap: var(--space-19_2); }
+
+    .mcalc-field {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      column-gap: var(--space-12);
+    }
+
+    .mcalc-field label {
+      margin: 0;
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .mcalc-readout {
+      flex: 0 0 auto;
+      margin: 0;
+      padding: var(--space-6_4) var(--space-12);
+      font-size: 1.05rem;
+    }
+
+    .mcalc-field input[type="range"] {
+      /* flex-basis 100% — переносит слайдер на новую строку под
+         подписью+значением, не занимая место рядом с ними в той же
+         строке (у flex-wrap строка с меньшим content не ломается
+         сама по себе, нужен явный базис на всю ширину). */
+      flex: 1 1 100%;
+      margin-top: var(--space-8);
+    }
   }
 
   /* ===== Блок «Дополнительные услуги» =====
