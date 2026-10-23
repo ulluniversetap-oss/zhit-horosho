@@ -6691,8 +6691,15 @@
         [elPrice, elDown, elTerm].forEach(paintTrack);
 
         var head = table.querySelector('.mcalc-row.is-head');
-        var rowsHtml = banks.map(function (b) {
-          var payment = monthlyPayment(loan, b.rate, Math.min(term, b.term));
+        // Как в референсе (butik): если выбранный срок больше
+        // максимального срока банка, банк не показывается вовсе —
+        // не оставляем строку с платежом, молча пересчитанным на
+        // укороченный (свой) срок. У банков, что прошли фильтр, платёж
+        // считается по выбранному сроку целиком, не по min(term, b.term)
+        // — укорачивать уже не от чего, раз их максимум не меньше.
+        var available = banks.filter(function (b) { return b.term >= term; });
+        var rowsHtml = available.map(function (b) {
+          var payment = monthlyPayment(loan, b.rate, term);
           return (
             '<div class="mcalc-row">' +
               '<span class="mcalc-bank"><span class="mcalc-mono"><img src="assets/icons/banks/' + b.logo + '" alt="' + b.name + '" loading="lazy"></span>' + b.name + '</span>' +
@@ -6705,7 +6712,12 @@
 
         table.innerHTML = '';
         if (head) table.appendChild(head);
-        table.insertAdjacentHTML('beforeend', rowsHtml);
+        if (available.length) {
+          table.insertAdjacentHTML('beforeend', rowsHtml);
+        } else {
+          table.insertAdjacentHTML('beforeend',
+            '<p style="padding: var(--space-24) var(--space-27_2); color:#8a8a83; font-size:0.9rem;">При таком сроке кредита ни один банк не предлагает ипотеку — уменьшите срок.</p>');
+        }
         updateScrollThumb();
       }
 
