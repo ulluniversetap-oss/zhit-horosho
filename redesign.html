@@ -5576,6 +5576,14 @@
   /* Подложка панели отделки — тёмное стекло вместо светлого,
      чтобы белый текст читался на светлых кадрах видео. */
   .finish-features { background: rgba(20, 18, 16, 0.4); }
+
+  /* Вся планировка кликабельна: курсор-лупа и лёгкое увеличение
+     картинки при наведении, лупа в углу показывается как раньше. */
+  .layouts-photo { cursor: zoom-in; }
+  .layouts-photo img { transition: transform 0.4s ease; }
+  @media (hover: hover) and (pointer: fine) {
+    .layouts-photo:hover img { transform: scale(1.05); }
+  }
 </style>
 
 <body>
@@ -7039,6 +7047,12 @@
 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') closeLayoutZoom();
+  });
+
+  // Клик по любой точке планировки (не только по лупе) открывает её
+  // крупно, без перехода по ссылке карточки.
+  document.querySelectorAll('.layouts-photo').forEach(function (photo) {
+    photo.addEventListener('click', function (e) { openLayoutZoom(e, photo); });
   });
 </script>
 
