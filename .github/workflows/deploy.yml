@@ -81,6 +81,12 @@ jobs:
 
           mkdir -p .publish/assets
           cp index.html .publish/index.html
+          # Черновик редизайна — отдельная страница рядом с основной
+          # (/redesign.html), index.html не затрагивает.
+          if [[ -f redesign.html ]]; then
+            test ! -L redesign.html
+            cp redesign.html .publish/redesign.html
+          fi
           rsync -rlt \
             --exclude='.git/' \
             --exclude='.env*' \
