@@ -1,0 +1,5862 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Главный экран — вариант C</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<!-- Leaflet — карта окружения в блоке «Всё нужное — в пешей доступности».
+     Версия зафиксирована; если CDN недоступен, блок деградирует в список
+     без карты (см. проверку typeof L в скрипте внизу страницы). -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js" defer></script>
+<style>
+  :root {
+    --space-2_4: 0.15rem;
+    --space-3_2: 0.2rem;
+    --space-4: 0.25rem;
+    --space-4_8: 0.3rem;
+    --space-5_6: 0.35rem;
+    --space-6_4: 0.4rem;
+    --space-8: 0.5rem;
+    --space-9_6: 0.6rem;
+    --space-11_2: 0.7rem;
+    --space-12: 0.75rem;
+    --space-12_8: 0.8rem;
+    --space-13_6: 0.85rem;
+    --space-14_4: 0.9rem;
+    --space-15_2: 0.95rem;
+    --space-16: 1rem;
+    --space-16_8: 1.05rem;
+    --space-17_6: 1.1rem;
+    --space-18_4: 1.15rem;
+    --space-19_2: 1.2rem;
+    --space-20: 1.25rem;
+    --space-20_8: 1.3rem;
+    --space-22_4: 1.4rem;
+    --space-24: 1.5rem;
+    --space-25_6: 1.6rem;
+    --space-26: 1.625rem;
+    --space-27_2: 1.7rem;
+    --space-28: 1.75rem;
+    --space-28_8: 1.8rem;
+    --space-30_4: 1.9rem;
+    --space-32: 2rem;
+    --space-35_2: 2.2rem;
+    --space-36: 2.25rem;
+    --space-36_8: 2.3rem;
+    --space-38: 2.375rem;
+    --space-38_4: 2.4rem;
+    --space-40: 2.5rem;
+    --space-41_6: 2.6rem;
+    --space-48: 3rem;
+    --space-54_4: 3.4rem;
+    --space-56: 3.5rem;
+    --space-57_6: 3.6rem;
+    --space-64: 4rem;
+    --space-72: 4.5rem;
+    --space-80: 5rem;
+    --space-94: 5.875rem;
+  }
+
+  @font-face {
+    font-family: 'RoadRadio';
+    /* Шрифт заголовков заменён с RoadRadio на Stolzl Medium (имя
+       font-family оставлено прежним — 'RoadRadio' — чтобы не менять
+       все селекторы по файлу). */
+    src: url(assets/fonts/Stolzl-Medium.woff) format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #F6F9FB;
+    font-family: 'Onest', -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  }
+
+  /* Кастомный скроллбар — по просьбе «сделай скролл этой штукой в
+     браузере точно такой же, как при скролле мышкой (плавный)».
+     Нативный скроллбар рисует ОС/браузер, JS не может подключиться к
+     его перетаскиванию и анимировать его так же, как колесо (там
+     работает preventDefault + rAF-докатка, см. скрипт в конце body).
+     Поэтому: нативный скрываем, рисуем свою тонкую полоску справа —
+     её перетаскивание двигает ту же общую цель (target) в rAF-цикле,
+     что и колесо, так что плавность одинаковая. Включается классом
+     .custom-scrollbar-enabled на <html> из JS — если скрипт по
+     какой-то причине не запустится (например, скрипты выключены),
+     класс не появится и увидим нативный скроллбар как раньше, ничего
+     не сломается. Только для мыши/трекпада (pointer: fine) — на тач-
+     устройствах кастомная полоска не включается, там своя нативная
+     инерция скролла. */
+  html.custom-scrollbar-enabled {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  html.custom-scrollbar-enabled::-webkit-scrollbar {
+    display: none;
+  }
+
+  .custom-scrollbar {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 14px;
+    height: 100vh;
+    z-index: 9999;
+  }
+
+  html.custom-scrollbar-enabled .custom-scrollbar {
+    display: block;
+  }
+
+  .custom-scrollbar-thumb {
+    position: absolute;
+    top: 0;
+    right: 3px;
+    width: 8px;
+    border-radius: 999px;
+    background: rgba(20, 16, 14, 0.35);
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+.custom-scrollbar-thumb:hover {
+    background: rgba(20, 16, 14, 0.5);
+  }
+}
+
+  html.custom-scrollbar-dragging .custom-scrollbar-thumb {
+    background: rgba(20, 16, 14, 0.6);
+  }
+
+  .hero {
+    --accent: #F03D3A;
+    --accent-secondary: #EC5958;
+    --glass-bg: rgba(255, 255, 255, 0.07);
+    --glass-border: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.3) 0px,
+      rgba(255, 255, 255, 0) 70px
+    );
+    --glass-blur-sm: 18.23px;  /* nav pill / contact button — Figma radius 36.46 / 2 */
+    --glass-blur-lg: 22.41px;  /* stat cards / badges — Figma radius 44.81 / 2 */
+
+    position: relative;
+    min-height: clamp(640px, 52vw, 900px);
+    color: #fff;
+    overflow: hidden;
+    border-radius: 0;
+    max-width: 1920px;
+    margin: 0 auto;
+  }
+
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  .hero__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      180deg,
+      rgba(10, 14, 25, 0.35) 0%,
+      rgba(10, 14, 25, 0) 30%,
+      rgba(10, 14, 25, 0.15) 65%,
+      rgba(10, 14, 25, 0.55) 100%
+    );
+  }
+
+  .hero__inner {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    min-height: inherit;
+    padding: var(--space-28_8) var(--space-57_6) var(--space-54_4);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-24);
+  }
+
+  .logo-svg { display: block; height: 4.3rem; width: auto; }
+
+  .nav ul {
+    position: relative;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-25_6);
+    height: 4.22rem;
+    margin: 0;
+    padding: 0 var(--space-41_6);
+    border-radius: 999px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur-sm));
+    -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+  }
+
+  .nav a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-6_4);
+    color: #fff;
+    font-weight: 500;
+    font-size: 0.844rem;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+.nav a:hover { opacity: 0.8; }
+}
+
+  .contacts { display: flex; align-items: center; gap: var(--space-32); }
+
+  .phone-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-4);
+  }
+
+  .phone { color: #fff; font-weight: 500; font-size: 1.4rem; text-decoration: none; }
+  .max-link { color: var(--accent-secondary); font-weight: 500; font-size: 1.05rem; text-decoration: none; }
+
+  @media (hover: hover) and (pointer: fine) {
+.max-link:hover { text-decoration: underline; }
+}
+
+  /* Высота кнопки зафиксирована и равна высоте .nav ul (4.22rem) —
+     раньше высота считалась от паддинга + 4.5rem-иконки (общий
+     .icon-circle для всех pill-кнопок сайта) и получалась ~5.5rem,
+     заметно выше пилюли меню и телефона рядом в той же строке шапки.
+     Здесь кнопка компактнее, т.к. живёт в тонкой строке шапки, а не
+     одна на пустом месте как .cta/.leadgen-submit. */
+  .contact-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    box-sizing: border-box;
+    height: 4.22rem;
+    gap: var(--space-22_4);
+    padding: 0 var(--space-8) 0 var(--space-36_8);
+    border-radius: 999px;
+    background: var(--glass-bg);
+    border: 0.95px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(var(--glass-blur-sm));
+    -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+
+  /* Своя (меньше общей 4.5rem) иконка-круг — рассчитана так, чтобы
+     вместе с вертикальным паддингом кнопки (0, высота задана самой
+     кнопкой) вписаться ровно в те же 4.22rem, что и .nav ul. */
+  .contact-btn .icon-circle { width: 3.22rem; height: 3.22rem; font-size: 1.05rem; }
+
+  /* Единая высота круглой иконки для всех pill-кнопок сайта
+     (contact-btn / cta / leadgen-submit) — на ~20% больше прежней
+     (3.6rem), плюс одинаковый вертикальный паддинг 0.5rem у каждой
+     кнопки даёт всем одну и ту же итоговую высоту ~5.5rem. */
+  .icon-circle {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    background: #fff;
+    color: #0a0e19;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+
+  /* ===== Единая анимация ховера для всех красных pill-кнопок сайта:
+     белый кружок расширяется и заливает всю кнопку, фон становится
+     белым, текст — фирменным красным. Круг живёт в ::before, а не в
+     самом .icon-circle: последний в DOM элемент по умолчанию красится
+     поверх остальных, и разросшийся .icon-circle просто закрашивал
+     текст кнопки собой. ::before с z-index:-1 красится строго между
+     фоном кнопки и текстом (текст — обычный неспозиционированный
+     инлайн-контент, он по правилам покраски CSS всегда выше
+     отрицательного z-index, но ниже z-index:0+), а сама иконка со
+     стрелкой (z-index:2) остаётся поверх всего и не мешает. */
+  .cta,
+  .leadgen-submit,
+  .contact-btn,
+  .addl-btn,
+  .offices-cta,
+  .news-btn {
+    position: relative;
+    z-index: 0; /* без явного z-index position:relative не создаёт свой контекст наложения, и ::before с z-index:-1 проваливается ЗА кнопку целиком (за hero-фон), а не просто под текст */
+    overflow: hidden;
+    transition: color 0.25s ease 0.1s;
+  }
+
+  .cta::before,
+  .leadgen-submit::before,
+  .contact-btn::before,
+  .addl-btn::before,
+  .offices-cta::before,
+  .news-btn::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    right: 0.5rem;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    background: #fff;
+    transform: translateY(-50%) scale(1);
+    transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+    pointer-events: none;
+  }
+
+  .contact-btn::before { width: 3.22rem; height: 3.22rem; }
+  /* .cta .icon-circle тянется по vw (clamp) вместе с hero — заливка
+     должна повторять тот же размер, иначе в статике белый круг
+     заливки крупнее настоящей иконки и торчит вокруг неё. */
+  .cta::before { width: clamp(3rem, 3.75vw, 4.5rem); height: clamp(3rem, 3.75vw, 4.5rem); }
+  .addl-btn::before,
+  .news-btn::before { width: 2.2rem; height: 2.2rem; }
+  .offices-cta::before { width: 2.6rem; height: 2.6rem; }
+
+  @media (hover: hover) and (pointer: fine) {
+  .cta:hover,
+  .leadgen-submit:hover,
+  .contact-btn:hover,
+  .addl-btn:hover,
+  .offices-cta:hover,
+  .news-btn:hover {
+    color: var(--accent, #F03D3A);
+  }
+.cta:hover::before,
+  .leadgen-submit:hover::before,
+  .contact-btn:hover::before,
+  .addl-btn:hover::before,
+  .offices-cta:hover::before,
+  .news-btn:hover::before {
+    transform: translateY(-50%) scale(16);
+  }
+/* По просьбе «анимация кнопки не доходит до левого края, надо как у
+     всех, чтобы полностью белым закрывало» — .offices-cta намного шире
+     остальных кнопок (полноширинная плашка в карточке контактов), а не
+     компактная пилюля, поэтому общего scale(16) не хватает, чтобы круг
+     дотянулся до левого края. Увеличен специально для неё. */
+  .offices-cta:hover::before {
+    transform: translateY(-50%) scale(40);
+  }
+/* .news-btn лежит на белой карточке (блок «Новости») — залитая
+     белым кнопка на ховере сливается с фоном карточки. Только здесь
+     добавляем красную обводку, чтобы граница кнопки не терялась. */
+  .news-btn:hover { border-color: var(--accent, #F03D3A); }
+}
+
+  /* Stats column */
+  /* .hero теряет высоту при сужении окна (clamp 640-900px от 52vw) —
+     эта колонка и .cta стояли на фиксированных rem-отступах и на
+     ноутбучных ширинах (1280-1600px) начинали наезжать друг на друга.
+     Все внутренние отступы/шрифты переведены на тот же приём vw-clamp,
+     что уже используется в .title — колонка сжимается синхронно с hero
+     и упирается в тот же минимум, что и .cta ниже. */
+  /* top подставляется через JS (см. скрипт в конце файла) — он считает
+     точную границу шапки и CTA и центрирует колонку между ними. Значение
+     ниже — просто fallback на случай, если JS не выполнился. */
+  .stats-column {
+    position: absolute;
+    right: 3.6rem;
+    top: 104.4px;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.7rem, 0.92vw, 1.1rem);
+    width: min(15.5rem, 22%);
+  }
+
+  .stat-card {
+    position: relative;
+    background: var(--glass-bg);
+    border-radius: 1.44rem;
+    backdrop-filter: blur(var(--glass-blur-lg));
+    -webkit-backdrop-filter: blur(var(--glass-blur-lg));
+    /* верхний паддинг чуть меньше бокового — визуальная компенсация:
+       снизу от иконки сразу идёт заголовок, а сверху пустота, и при
+       математически равных отступах верхний казался на глаз больше. */
+    padding: clamp(0.85rem, 1.07vw, 1.3rem) clamp(1.05rem, 1.33vw, 1.6rem) clamp(1.05rem, 1.33vw, 1.6rem);
+  }
+
+  /* Border-only gradient ring. The card's own background above is a
+     plain flat color — this pseudo-element is the ONLY place the
+     gradient exists, masked down to just the 1.45px stroke. */
+
+  .stat-card .cube {
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: clamp(0.95rem, 1.17vw, 1.4rem);
+    display: block;
+    color: var(--accent);
+  }
+
+  .stat-card strong {
+    display: block;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 800;
+    /* -20% по просьбе: было clamp(1.13rem, 1.41vw, 1.7rem). */
+    font-size: clamp(0.904rem, 1.128vw, 1.36rem);
+    letter-spacing: -0.03em;
+    line-height: 0.9;
+    margin-bottom: clamp(0.3rem, 0.4vw, 0.45rem);
+    text-transform: uppercase;
+  }
+
+  .stat-card p {
+    margin: 0;
+    font-weight: 300;
+    /* По просьбе «размер текста в этих 3-х плашках на 1px меньше» —
+       было 0.91rem (14.56px). */
+    font-size: 0.8475rem;
+    line-height: 1.25;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  /* Hero copy */
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-20_8);
+    max-width: 62%;
+  }
+
+  .badges { display: flex; flex-wrap: wrap; gap: var(--space-11_2); }
+
+  .badge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-9_6);
+    padding: var(--space-11_2) var(--space-19_2);
+    border-radius: 999px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur-lg));
+    -webkit-backdrop-filter: blur(var(--glass-blur-lg));
+    font-weight: 600;
+    font-size: 0.95rem;
+    white-space: nowrap;
+  }
+
+  .badge-dot {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* Иконка в пилюле вместо точки — по референсу (стилистика hero). */
+  .badge-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+    flex-shrink: 0;
+    color: var(--accent);
+  }
+
+  .title {
+    margin: 0;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.6rem, 5.2vw, 5.6rem);
+    line-height: 0.85;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+
+  /* CTA */
+  /* bottom-offset и высота кнопки тоже переведены на vw-clamp — см.
+     комментарий у .stats-column: обе части должны терять высоту
+     синхронно с .hero, иначе на ноутбучных ширинах CTA наезжает на
+     нижнюю карточку статистики. */
+  .cta {
+    position: absolute;
+    right: 3.6rem;
+    bottom: clamp(2.3rem, 2.83vw, 3.4rem);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-25_6);
+    padding: clamp(0.4rem, 0.5vw, 0.5rem) clamp(0.4rem, 0.5vw, 0.5rem) clamp(0.4rem, 0.5vw, 0.5rem) 2.2rem;
+    background: var(--accent);
+    border: none;
+    border-radius: 999px;
+    color: #fff;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  .cta .icon-circle {
+    color: var(--accent);
+    width: clamp(3rem, 3.75vw, 4.5rem);
+    height: clamp(3rem, 3.75vw, 4.5rem);
+  }
+
+  /* Ручные переносы под ноутбучную ширину строки (блок «Всё что нужно
+     в шаговой доступности») — на десктопе (широкий монитор) и на
+     мобильном текст сам переносится нормально, мешают только на
+     макбучных ширинах. */
+  .br-mac { display: none; }
+  /* Перенос только на мобильном (обратная логика .br-mac выше) — для
+     ручных разбивок строки, которые имеют смысл лишь на узком экране,
+     где заголовок иначе переполняет панель по горизонтали (см. блок
+     «Выберите свою квартиру»). На десктопе/планшете текст сам
+     переносится по ширине контейнера — там этот <br> не нужен. */
+  .br-mobile { display: none; }
+  @media (max-width: 640px) {
+    .br-mobile { display: block; }
+  }
+  @media (max-width: 1600px) and (min-width: 901px) {
+    .br-mac { display: block; }
+    /* Карточки блока «Ещё возможности» (.addl-card) — их «десктопный»
+       перенос (.addl-break) на мак-ширинах ломает раскладку вместе с
+       новыми .br-mac переносами (получается лишняя 4-я строка); на
+       мак-ширинах используем только .br-mac. */
+    .addl-break { display: none; }
+    /* Аналогично для карточки новости «Сколько стоят четыре года учёбы
+       студента» — старый перенос (после «квартира») уступает место
+       новому .br-mac (после «общежитие,»), чтобы не было 3 строк
+       вместо 2. */
+    .br-desktop-only { display: none; }
+
+    /* По просьбе «на макбук разрешении размер иконок на 15% меньше» —
+       иконки-кубы в карточках статистики хиро-блока. Было 2rem. */
+    .stat-card .cube { width: 1.7rem; height: 1.7rem; }
+
+    /* По просьбе «расстояние между иконкой и заголовком на 20% больше,
+       на мак разрешении» — было clamp(0.95rem, 1.17vw, 1.4rem). */
+    .stat-card .cube { margin-bottom: clamp(1.14rem, 1.404vw, 1.68rem); }
+  }
+
+  /* Ноутбучные ширины (1280-1600px): в шапке 8 пунктов меню + телефон +
+     кнопка физически не помещаются на фиксированных отступах/шрифтах —
+     компактная версия тех же элементов, ничего не скрываем. */
+  @media (max-width: 1600px) {
+    .nav ul { gap: var(--space-16_8); padding: 0 var(--space-27_2); }
+    .nav a { font-size: 0.78rem; }
+    .contacts { gap: var(--space-17_6); }
+    .phone { font-size: 1.15rem; }
+    .max-link { font-size: 0.92rem; }
+    .contact-btn { gap: var(--space-16); padding: 0 var(--space-8) 0 var(--space-25_6); font-size: 0.75rem; }
+  }
+
+  /* Гамбургер — скрыт на десктопе, показывается вместо nav/contacts
+     на мобильном (см. брейкпоинт ниже). */
+  .burger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.32rem;
+    width: 2.8rem;
+    height: 2.8rem;
+    border: none;
+    border-radius: 50%;
+    background: var(--glass-bg);
+    flex-shrink: 0;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .burger span {
+    display: block;
+    width: 1.2rem;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  .burger.is-open span:nth-child(1) { transform: translateY(0.42rem) rotate(45deg); }
+  .burger.is-open span:nth-child(2) { opacity: 0; }
+  .burger.is-open span:nth-child(3) { transform: translateY(-0.42rem) rotate(-45deg); }
+
+  /* Полноэкранная мобильная навигация — скрыта на десктопе, всегда
+     существует в DOM (не только в мобильном брейкпоинте), но не
+     занимает места, пока .is-open не добавлен. */
+  .mobile-nav {
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    .stats-column { display: none; } /* десктоп-версия: на мобильном верстка не продумывалась */
+    .content { max-width: 100%; }
+
+    /* Шапка на мобильном: логотип + гамбургер, всё остальное уходит
+       в выезжающую панель .mobile-nav. */
+    .header .nav,
+    .header .contacts { display: none; }
+    .burger { display: flex; }
+
+    .mobile-nav {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: #0a0e19;
+      padding: var(--space-28_8) var(--space-24) var(--space-32);
+      overflow-y: auto;
+      transform: translateY(-100%);
+      opacity: 0;
+      transition: transform 0.35s ease, opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .mobile-nav.is-open {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .mobile-nav nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-8);
+    }
+
+    .mobile-nav nav a {
+      display: block;
+      padding: var(--space-16) 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 1.15rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .mobile-nav__contacts {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-12);
+      margin-top: var(--space-32);
+    }
+
+    .mobile-nav__contacts .phone { font-size: 1.3rem; }
+
+    .mobile-nav__contacts .contact-btn { width: 100%; justify-content: space-between; }
+
+    /* Пока меню открыто — страница за ним не скроллится. */
+    body.nav-open { overflow: hidden; }
+
+    /* Hero на мобильном — обычный поток вместо position:absolute для
+       CTA: раньше кнопка была прибита к низу секции и наезжала на
+       заголовок, если он переносился на 3 строки. Теперь высота hero
+       считается по контенту, а не фиксируется. */
+    .hero { min-height: 0; }
+
+    .hero__inner {
+      min-height: 78dvh;
+      padding: var(--space-24) var(--space-20) var(--space-32);
+      gap: var(--space-32);
+      justify-content: flex-start;
+    }
+
+    .header { margin-bottom: auto; } /* держит шапку у верха, весь остальной контент группируется у низа */
+
+    .content { gap: var(--space-16); }
+
+    .badges { gap: var(--space-8); }
+
+    .badge { font-size: 0.85rem; padding: var(--space-8) var(--space-16); }
+
+    .title { font-size: clamp(2.1rem, 9.5vw, 2.8rem); line-height: 0.95; }
+
+    .cta {
+      /* Было position:static — из-за этого .cta переставала быть
+         containing block для .cta::before (position:absolute, тот
+         самый белый круг заливки), и он позиционировался относительно
+         следующего позиционированного предка выше (.hero__inner),
+         вылезая из-под overflow:hidden кнопки прямо на фон hero.
+         position:relative ведёт себя как static в потоке (offset нулевой,
+         top/left не заданы), но возвращает кнопке роль контейнера. */
+      position: relative;
+      width: 100%;
+      justify-content: space-between;
+      margin-top: var(--space-32);
+    }
+  }
+
+
+  /* ===== Блок 2: «Семейный дом / Все что нужно / Собственная котельная» ===== */
+.section {
+    position: relative;
+    max-width: 1920px;
+    margin: 0 auto;
+  }
+
+  .row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 516fr 888fr 516fr;
+    border-top: 1px solid #dcdcd8;
+    min-height: 85vh;
+    overflow: hidden;
+  }
+
+  .row--a { min-height: 66.3vh; } /* 55.25vh + 20% */
+  .row--b { min-height: 47.6vh; } /* 59.5vh − 20% */
+  .row--c { min-height: 42.5vh; } /* 85vh − 50% */
+  .row--spacer { min-height: 12vh; }
+
+  .row:first-child { border-top: none; }
+
+  .col {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-48) var(--space-32);
+  }
+
+  .col + .col { border-left: 1px solid #dcdcd8; }
+
+  .col-media { padding: 0; min-height: 34rem; }
+  .row--a .col-media { min-height: 26.5rem; }  /* 22.1rem + 20% */
+  .row--b .col-media { min-height: 19rem; }   /* 23.8rem − 20% */
+  .row--c .col-media { min-height: 17rem; }   /* 34rem − 50% */
+
+  /* image sits in the LAST column (right side of layout) → gap on the
+     outer right edge, flush against the divider on the left */
+  .row > .col-media:last-child { padding: 0 var(--space-36) 0 0; }
+  .row > .col-media:last-child .media-frame { border-radius: 0; }
+
+  /* image sits in the FIRST column (left side of layout) → gap on the
+     outer left edge, flush against the divider on the right */
+  .row > .col-media:first-child { padding: 0 0 0 var(--space-36); }
+  .row > .col-media:first-child .media-frame { border-radius: 0; }
+
+  .media-frame {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #d8d8d4;
+    will-change: transform, opacity;
+  }
+
+  .media-frame.placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #e2e2de, #c9c9c3);
+    color: #8a8a83;
+    font-size: 0.9rem;
+    text-align: center;
+    padding: var(--space-16);
+
+  }
+
+  .media-frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .col-text {
+    align-items: flex-start;
+    padding: 0 var(--space-32);
+  }
+
+  .text-inner {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+    text-align: center;
+    padding: 0 var(--space-32);
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+
+  .heading {
+    margin: 0;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 2.8125rem;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    text-align: center;
+    color: #272727;
+  }
+
+  .heading .accent { color: #F03D3A; }
+
+  .paragraph {
+    margin: 0 auto;
+    max-width: 42rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    text-align: center;
+    color: #3c3c3a;
+  }
+
+  /* ===== Блок 3: «Три разных сценария в одном доме» ===== */
+  /* position: sticky (не relative) — блок остаётся на месте, пока блок 4
+     не «наезжает» и не закрывает его целиком. z-index ниже блока 4. */
+  .scenarios {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: url('assets/images/scenarios-bg.jpg') center / cover no-repeat;
+    /* Внутренний вертикальный паддинг -20% по просьбе «у всех
+       блоков»: было var(--space-80). */
+    padding: var(--space-64) 0;
+    margin: 0 var(--space-36);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .scenarios-inner {
+    max-width: 1920px;
+    margin: 0 auto;
+    /* Горизонтальный отступ подложки блока (от края панели до контента)
+       увеличен на 60% (27.2px → 43.52px = 2.72rem) по уточнённой просьбе
+       «внутренние отступы в подложках у контента» — речь про этот отступ,
+       не про паддинг внутри стеклянных .scenario-card (там вернули как
+       было). Точного токена под 43.52px нет, посчитано напрямую. */
+    padding: 0 2.72rem;
+  }
+
+  .scenarios-heading {
+    /* Было var(--space-40) = 2.5rem, -20% по просьбе «везде на всех
+       заголовках» = 2rem = var(--space-32). */
+    margin: 0 0 var(--space-32);
+    max-width: 45rem;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 2.8125rem;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: #ffffff;
+  }
+
+  .scenario-card {
+    display: flex;
+    /* stretch (не flex-start): иконка растягивается по высоте до низа
+       статов-чипов, а не только до верхней строки — картинка идёт
+       вровень с текстом сверху и снизу, как на референсе. .scenario-stats
+       теперь лежит внутри .scenario-body, так что wrap для статов
+       больше не нужен. */
+    align-items: stretch;
+    gap: var(--space-24);
+    max-width: 47.6rem; /* 68rem − 30% */
+    /* Однородные отступы со всех сторон (раньше было 24/27.2/27.2/14.4 —
+       низ был заметно теснее верха и боков). +60% горизонтали пробовали
+       здесь (внутри самой стеклянной карточки), но по уточнению «я не
+       имел ввиду внутри стеклянных блоков, верни как было» — вернули
+       24px, +60% перенесли в .scenarios-inner (отступ подложки блока
+       целиком от края до контента). */
+    padding: var(--space-24);
+    margin-bottom: var(--space-19_2);
+    background: rgba(48, 38, 32, 0.55);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 0.8rem;
+  }
+
+  .scenario-card:last-child { margin-bottom: 0; }
+
+  .scenario-icon {
+    flex-shrink: 0;
+    /* Высота растягивается по кросс-оси (align-items: stretch у
+       родителя) до высоты .scenario-body (заголовок + текст + статы);
+       ширина явно не задана — aspect-ratio: 1 подтягивает её к той же
+       величине, что и высота, так что иконка остаётся квадратом
+       независимо от того, насколько высокий текстовый блок. */
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    padding: var(--space-4_8);
+  }
+
+  .scenario-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .scenario-body {
+    flex: 1 1 20rem;
+    min-width: 14rem;
+    /* Колонка + margin-top: auto у .scenario-stats (ниже): иконка
+       квадратная и её высота иногда больше, чем реально нужно тексту —
+       раньше эта разница оставалась пустым местом ПОД плашками, из-за
+       чего плашки не доходили до нижнего края иконки. Теперь остаток
+       высоты уходит в зазор ПЕРЕД плашками, и они всегда прижаты к низу
+       вровень с иконкой. */
+    display: flex;
+    flex-direction: column;
+  }
+
+  .scenario-body h3 {
+    margin: 0 0 var(--space-8);
+    font-family: 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #ffffff;
+  }
+
+  .scenario-body p {
+    margin: 0 0 var(--space-14_4);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  /* Статы карточки — плашки-чипы вместо строки под разделителем
+     (было: одна строка "Label: value", разделённая border-top).
+     Теперь лежит внутри .scenario-body (после <p>), а не отдельным
+     flex-item карточки — из-за этого раньше отступ до чипов складывался
+     из gap самой .scenario-card (24px) и margin-top чипов (14.4px) —
+     получалось 38.4px, слишком далеко от текста.
+     margin-top: auto (вместо фиксированного var(--space-14_4)) прижимает
+     плашки к нижнему краю .scenario-body (= нижний край квадратной
+     иконки, т.к. card использует align-items: stretch), забирая себе весь
+     "лишний" остаток высоты; минимальный отступ от текста в 14.4px при
+     этом гарантирует margin-bottom самого <p> (см. ниже). */
+  .scenario-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+    margin-top: auto;
+  }
+
+  .scenario-stats > div {
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    font-size: 0.78rem;
+    line-height: 1.2;
+    color: rgba(255, 255, 255, 0.85);
+    white-space: nowrap;
+  }
+
+  .scenario-stats strong {
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  @media (max-width: 900px) {
+    .scenarios-inner { padding: 0 var(--space-24); }
+    /* flex-direction: column переворачивает кросс-ось на горизонтальную —
+       align-items: stretch (родителя) растянул бы иконку на всю ширину
+       карточки, поэтому явно возвращаем flex-start только для мобильного. */
+    .scenario-card { flex-direction: column; align-items: flex-start; }
+    /* aspect-ratio нужен явный width, чтобы вычислить height — на
+       desktop его давал stretch по кросс-оси, здесь кросс-ось стала
+       горизонтальной и не растягивается (align-items: flex-start), так
+       что без width иконка схлопнется. */
+    .scenario-icon { width: 5.4rem; }
+    /* На мобильном card — column, иконка идёт НАД текстом, а не сбоку,
+       так что "прижать плашки к низу иконки" тут не имеет смысла.
+       Но flex: 1 1 20rem у .scenario-body в column-контейнере трактует
+       20rem как БАЗОВУЮ ВЫСОТУ (а не ширину, как в row) — тело
+       растягивалось на 320px и margin-top: auto у плашек утягивал их
+       вниз с огромным пустым зазором сверху. Сбрасываем flex-basis на
+       auto (высота по контенту) и возвращаем плашкам обычный
+       фиксированный отступ. */
+    .scenario-body { flex-basis: auto; }
+    .scenario-stats { margin-top: var(--space-14_4); }
+  }
+
+  /* По просьбе «как-то блок надо назвать» — перед тремя sticky-плашками
+     сценариев не было заголовка вообще (просто пустой отступ). Сначала
+     сделали отдельным плоским блоком вне .row-сетки — по следующей
+     просьбе («линии продли до плашки семьи с детьми» + «заголовок должен
+     выезжать из линии, как те, что до него») переделали на обычный .row
+     (.row--scenarios-title ниже) внутри той же .section, чтобы вертикальные
+     линии колонок и scroll-анимация .text-inner не прерывались перед
+     заголовком, а продолжались до самого конца секции. */
+  .row--scenarios-title {
+    /* Высота подобрана так, чтобы при обычной скорости скролла текст
+       успевал полностью проявиться (анимация .text-inner привязана к
+       линии на 55% высоты экрана) и визуально «остановиться» примерно
+       посередине — между верхней линией ряда, откуда он выезжает,
+       и первой sticky-карточкой сразу под ним. По просьбе «высоту на 25%
+       меньше» — было 34vh, уменьшили на четверть. */
+    min-height: 25.5vh;
+  }
+
+  /* text-transform не наследуем от .heading — по просьбе «не капсом»:
+     остальные заголовки блока 2 (Семейный дом/Все что нужно/Собственная
+     котельная) показаны капсом, а этот — как напечатан, обычным регистром. */
+  .scenarios-title {
+    text-transform: none;
+  }
+
+  @media (max-width: 900px) {
+    .row--scenarios-title { min-height: 0; }
+  }
+
+  /* ===== Блок 3, мини-версия сценария «Семье с детьми» (первый из трёх
+     будущих мини-блоков, на которые распадётся .scenarios) =====
+     ЛОКАЛЬНАЯ ВЕРСТКА ПО РЕФЕРЕНСУ (Figma-фрейм), НЕ ЗАПУШЕНО.
+     Тот же sticky-приём, что у блоков 4/5: полноэкранное фото (тут —
+     assets/images/scenario-mini-family-bg.jpg, с Google Диска, семья
+     с детьми на диване; было временно family-lead-bg.webp, заменили
+     по присланному фото) + тёмный градиент снизу для читаемости текста, заголовок,
+     подпись и мини-карточка «планировка + CTA + статы» поверх фото внизу
+     слева. z-index=1 — ниже второго мини-блока (пока это временный блок
+     .scenarios-rest с оставшимися 2 сценариями по старому дизайну) и
+     блоков 4/5, которые идут следом. min-height подобран так, чтобы
+     следующий блок полностью его перекрывал при наезде. */
+  .scenario-mini {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    margin: 0 var(--space-36);
+    border-radius: 10px;
+    overflow: hidden;
+    min-height: 30.4rem;
+  }
+
+  .scenario-mini-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .scenario-mini-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    /* По просьбе «выровни контент... чтобы отступы сверху и снизу
+       одинаковые были» — было flex-end (контент прижат к низу, отступ
+       сверху намного больше отступа снизу), center уравнивает отступы. */
+    justify-content: center;
+    min-height: 30.4rem;
+    /* По просьбе «отступы вертикальные как у блока "жить — рядом"» —
+       вертикальный паддинг поднят с var(--space-48) до var(--space-80),
+       как у .nearby-inner. */
+    padding: var(--space-80) 2.72rem;
+    color: #ffffff;
+  }
+
+  .scenario-mini-heading {
+    margin: 0 0 var(--space-14_4);
+    max-width: 32rem;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    /* Было 2.25rem — по просьбе «заголовок по размеру такой же сделай
+       как в других блоках» подняли до 2.8125rem (45px), как у
+       большинства секций сайта (.scenarios-heading, .offers-heading
+       и т.д.). */
+    font-size: 2.8125rem;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+
+  .scenario-mini-text {
+    margin: 0 0 var(--space-27_2);
+    max-width: 30rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  /* Раскладка по образцу: слева планировка на всю высоту карточки,
+     справа — колонка (статы сверху, кнопка снизу, во всю ширину
+     колонки), align-items: stretch тянет картинку по высоте под
+     реальную высоту правой колонки (было: картинка+кнопка колонкой
+     слева, статы отдельным столбцом справа — перевёрстано по
+     присланному макету). */
+  .scenario-mini-panel {
+    display: flex;
+    align-items: stretch;
+    gap: var(--space-24);
+    /* Сузили по просьбе «по ширине всю плашку меньше сделай, примерно
+       как на скрине» — было 44rem (704px), стало 34rem (544px). */
+    max-width: 34rem;
+    padding: var(--space-19_2);
+    /* По просьбе «плашку сделай по тени и цвету как плашку ниже блоком»
+       — было rgba(20, 16, 14, 0.55) (почти чёрный), теперь тот же тон,
+       что у .scenario-card (блок «Ещё два сценария» ниже):
+       rgba(48, 38, 32, 0.55). */
+    background: rgba(48, 38, 32, 0.55);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 0.8rem;
+  }
+
+  .scenario-mini-plan {
+    flex-shrink: 0;
+    width: 14rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    padding: var(--space-4_8);
+  }
+
+  .scenario-mini-plan img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .scenario-mini-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-16);
+  }
+
+  /* Кнопка CTA — по просьбе «кнопку просто туда вот эту поставь
+     отсюда (со скрина с блока доп услуги)» переиспользуем готовый
+     .addl-btn как есть, без отдельного класса/стилей под мини-блок
+     (был свой .scenario-mini-cta — убрали, здесь не нужен). */
+  /* По просьбе «справа как слева сделай расстояние» — у .addl-btn
+     свой align-self: flex-start (ширина по контенту), из-за чего
+     отступ до правого края плашки (51.6px) был больше отступа слева у
+     картинки планировки (19.2px, padding плашки). stretch растягивает
+     кнопку на всю ширину колонки, отступ справа выравнивается с левым. */
+  .scenario-mini-panel .addl-btn {
+    align-self: stretch;
+  }
+
+  /* По просьбе «отцентруй текст в кнопке так как раньше делали» — тот
+     же приём, что уже применялся к .scenario-mini-cta-label (коммит
+     ae9a3be): текст в своём span с flex: 1; text-align: center,
+     центрируется в промежутке от левого края кнопки до .icon-circle,
+     а не жмётся к левому краю на всю растянутую ширину кнопки. */
+  .scenario-mini-panel .addl-btn-label {
+    flex: 1;
+    text-align: center;
+  }
+
+  .scenario-mini-stats {
+    display: flex;
+    flex-direction: column;
+    /* +20%, потом +10%, потом ещё +10%: было var(--space-9_6) = 0.6rem
+       (9.6px) -> 0.72rem (11.52px) -> 0.792rem (12.672px) -> теперь
+       12.672*1.1=13.9392px = 0.8712rem. */
+    gap: 0.8712rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    /* +3px, потом -2px, потом +1px: было 0.85rem (13.6px) -> 1.0375rem
+       (16.6px) -> 0.9125rem (14.6px) -> теперь 0.975rem (15.6px). */
+    font-size: 0.975rem;
+    line-height: 1.3;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  /* Маркер списка по просьбе «добавь маркер списка в пункты» — своя
+     точка перед каждым пунктом (list-style: none выше, поэтому маркер
+     через ::before), фирменный красный акцент. */
+  .scenario-mini-stats li {
+    /* было align-items: baseline — маркер визуально плющило в овал,
+       т.к. пустой ::before без текста растягивался под baseline-расчёт
+       строки; center убирает искажение. */
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .scenario-mini-stats li::before {
+    content: '';
+    flex-shrink: 0;
+    /* aspect-ratio вдобавок к width/height — гарантия круга, даже если
+       что-то в контексте попытается сжать/растянуть высоту. */
+    aspect-ratio: 1 / 1;
+    width: 0.35rem;
+    height: 0.35rem;
+    border-radius: 50%;
+    /* var(--accent) не резолвится тут — токен объявлен в скоупе .hero,
+       а этот блок вне .hero, поэтому фолбэк на литеральный цвет как в
+       .addl-btn. */
+    background: var(--accent, #F03D3A);
+  }
+
+  .scenario-mini-stats strong {
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  @media (max-width: 900px) {
+    .scenario-mini-inner { padding: var(--space-32) var(--space-24); }
+    .scenario-mini-panel { flex-direction: column; max-width: none; }
+    .scenario-mini-plan { width: 100%; height: 12rem; }
+    .scenario-mini-content { width: 100%; }
+  }
+
+  /* Второй и третий мини-блоки (сценарии «Родителям студента» и «Под
+     аренду и инвестицию») — та же вёрстка, что у .scenario-mini, но
+     каждому нужен свой z-index в sticky-стеке, чтобы по очереди
+     наезжать на предыдущий при скролле: 1-й блок z=1 (базовый
+     .scenario-mini), 2-й z=2, 3-й z=3. .scenarios-rest (старый
+     комбинированный блок-обёртка для оставшихся сценариев) больше не
+     используется в разметке — все три сценария теперь отдельные
+     .scenario-mini-секции, правило удалено. */
+  .scenario-mini--2 {
+    z-index: 2;
+  }
+
+  .scenario-mini--3 {
+    z-index: 3;
+  }
+
+  /* По просьбе разбить текст третьей плашки на 3 строки конкретным
+     образом («Три учебных заведения...сентябрь.» / «Компактные
+     площади сдаются» / «быстрее и ликвиднее при перепродаже.») БЕЗ
+     сокращения текста: первая строка сама по себе шире стандартного
+     .scenario-mini-text (30rem/480px) — 549.5px при этом шрифте.
+     Расширяем контейнер текста только в этом блоке (места в панели
+     достаточно, overflow нет), а не глобально — чтобы не задеть
+     переносы в первых двух блоках, которые уже умещаются в 480px. */
+  .scenario-mini--3 .scenario-mini-text {
+    max-width: 36rem;
+  }
+
+  /* ===== Блок «Жить — спокойно» (перенесён после карты с инфраструктурой
+     .walk, по просьбе «этот блок перенеси на место после карты с
+     инфраструктурой») =====
+     Был одной секцией .trust с фото + 3 стеклянными карточками поверх
+     (роль конкретных стилей .trust/.trust-inner/.trust-photo/.trust-card
+     и т.д. упразднена, разметка удалена). По просьбе «на 3 таких карточки
+     разбей, также со своими иконками в плашках» пересобран тем же
+     приёмом, что и .scenario-mini выше (3 отдельные sticky-секции,
+     каждая наезжает на предыдущую при скролле): полноэкранное фото,
+     иконка в круглой плашке (стиль/цвет как у старой .trust-icon),
+     заголовок и текст — взяты из прежних .trust-card h3/p. Фон у всех
+     трёх временно один и тот же (assets/images/trust-photo.jpg) — по
+     словам «картинки ща пришлю» ожидаются отдельные фото под каждую
+     карточку, заменить src в .trust-mini-bg трёх секций при получении.
+     ЛОКАЛЬНО, НЕ ЗАПУШЕНО. */
+  .trust-mini {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    margin: 0 var(--space-36);
+    border-radius: 10px;
+    overflow: hidden;
+    /* было 36rem, -20% по просьбе уменьшить высоту = 28.8rem. */
+    min-height: 28.8rem;
+  }
+
+  .trust-mini-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .trust-mini-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    /* было 36rem — та же правка -20%, что у .trust-mini выше. */
+    min-height: 28.8rem;
+    padding: var(--space-48) 2.72rem;
+    color: #ffffff;
+  }
+
+  /* Иконка в круглой плашке — тот же язык, что был у старой .trust-icon
+     (скруглённый квадрат, акцентная подложка), но непрозрачная (без
+     hover-состояния — карточка теперь не интерактивна, это просто
+     подпись-факт). */
+  .trust-mini-icon {
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--space-16);
+    border-radius: 0.9rem;
+    background: rgba(240, 61, 58, 0.85);
+    color: #ffffff;
+  }
+
+  .trust-mini-icon svg { width: 1.4rem; height: 1.4rem; }
+
+  .trust-mini-heading {
+    margin: 0 0 var(--space-14_4);
+    max-width: 32rem;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 2.8125rem;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+
+  .trust-mini-text {
+    margin: 0;
+    max-width: 30rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  @media (max-width: 900px) {
+    .trust-mini-inner { padding: var(--space-32) var(--space-24); }
+  }
+
+  /* Второй и третий блоки — тот же приём z-index, что у
+     .scenario-mini--2/--3: каждый следующий на 1 выше, чтобы по очереди
+     наезжать при скролле внутри своего локального .sticky-stack. */
+  .trust-mini--2 { z-index: 2; }
+  .trust-mini--3 { z-index: 3; }
+
+  /* По просьбе «в одну строчку сделай» для «162 квартиры на 2 подъезда»
+     (был перенос <br /> на 2 строки) — убрали <br />, но дефолтный
+     max-width: 32rem у .trust-mini-heading этой длине в одну строку не
+     хватает, поэтому здесь снимаем ограничение и на всякий случай
+     запрещаем перенос явно (white-space: nowrap), как в остальных
+     заголовках блока по 1 строке (.walk-heading--oneline). */
+  .trust-mini-heading--nowrap {
+    max-width: none;
+    white-space: nowrap;
+  }
+
+  /* ===== Блок «Выгодные условия» (акции, 4 карточки) =====
+     Размеры сверены с Figma (node 130:18644 и дети): контейнер-паддинг
+     94px, карточка 402×475px фиксированной высоты, gap 26px, текстовый
+     паддинг 36/38px, кнопка 44.7px. Иконки-иллюстрации в макете —
+     крупные (240–320px), прижаты к правому нижнему углу карточки;
+     точных ассетов достать не удалось (лимит Figma MCP), поставлены
+     SVG-заглушки того же размера/позиции — заменить при след. синке. */
+  .offers {
+    /* Обычный скролл, БЕЗ наезда: блок 6 не должен накладываться на
+       блок 5. Sticky здесь убран намеренно — см. .sticky-stack ниже. */
+    position: relative;
+    z-index: 4;
+    /* Внешний вертикальный отступ -20% по просьбе «у всех блоков»:
+       было var(--space-48) = 3rem, стало var(--space-38_4) = 2.4rem. */
+    /* Вертикальный отступ снизу убран из margin — теперь единственный
+       источник вертикального зазора между блоками это .block-gap
+       (64px), чтобы не задваивался с margin-bottom секции (было
+       38.4+64=102.4px вместо ожидаемых 64px). */
+    margin: 0 var(--space-36);
+  }
+
+  .offers-panel {
+    background: #ffffff;
+    border-radius: 10px;
+    /* Вертикальный ритм как у блоков 3 и 5 (5rem). Раньше было
+       8rem/10.5rem из Figma — выбивалось из общего ритма страницы.
+       -20% по просьбе «у всех блоков»: было var(--space-80) = 5rem,
+       стало var(--space-64) = 4rem. */
+    padding: var(--space-64) 0;
+  }
+
+  .offers-inner {
+    max-width: 1920px;
+    margin: 0 auto;
+    /* По просьбе «одинаковые горизонтальные отступы у всех блоков с
+       подложками, как у "Двор без машин"» — было var(--space-27_2)
+       (27.2px), стало 2.72rem (43.52px), как у .scenario-mini-inner/
+       .trust-mini-inner/.nearby-inner/.scenarios-inner. */
+    padding: 0 2.72rem;
+  }
+
+  .offers-heading {
+    /* Было var(--space-38_4) = 2.4rem, -20% по просьбе «везде на всех
+       заголовках» = 1.92rem. Точного токена нет — точный rem. */
+    margin: 0 0 1.92rem;
+    max-width: 45.3rem;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 2.8125rem;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #1c1c1a;
+  }
+
+  .offers-heading span {
+    display: block;
+    color: var(--accent, #F03D3A);
+  }
+
+  .offers-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-26);
+  }
+
+  .offers-card {
+    position: relative;
+    height: 29.6875rem;
+    padding: var(--space-38) var(--space-27_2) 0;
+    border-radius: 0.9rem;
+    background: #F3F6F9;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background-color 0.35s ease, color 0.35s ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+/* В статике все карточки нейтральные; фирменный оранжевый —
+     это состояние hover, а не выделение одной карточки. */
+  .offers-card:hover {
+    background: var(--accent, #F03D3A);
+    color: #ffffff;
+  }
+}
+
+  .offers-card-body {
+    position: relative;
+    z-index: 2;
+    max-width: 21.6rem;
+  }
+
+  .offers-card h3 {
+    margin: 0;
+    font-family: 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 1.35rem;
+    line-height: 1.28;
+    color: inherit;
+  }
+
+  .offers-card h3 strong {
+    font-weight: 700;
+  }
+
+  .offers-card .offers-price {
+    margin: 0;
+    font-family: 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 1.35rem;
+    line-height: 1.28;
+    color: inherit;
+  }
+
+  .offers-card .offers-note {
+    margin: var(--space-14_4) 0 0;
+    max-width: 19rem;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: inherit;
+    opacity: 0.65;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+.offers-card:hover .offers-note { opacity: 0.85; }
+}
+
+  /* Ассеты из Figma — 3D-иконки с альфой, уже обрезанные по краю кадра,
+     поэтому сажаем их в правый нижний угол карточки (карточка с
+     overflow: hidden доводит обрезку). Высота — из макета, ширина —
+     по нативным пропорциям PNG, чтобы иконки не плющило. */
+  .offers-icon {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+
+  .offers-icon img {
+    display: block;
+    height: 100%;
+    width: auto;
+  }
+
+  /* Свап 3D-иконки на hover (пока только у карточки 1 — есть готовые
+     серый/красный ассеты ключа; для остальных карточек — на след. синке). */
+  .offers-icon-hover {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+
+  .offers-icon-default {
+    transition: opacity 0.35s ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+.offers-card:hover .offers-icon-default { opacity: 0; }
+.offers-card:hover .offers-icon-hover { opacity: 1; }
+}
+
+  .offers-card--1 .offers-icon { height: 20.4rem; }
+  .offers-card--2 .offers-icon { height: 19.494rem; }
+  .offers-card--3 .offers-icon { height: 18.24rem; }
+  .offers-card--4 .offers-icon { height: 16.7958rem; }
+
+  /* По просьбе «на макбуке иконки в карточках блока "Выгодные условия"
+     слишком большие, на десктопе (полноразмерный монитор) норм» —
+     уменьшены на 25% только в ноутбучном диапазоне ширин (1600px —
+     тот же брейкпоинт, что у компактной шапки выше). */
+  @media (max-width: 1600px) {
+    .offers-card--1 .offers-icon { height: 15.3rem; }
+    .offers-card--2 .offers-icon { height: 14.6205rem; }
+    .offers-card--3 .offers-icon { height: 13.68rem; }
+    .offers-card--4 .offers-icon { height: 12.59685rem; }
+
+    /* По просьбе «плашки с акциями на 20% меньше по высоте, на мак
+       разрешении» — было 29.6875rem. */
+    .offers-card { height: 23.75rem; }
+
+    /* По просьбе «подними заголовок и подзаголовок, чтобы вертикальный
+       отступ был как горизонтальный, на маке» — верхний паддинг был
+       var(--space-38) (38px), горизонтальный var(--space-27_2) (27.2px);
+       на маке верхний уравнен с горизонтальным. */
+    .offers-card { padding-top: var(--space-27_2); }
+  }
+
+  /* По просьбе «размер заголовков в блоках акции на 20% меньше, на
+     макбук разрешении» — было 1.35rem. Только мак-диапазон, не мобильный
+     и не полноразмерный десктоп. */
+  @media (max-width: 1600px) and (min-width: 901px) {
+    .offers-card h3,
+    .offers-card .offers-price { font-size: 1.2rem; }
+  }
+
+  .offers-btn {
+    position: absolute;
+    left: 2.25rem;
+    bottom: 2.08rem;
+    z-index: 2;
+    width: 2.79rem;
+    height: 2.79rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    /* По просьбе «сделай круг белым, а стрелку красным» — было наоборот
+       (акцентный фон, белая стрелка). Круг остаётся белым и при hover
+       карточки тоже — сама карточка на hover заливается акцентным
+       цветом (.offers-card:hover), и если бы круг тоже красил себя в
+       акцентный, он слился бы с фоном карточки и стал невидимым. */
+    background: #ffffff;
+    color: var(--accent, #F03D3A);
+    font-size: 1rem;
+    transition: background-color 0.35s ease, color 0.35s ease;
+  }
+
+  @media (max-width: 1200px) {
+    .offers-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-16); }
+  }
+
+  /* ===== Блок «Горячая вода — всегда» =====
+     Тёмная панель в системе leadgen/nearby. Обычный скролл.
+     Правая колонка — не фото, а инженерная схема: она доказывает
+     ровно тот тезис, который заявлен в тексте (контур замкнут). */
+  .heat {
+    display: none; /* временно скрыт по просьбе — не увидели особого смысла в блоке; разметка сохранена */
+    position: relative;
+    z-index: 5;
+    /* Внешний/внутренний вертикальный отступ -20% по просьбе «у всех
+       блоков»: margin было var(--space-48), padding — var(--space-80). */
+    /* Вертикальный отступ снизу убран из margin — теперь единственный
+       источник вертикального зазора между блоками это .block-gap
+       (64px), чтобы не задваивался с margin-bottom секции (было
+       38.4+64=102.4px вместо ожидаемых 64px). */
+    margin: 0 var(--space-36);
+    border-radius: 1.44rem;
+    overflow: hidden;
+    background: #1b1c22;
+    padding: var(--space-64) var(--space-48);
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    gap: var(--space-64);
+  }
+
+  .heat::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1px);
+    background-size: 15px 15px;
+    pointer-events: none;
+  }
+
+  .heat-content { position: relative; z-index: 2; }
+
+  .heat-content h2 {
+    margin: 0 0 var(--space-20_8);
+    max-width: 30rem;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 2.8125rem;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #ffffff;
+  }
+
+  .heat-content h2 span {
+    display: block;
+    color: var(--accent, #F03D3A);
+  }
+
+  .heat-lead {
+    margin: 0 0 var(--space-35_2);
+    max-width: 30rem;
+    font-size: 0.98rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.62);
+  }
+
+  .heat-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-11_2);
+    max-width: 34rem;
+  }
+
+  /* Левая оранжевая кромка + номер: строки читаются как пункты
+     спецификации, а не как ещё один буллет-лист. */
+  .heat-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-17_6);
+    padding: var(--space-16_8) var(--space-22_4);
+    border-radius: 0.6rem;
+    border-left: 2px solid rgba(242, 114, 57, 0.55);
+    background: rgba(255, 255, 255, 0.05);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+.heat-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-left-color: var(--accent, #F03D3A);
+  }
+}
+
+  .heat-num {
+    flex: none;
+    padding-top: var(--space-2_4);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    color: var(--accent, #F03D3A);
+  }
+
+  .heat-item p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  /* --- Схема --- */
+  .heat-scheme {
+    position: relative;
+    z-index: 2;
+    align-self: stretch;
+    border-radius: 0.9rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    padding: var(--space-32);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .heat-scheme svg {
+    display: block;
+    width: 100%;
+    max-width: 27rem;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .heat-scheme-caption {
+    flex: 1 1 100%;
+    font-size: 0.78rem;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .heat-scheme-foot {
+    display: flex;
+    align-items: center;
+    gap: var(--space-22_4);
+    flex-wrap: wrap;
+    margin-top: var(--space-22_4);
+    padding-top: var(--space-19_2);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .heat-legend {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .heat-legend i {
+    width: 1.5rem;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--accent, #F03D3A);
+  }
+
+  .heat-legend.is-return i { background: rgba(255, 255, 255, 0.35); }
+
+  @media (max-width: 1100px) {
+    .heat { grid-template-columns: 1fr; padding: var(--space-38_4); gap: var(--space-32); }
+    .heat-scheme { min-height: 0; }
+  }
+
+  /* ===== Блок «Планировки» =====
+     Каталожная сетка: 4 карточки формата. Лежит на фоне страницы,
+     несущий светлый слой — сами карточки (как в .walk). Обычный
+     скролл, без sticky-наезда. */
+  .layouts {
+    position: relative;
+    z-index: 5;
+    /* Внешний вертикальный отступ -20% по просьбе «у всех блоков»:
+       было var(--space-48). */
+    /* Вертикальный отступ снизу убран из margin — теперь единственный
+       источник вертикального зазора между блоками это .block-gap
+       (64px), чтобы не задваивался с margin-bottom секции (было
+       38.4+64=102.4px вместо ожидаемых 64px). */
+    margin: 0 var(--space-36);
+  }
+
+  .layouts-panel {
+    background: #ffffff;
+    border-radius: 10px;
+    /* Внутренний вертикальный паддинг -20% по просьбе «у всех
+       блоков»: было var(--space-80). */
+    padding: var(--space-64) 0;
+  }
+
+  .layouts-inner {
+    max-width: 1920px;
+    margin: 0 auto;
+    /* По просьбе «одинаковые горизонтальные отступы у всех блоков с
+       подложками, как у "Двор без машин"» — было var(--space-27_2)
+       (27.2px), стало 2.72rem (43.52px). */
+    padding: 0 2.72rem;
+  }
+
+  .layouts-head {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: start;
+    /* По просьбе «расстояние между заголовком и подзаголовком на всех
+       блоках на 15% меньше» — было var(--space-16) (16px). */
+    gap: 0.7225rem;
+    /* Было var(--space-38_4) = 2.4rem, -20% по просьбе «везде на всех
+       заголовках» = 1.92rem. Точного токена нет — точный rem. */
+    margin: 0 0 1.92rem;
+  }
+
+  .layouts-heading {
+    margin: 0;
+    max-width: 40rem;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 2.8125rem;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #1c1c1a;
+  }
+
+  .layouts-heading span { color: var(--accent, #F03D3A); }
+
+  .layouts-note {
+    margin: 0;
+    max-width: none;
+    white-space: nowrap;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: #1c1c1a;
+    opacity: 0.45;
+    text-align: left;
+  }
+
+  .layouts-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-26);
+  }
+
+  .layouts-card {
+    display: flex;
+    flex-direction: column;
+    background: #F3F6F9;
+    border-radius: 0.9rem;
+    padding: var(--space-14_4);
+    text-decoration: none;
+    transition: transform 0.35s ease, box-shadow 0.35s ease, background-color 0.35s ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+/* Как у карточек блока «Выгодные условия»: при наведении фон
+     становится фирменным оранжевым, текст — белым. */
+  .layouts-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 1.2rem 2.4rem rgba(20, 22, 26, 0.08);
+    background: var(--accent, #F03D3A);
+  }
+}
+
+  .layouts-photo {
+    position: relative;
+    aspect-ratio: 1 / 0.85;
+    border-radius: 0.6rem;
+    overflow: hidden;
+    background: #ece9e4;
+  }
+
+  .layouts-photo img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Лупа поверх планировки: скрыта в обычном состоянии, всплывает
+     при наведении именно на изображение (не на всю карточку) —
+     клик по ней открывает планировку крупно, не уводя со страницы
+     по ссылке карточки. */
+  .layouts-zoom {
+    position: absolute;
+    right: 0.7rem;
+    bottom: 0.7rem;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border: none;
+    border-radius: 50%;
+    background: rgba(28, 28, 26, 0.55);
+    color: #ffffff;
+    cursor: zoom-in;
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.25s ease;
+  }
+
+  .layouts-zoom svg { width: 1.15rem; height: 1.15rem; }
+
+  @media (hover: hover) and (pointer: fine) {
+.layouts-zoom:hover { background: rgba(28, 28, 26, 0.8); }
+.layouts-photo:hover .layouts-zoom {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+  .layouts-photo-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    color: #a9a49a;
+    text-align: center;
+    padding: var(--space-16);
+  }
+
+  .layouts-photo--plan {
+    background: #fff;
+  }
+
+  .layouts-photo--plan img {
+    object-fit: contain;
+    padding: var(--space-9_6);
+  }
+
+  .layouts-meta {
+    padding: var(--space-20_8) var(--space-8) var(--space-3_2);
+  }
+
+  .layouts-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-16);
+    padding: var(--space-11_2) 0;
+    border-bottom: 1px solid rgba(28, 28, 26, 0.08);
+    transition: border-color 0.35s ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+.layouts-card:hover .layouts-row {
+    border-bottom-color: rgba(255, 255, 255, 0.25);
+  }
+}
+
+  .layouts-row span:first-child {
+    font-size: 0.85rem;
+    color: #1c1c1a;
+    opacity: 0.5;
+    transition: color 0.35s ease, opacity 0.35s ease;
+  }
+
+  .layouts-row span:last-child {
+    font-family: 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 0.92rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
+    color: #1c1c1a;
+    text-align: right;
+    transition: color 0.35s ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+.layouts-card:hover .layouts-row span:first-child {
+    color: #ffffff;
+    opacity: 0.75;
+  }
+.layouts-card:hover .layouts-row span:last-child {
+    color: #ffffff;
+  }
+}
+
+  /* Полноширинная светлая кнопка-пилюля, как в блоке акций, только в
+     светлых тонах: белый фон, фирменный оранжевый текст — так она
+     одинаково хорошо читается и на серой карточке, и на оранжевой
+     при наведении. */
+  .layouts-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: var(--space-9_6) 0 0;
+    padding: var(--space-17_6) var(--space-9_6);
+    background: #ffffff;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--accent, #F03D3A);
+  }
+
+  @media (max-width: 1200px) {
+    .layouts-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 1300px) {
+    .layouts-note {
+      white-space: normal;
+    }
+  }
+
+  /* Подсказка «Листайте влево» — виден только на мобильном (включается
+     в медиа-запросе ниже), тот же паттерн, что у .offers-swipe-hint
+     в блоке «Выгодные условия». */
+  .layouts-swipe-hint { display: none; }
+
+  @media (max-width: 640px) {
+    .layouts-inner { padding: 0 var(--space-24); }
+    /* По просьбе «слайдер сделай, как в блоке акций» — тот же приём,
+       что у .offers-grid: горизонтальный scroll-snap вместо вертикального
+       стека в одну колонку, карточки листаются свайпом, следующая слегка
+       выглядывает справа. */
+    .layouts-grid {
+      display: flex;
+      grid-template-columns: none;
+      gap: var(--space-16);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: var(--space-8);
+      margin: 0 calc(-1 * var(--space-24));
+      padding-left: var(--space-24);
+      padding-right: var(--space-24);
+    }
+    .layouts-grid::-webkit-scrollbar { display: none; }
+    .layouts-card {
+      flex: 0 0 auto;
+      width: 84vw;
+      scroll-snap-align: start;
+    }
+
+    .layouts-swipe-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-8);
+      /* Тот же отступ заголовок→подсказка→карточки, что у .offers —
+         margin заголовка (1.92rem), не отдельный токен. */
+      margin: 0 0 1.92rem;
+      padding: var(--space-8) var(--space-16);
+      border-radius: 999px;
+      background: rgba(240, 61, 58, 0.1);
+      color: var(--accent, #F03D3A);
+      font-family: 'Onest', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+  }
+
+  /* На тач-устройствах ховера нет — держим лупу всегда видимой,
+     иначе на неё нечем "навести". */
+  @media (hover: none) {
+    .layouts-zoom { opacity: 1; transform: scale(1); }
+  }
+
+  /* Лайтбокс планировки: один на страницу, наполняется по клику
+     на лупу (см. openLayoutZoom в конце файла). */
+  .layouts-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 4vh 4vw;
+    background: rgba(10, 12, 15, 0.85);
+    cursor: zoom-out;
+  }
+
+  .layouts-lightbox.is-open { display: flex; }
+
+  .layouts-lightbox img {
+    max-width: 100%;
+    max-height: 92vh;
+    border-radius: 0.6rem;
+    background: #fff;
+    cursor: default;
+    box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.4);
+  }
+
+  .layouts-lightbox-close {
+    position: absolute;
+    top: 1.6rem;
+    right: 1.8rem;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+.layouts-lightbox-close:hover { background: rgba(255, 255, 255, 0.22); }
+}
+
+
+
+  /* ===== Блок 7. «Всё нужное — в пешей доступности» =====
+     Карта + список инфраструктуры. Обычный скролл, без sticky-наезда
+     (как и блок 6). Карта внутри блока — sticky: держится, пока
+     справа листается длинный список категорий. */
+  .walk {
+    position: relative;
+    z-index: 5;
+    /* Внешний вертикальный отступ -20% по просьбе «у всех блоков»:
+       было var(--space-48). */
+    /* Вертикальный отступ снизу убран из margin — теперь единственный
+       источник вертикального зазора между блоками это .block-gap
+       (64px), чтобы не задваивался с margin-bottom секции (было
+       38.4+64=102.4px вместо ожидаемых 64px). */
+    margin: 0 var(--space-36);
+  }
+
+  /* ==== Блок «Всё нужное — в пешей доступности» ====
+     Переверстан из «Яндекс-iframe + 4 белые карточки-таблицы» в сцену:
+     настоящая интерактивная карта (Leaflet + обесцвеченные тайлы
+     OpenStreetMap) со своими пинами, поверх неё —
+     стеклянная панель со списком. Наведение/клик по строке подсвечивает
+     пин и ведёт к нему камеру, смена категории — переобрамляет карту
+     по объектам этой категории.
+     Почему ушли от Яндекс-виджета: он не даёт ни своих маркеров, ни
+     управления камерой и тащит чужой интерфейс («Пробки», ±, кнопка
+     геолокации) — из-за него блок и читался как вставленная чужая
+     карта, а не как элемент дизайна страницы. */
+
+  .walk-panel { padding: 0; }
+
+  .walk-inner {
+    max-width: 1920px;
+    margin: 0 auto;
+    padding: 0 var(--space-27_2);
+  }
+
+  /* Заголовок слева, три числа-героя справа. Приём «крупная цифра +
+     мелкая подпись» уже используется в .scenario-stats — здесь тот же. */
+  .walk-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-40);
+    flex-wrap: wrap;
+    margin: 0 0 1.92rem;
+  }
+
+  .walk-heading {
+    margin: 0;
+    max-width: 45.3rem;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 2.8125rem;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #1c1c1a;
+  }
+
+  .walk-heading span {
+    display: block;
+    color: var(--accent, #F03D3A);
+  }
+
+  /* В одну строку: заголовок + акцент идут inline, без переноса. */
+  .walk-heading--oneline {
+    max-width: none;
+    white-space: nowrap;
+  }
+
+  .walk-heading--oneline span { display: inline; }
+
+  /* --- Сцена: карта во всю ширину блока, панель поверх --- */
+  .walk-scene {
+    position: relative;
+    height: clamp(34rem, calc(100vh - 9rem), 46rem);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #e9edf0;
+    isolation: isolate;
+  }
+
+  .walk-scene-map {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: #e9edf0;
+  }
+
+  /* Подложка: видна, пока не загрузились тайлы, и если Leaflet с CDN
+     не поднялся — тогда блок деградирует в «панель со списком». */
+  .walk-scene-fallback {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #9aa0a6;
+  }
+
+  .walk-glass {
+    position: absolute;
+    z-index: 3;
+    left: var(--space-20);
+    top: var(--space-20);
+    bottom: var(--space-20);
+    width: 25.5rem;
+    max-width: calc(100% - var(--space-40));
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-27_2);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.84);
+    -webkit-backdrop-filter: blur(20px) saturate(1.5);
+    backdrop-filter: blur(20px) saturate(1.5);
+    box-shadow: 0 1.5rem 3rem rgba(16, 22, 30, 0.16);
+  }
+
+  .walk-eyebrow {
+    margin: 0 0 var(--space-16);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(28, 28, 26, 0.4);
+  }
+
+  /* Категории — чипы, одна активна за раз (было: 4 карточки-списка
+     одновременно, из-за чего блок читался как реестр). */
+  .walk-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6_4);
+    margin: 0 0 var(--space-20);
+  }
+
+  .walk-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-6_4);
+    padding: var(--space-8) var(--space-14_4);
+    border: 1px solid rgba(28, 28, 26, 0.13);
+    border-radius: 999px;
+    background: transparent;
+    font-family: 'Onest', sans-serif;
+    font-weight: 600;
+    font-size: 0.82rem;
+    line-height: 1;
+    color: #1c1c1a;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+
+  .walk-chip svg { display: block; width: 0.95rem; height: 0.95rem; }
+  .walk-chip em { font-style: normal; opacity: 0.4; font-variant-numeric: tabular-nums; }
+
+  .walk-chip.is-active {
+    background: var(--accent, #F03D3A);
+    border-color: var(--accent, #F03D3A);
+    color: #ffffff;
+  }
+
+  .walk-chip.is-active em { opacity: 0.55; }
+
+  .walk-list {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .walk-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-16);
+    flex: none;
+    /* Без отрицательного margin: раньше подложка ховера/активного пункта
+       «выезжала» за счёт отрицательного margin (пробовали -12px, потом
+       -6.4px) — в обоих случаях разделительная линия между пунктами
+       считала отступ от других координат и была короче подложки. Без
+       margin подложка и текст — в одной системе координат (border-box
+       самого .walk-item), отступают от края панели на величину её
+       паддинга, как заголовок «Что рядом с домом» и чипы над списком.
+       Разделительная линия — см. отдельный комментарий у неё ниже,
+       инсет border-radius, не 0, иначе прямая линия обрезает скруглённый
+       угол подложки активного пункта и на стыке остаётся заметный зазор. */
+    padding: var(--space-13_6) var(--space-12);
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.18s;
+  }
+
+  /* .walk-item задаёт display:flex — той же специфичности, что и
+     [hidden]{display:none} из UA-стилей, и идёт позже, поэтому
+     перебивал бы её: скрытые категории оставались бы видимыми. */
+  .walk-item[hidden] { display: none; }
+
+  /* Инсет — не 0 и не 12px (как было до правки подложки), а ровно
+     border-radius подложки (8px): прямая линия во всю ширину строки
+     резала бы скруглённый угол активного/наведённого пункта «по
+     касательной» и у краёв линии появлялся заметный зазор (прямая
+     граница торчит за пределы скруглённой подложки в районе угла).
+     8px — она начинается и заканчивается ровно там, где подложка уже
+     перестаёт скругляться и идёт прямой стороной. */
+  .walk-item + .walk-item::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    top: 0;
+    border-top: 1px solid rgba(28, 28, 26, 0.08);
+  }
+
+  .walk-item-name {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.25;
+    color: #1c1c1a;
+  }
+
+  .walk-item-sub {
+    display: block;
+    margin-top: var(--space-2_4);
+    font-size: 0.74rem;
+    line-height: 1.25;
+    color: rgba(28, 28, 26, 0.45);
+  }
+
+  /* Время — крупной табличной цифрой, а не красным чипом: раньше
+     13 одинаковых акцентных плашек забивали акцент в шум. Красным
+     подсвечивается только активная строка. */
+  .walk-item-time {
+    flex: none;
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3_2);
+    color: #1c1c1a;
+    font-variant-numeric: tabular-nums;
+    transition: color 0.18s;
+  }
+
+  .walk-item-time b {
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 1.35rem;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .walk-item-time span {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    opacity: 0.45;
+  }
+
+  .walk-item.is-active { background: rgba(240, 61, 58, 0.07); }
+  .walk-item.is-active .walk-item-time { color: var(--accent, #F03D3A); }
+
+  /* Раньше тайлы обесцвечивались (grayscale) — по просьбе пользователя
+     вернули цветную подложку OSM. Лёгкие contrast/brightness оставлены,
+     чтобы свои пины (L.divIcon) по-прежнему хорошо читались поверх карты. */
+  .walk-scene .leaflet-tile-pane {
+    filter: contrast(1.06) brightness(0.99);
+  }
+
+  /* --- Свои пины поверх карты (L.divIcon) --- */
+  .leaflet-div-icon.walk-icon {
+    background: transparent;
+    border: 0;
+  }
+
+  .walk-marker {
+    position: relative;
+    width: 2.1rem;
+    height: 2.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #1c1c1a;
+    box-shadow: 0 0.35rem 0.9rem rgba(16, 22, 30, 0.28);
+    transition: transform 0.2s, background 0.2s, color 0.2s;
+  }
+
+  .walk-marker svg { display: block; width: 1.05rem; height: 1.05rem; }
+
+  .walk-marker.is-active {
+    background: var(--accent, #F03D3A);
+    color: #ffffff;
+    transform: scale(1.25);
+  }
+
+  .walk-marker-home {
+    width: 3rem;
+    height: 3rem;
+    background: var(--accent, #F03D3A);
+    color: #ffffff;
+    box-shadow: 0 0.5rem 1.4rem rgba(240, 61, 58, 0.45);
+  }
+
+  .walk-marker-home svg { width: 1.45rem; height: 1.45rem; }
+
+  .walk-home-label {
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 0.45rem);
+    transform: translateX(-50%);
+    padding: var(--space-5_6) var(--space-11_2);
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 0.3rem 0.8rem rgba(16, 22, 30, 0.2);
+    font-family: 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 0.72rem;
+    line-height: 1.1;
+    white-space: nowrap;
+    color: #1c1c1a;
+  }
+
+  /* Пока карту не «разбудили» тапом — она не перехватывает свайп
+     страницы (классическая проблема встроенных карт на мобильном). */
+  .walk-map-lock {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: var(--space-20);
+    border: 0;
+    background: transparent;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .walk-map-lock span {
+    padding: var(--space-8) var(--space-16);
+    border-radius: 999px;
+    background: rgba(28, 28, 26, 0.78);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    color: #ffffff;
+    font-family: 'Onest', sans-serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+  }
+
+  .walk-scene.is-locked .walk-map-lock { display: flex; }
+
+  /* Родной интерфейс Leaflet приглушаем под типографику сайта. */
+  .walk-scene .leaflet-control-zoom {
+    border: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0.3rem 0.8rem rgba(16, 22, 30, 0.18);
+  }
+
+  .walk-scene .leaflet-control-zoom a {
+    width: 2rem;
+    height: 2rem;
+    line-height: 1.9rem;
+    border: 0;
+    color: #1c1c1a;
+    background: #ffffff;
+  }
+
+  .walk-scene .leaflet-control-attribution {
+    background: rgba(255, 255, 255, 0.7);
+    font-size: 0.6rem;
+    color: rgba(28, 28, 26, 0.5);
+  }
+
+  .walk-scene .leaflet-control-attribution a { color: rgba(28, 28, 26, 0.65); }
+
+  @media (hover: hover) {
+    .walk-chip:hover { border-color: rgba(28, 28, 26, 0.35); }
+    .walk-chip.is-active:hover { border-color: var(--accent, #F03D3A); }
+    .walk-item:hover { background: rgba(28, 28, 26, 0.05); }
+    .walk-item.is-active:hover { background: rgba(240, 61, 58, 0.07); }
+  }
+
+  /* На средних ширинах стеклянная панель поверх карты съедает её
+     целиком — раскладываем в поток: карта сверху, список под ней. */
+  @media (max-width: 1200px) {
+    .walk-head { display: block; }
+    .walk-heading--oneline { white-space: normal; }
+
+    .walk-scene {
+      height: auto;
+      border-radius: 0;
+      overflow: visible;
+      background: transparent;
+    }
+
+    .walk-scene-map {
+      position: relative;
+      inset: auto;
+      height: 22rem;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .walk-scene-fallback { display: none; }
+
+    .walk-glass {
+      position: static;
+      width: auto;
+      max-width: none;
+      margin-top: var(--space-16);
+      background: #ffffff;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+
+    .walk-list { overflow: visible; }
+
+    .walk-chips {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      margin: 0 calc(-1 * var(--space-27_2)) var(--space-20);
+      padding: 0 var(--space-27_2) var(--space-4);
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .walk-chips::-webkit-scrollbar { display: none; }
+    .walk-chip { flex: none; }
+  }
+
+  @media (max-width: 640px) {
+    .walk-inner { padding: 0 var(--space-24); }
+    .walk-glass { padding: var(--space-22_4) var(--space-20); }
+    .walk-chips { margin: 0 calc(-1 * var(--space-20)) var(--space-20); padding: 0 var(--space-20) var(--space-4); }
+    .walk-scene-map { height: 18rem; }
+  }
+
+
+  .offers-swipe-hint { display: none; }
+
+  @media (max-width: 640px) {
+    .offers-inner { padding: 0 var(--space-24); }
+    /* По просьбе «сделай как слайдер, чтобы листались» — горизонтальный
+       scroll-snap вместо вертикального стека: карточки листаются свайпом,
+       следующая слегка выглядывает справа. */
+    .offers-grid {
+      display: flex;
+      grid-template-columns: none;
+      gap: var(--space-16);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: var(--space-8);
+      margin: 0 calc(-1 * var(--space-24));
+      padding-left: var(--space-24);
+      padding-right: var(--space-24);
+    }
+    .offers-grid::-webkit-scrollbar { display: none; }
+    .offers-card {
+      flex: 0 0 auto;
+      width: 84vw;
+      scroll-snap-align: start;
+    }
+    /* По просьбе «плашки с акциями на мобилке на 25% по высоте
+       увеличь» — было min-height: 15.5rem, padding-bottom: var(--space-72) (4.5rem). */
+    .offers-card { height: auto; min-height: 19.375rem; padding-bottom: 5.625rem; }
+
+    /* Подсказка «Листайте влево» — только на мобильном, сразу после
+       заголовка блока (перед слайдером карточек). */
+    .offers-swipe-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-8);
+      /* По просьбе «расстояние заголовок→плашка→карточки как везде
+         заголовок→контент» — тот же margin, что у .offers-heading
+         (1.92rem), а не отдельный var(--space-16). */
+      margin: 0 0 1.92rem;
+      padding: var(--space-8) var(--space-16);
+      border-radius: 999px;
+      background: rgba(240, 61, 58, 0.1);
+      color: var(--accent, #F03D3A);
+      font-family: 'Onest', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+  }
+
+  /* Базовый зазор между обычными (не наезжающими) блоками — единственный
+     источник вертикального отступа между секциями, 64px. */
+  .block-gap {
+    height: 64px;
+    background: #F6F9FB;
+  }
+
+  /* Небольшой нейтральный зазор между наезжающими sticky-блоками
+     (семья с детьми → родителям студента → под аренду и инвестицию,
+     и двор без машин → контроль доступа → 162 квартиры на 2 подъезда),
+     чтобы следующий блок не начинал наезд с первого же пикселя скролла —
+     небольшая пауза перед наездом. Возвращено обратно к исходным 30px
+     по просьбе пользователя — отделено от общего .block-gap (64px),
+     который используется между обычными блоками. */
+  .block-gap--stack {
+    height: 30px;
+  }
+
+  /* ===== Зона действия sticky-наезда (блоки 3, 4, 5) =====
+     Sticky-элемент может «липнуть» только в пределах своего родителя.
+     Блоки 3-4-5 обёрнуты в этот контейнер, поэтому:
+       - блок 3 держится, пока идут блоки 4 и 5 — наезд сохраняется;
+       - блок 4 держится, пока идёт блок 5 — наезд сохраняется;
+       - блок 5 последний в контейнере, его ход залипания = 0, значит он
+         скроллится как обычный блок и уезжает вверх, утаскивая за собой
+         прижатые к нему блоки 3 и 4 (они уже на максимальном смещении и
+         из-под него не вылезают).
+     Итог: блок 6 («Выгодные условия») идёт обычным скроллом и ни на что
+     не накладывается. Никаких overflow/transform/z-index на контейнере —
+     они бы сломали sticky у детей. */
+  .sticky-stack {
+    position: relative;
+  }
+
+
+
+  /* ===== Блок 6: «Скачайте презентацию» (лид-форма) ===== */
+  /* Временно скрыт по просьбе — код не удалён, просто не рендерится.
+     Убрать display:none, когда блок снова понадобится. */
+  .leadgen {
+    /* Обычный скролл, как блоки 6 и 7: sticky-наезд живёт только
+       внутри .sticky-stack (блоки 3-5). min-height здесь тоже больше
+       не нужен — он был нужен только чтобы полностью перекрыть блок 5
+       при наезде; высоту теперь задаёт содержимое. */
+    position: relative;
+    z-index: 6;
+    /* Внешний вертикальный отступ -20% по просьбе «у всех блоков»:
+       было var(--space-48). */
+    /* Вертикальный отступ снизу убран из margin — теперь единственный
+       источник вертикального зазора между блоками это .block-gap
+       (64px), чтобы не задваивался с margin-bottom секции (было
+       38.4+64=102.4px вместо ожидаемых 64px). */
+    margin: 0 var(--space-36);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #1b1c22;
+    /* Вертикальные — как у блока акций (.offers-panel, теперь 4rem
+       после общего -20%); боковые — по просьбе «одинаковые
+       горизонтальные отступы у всех блоков с подложками, как у "Двор
+       без машин"» — было var(--space-27_2) (27.2px), стало 2.72rem
+       (43.52px), как у .scenario-mini-inner/.trust-mini-inner/.nearby-inner. */
+    padding: var(--space-64) 2.72rem;
+    /* Свободная композиция вместо колонок: контент во всю ширину,
+       мокап позиционируется поверх правой части и уходит за край.
+       Пропорция блока ~3:1 — форма разворачивается в одну строку. */
+    display: flex;
+    align-items: center;
+  }
+
+  .leadgen::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1px);
+    background-size: 15px 15px;
+    pointer-events: none;
+  }
+
+  .leadgen-content { position: relative; z-index: 2; width: 74%; }
+
+  .leadgen-content h2 {
+    margin: 0 0 var(--space-20_8);
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 2.8125rem;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  .leadgen-content > p {
+    margin: 0 0 var(--space-30_4);
+    max-width: 38rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .leadgen-form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-17_6);
+  }
+
+  .leadgen-input {
+    flex: 1 1 0;
+    min-width: 0;
+    box-sizing: border-box;
+    height: 5.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 999px;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    padding: 0 var(--space-25_6);
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.95rem;
+  }
+
+  .leadgen-input::placeholder { color: rgba(255, 255, 255, 0.4); }
+
+  .leadgen-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-25_6);
+    flex: none;
+    box-sizing: border-box;
+    padding: var(--space-8) var(--space-8) var(--space-8) var(--space-35_2);
+    background: var(--accent, #F03D3A);
+    border: none;
+    border-radius: 999px;
+    color: #fff;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+
+  .leadgen-submit .icon-circle { color: var(--accent, #F03D3A); font-size: 1.15rem; }
+
+  /* Селектор через > : иначе правило .leadgen-content > p (специфичнее)
+     перебивает отступы и вешает дисклеймеру лишние 1.9rem снизу. */
+  .leadgen-content > .leadgen-disclaimer {
+    margin: var(--space-17_6) 0 0;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    text-align: left;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .leadgen-disclaimer a { color: rgba(255, 255, 255, 0.7); text-decoration: underline; }
+
+  .leadgen-mockup {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    width: 46%;
+    height: 100%;
+  }
+
+  .leadgen-mockup img {
+    position: absolute;
+    top: -18%;
+    right: calc(-14% + 30px);
+    width: 112%;
+    max-width: none;
+    transform: rotate(14deg);
+  }
+
+  .pdf-badge {
+    position: absolute;
+    z-index: 2;
+    left: 5%;
+    top: 5%;
+    width: 11.5rem;
+    height: 11.5rem;
+  }
+
+  .pdf-badge img { display: block; width: 100%; height: 100%; }
+
+  @media (max-width: 1100px) {
+    /* .leadgen — flex, не grid (grid-template-columns ниже был для
+       display:grid, которого тут нет — на flex он не действовал вообще,
+       форма как была рядом из 2 полей + кнопки в одну строку, так и
+       переполняла экран). Раскладываем в колонку: контент на всю
+       ширину, поля формы друг под другом. */
+    .leadgen { flex-direction: column; align-items: stretch; padding: var(--space-38_4) var(--space-24); }
+    .leadgen-content { width: 100%; }
+    .leadgen-content h2 { font-size: 1.9rem; }
+    .leadgen-form { flex-direction: column; align-items: stretch; }
+    .leadgen-submit { width: 100%; }
+    .leadgen-mockup { display: none; } /* десктоп-версия: на мобильном верстка не продумывалась */
+  }
+
+  /* ===== Блок 5: «Жить — рядом» ===== */
+  /* Тот же sticky-приём: z-index выше блока 4, поэтому при скролле этот
+     блок наезжает на «Жить — спокойно» и полностью закрывает его. */
+  .nearby {
+    display: none; /* временно скрыт по просьбе — разметка сохранена */
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    /* было z-index: 3, сдвинут на 5 — см. комментарий у .trust. */
+    z-index: 5;
+    /* Внешний вертикальный отступ -20% по просьбе «у всех блоков»:
+       было var(--space-48). */
+    /* Вертикальный отступ снизу убран из margin — теперь единственный
+       источник вертикального зазора между блоками это .block-gap
+       (64px), чтобы не задваивался с margin-bottom секции (было
+       38.4+64=102.4px вместо ожидаемых 64px). */
+    margin: 0 var(--space-36);
+    border-radius: 10px;
+    overflow: hidden;
+    min-height: 56rem;
+  }
+
+  /* По просьбе «блок "Жить — рядом" на маке по высоте сделай меньше,
+     чтобы во full screen попадал» — на мак-ширинах вместо фиксированных
+     56rem (896px, часто выше высоты экрана макбука) высота привязана к
+     высоте окна (vh), чтобы блок всегда помещался целиком на экране. */
+  @media (max-width: 1600px) and (min-width: 901px) {
+    .nearby { min-height: 88vh; }
+  }
+
+  .nearby-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .nearby-bg--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--space-32);
+    background: linear-gradient(160deg, #1c2534 0%, #0c1119 100%);
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .nearby-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(10, 14, 25, 0.35) 0%,
+      rgba(10, 14, 25, 0.05) 30%,
+      rgba(10, 14, 25, 0.35) 70%,
+      rgba(10, 14, 25, 0.75) 100%
+    );
+  }
+
+  .nearby-inner {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* Горизонтальный отступ подложки блока (от края панели до контента)
+       увеличен на 60% (27.2px → 43.52px = 2.72rem), вертикальный
+       (--space-80) не трогали — тот же принцип, что у .scenarios-inner /
+       .trust-photo-text: отступ подложки, не паддинг внутри стеклянных
+       .nearby-card (там вернули как было). */
+    padding: var(--space-80) 2.72rem;
+    color: #ffffff;
+  }
+
+  .nearby-heading {
+    margin: 0 0 var(--space-14_4);
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    /* было 2.8125rem — по просьбе «сделай размером как "жить - спокойно"»
+       подняли до 3.375rem, как у .trust-photo-text h2 (блок 4). */
+    font-size: 3.375rem;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+
+  .nearby-text {
+    margin: 0;
+    max-width: 34rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .nearby-cards {
+    display: flex;
+    gap: var(--space-19_2);
+  }
+
+  .nearby-card {
+    flex: 1;
+    /* +60% горизонтали пробовали здесь (внутри самой стеклянной
+       карточки), но по уточнению «я не имел ввиду внутри стеклянных
+       блоков, верни как было» — вернули исходные 27.2px, +60% перенесли
+       в .nearby-inner (отступ подложки блока целиком от края до
+       контента). */
+    padding: var(--space-28_8) var(--space-27_2) var(--space-30_4);
+    background: rgba(30, 32, 38, 0.55);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 0.8rem;
+  }
+
+  .nearby-dots {
+    display: flex;
+    gap: var(--space-6_4);
+    margin-bottom: var(--space-25_6);
+  }
+
+  .nearby-dots span {
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  .nearby-dots span.on { background: var(--accent, #F03D3A); }
+
+  .nearby-card h3 {
+    margin: 0 0 var(--space-6_4);
+    font-family: 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #ffffff;
+  }
+
+  .nearby-card p {
+    margin: 0;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  /* По просьбе «должно быть в 2 строчки, слетело на мак разрешении» —
+     на ноутбучных ширинах карточка узкая, и первая строка перед ручным
+     <br class="br-desktop" /> не помещалась, добавляя лишний перенос.
+     Слегка уменьшаем шрифт только в этом диапазоне, чтобы совпадало
+     с задуманной разбивкой на 2 строки. */
+  @media (max-width: 1600px) and (min-width: 901px) {
+    .nearby-card p { font-size: 0.76rem; }
+  }
+
+  @media (max-width: 900px) {
+    .nearby-cards { flex-direction: column; }
+    .nearby { min-height: auto; }
+  }
+
+  @media (max-width: 900px) {
+    /* minmax(0, 1fr), не просто 1fr: иначе трек не сжимается меньше
+       min-content самого широкого потомка (длинный текст без переносов)
+       и вылезает за пределы row/viewport. */
+    .row { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+    .row--a, .row--b, .row--c { min-height: 0; }
+    .row--spacer { display: none; } /* пустые ряды-отступы нужны только для desktop-ритма */
+    .col:empty { display: none; }
+    .col { min-width: 0; }
+    /* На мобильном граница нужна только МЕЖДУ целыми блоками (row —
+       у неё уже есть border-top), а не между текстом и картинкой внутри
+       одного блока — раньше .col+.col рисовала лишнюю линию ровно там,
+       по референсу (Figma-фрейм) её быть не должно. */
+    .col + .col { border-left: none; border-top: none; }
+
+    /* По референсу порядок всегда «заголовок+текст → картинка», как в
+       row--a/row--c. Раньше order:-1 у .col-media выводил картинку
+       ПЕРВОЙ во всех трёх рядах (в т.ч. переворачивая row--b, где в DOM
+       картинка и так уже стоит перед текстом) — теперь порядок задан
+       явно на обоих col, а не относительно DOM. */
+    .col-media {
+      order: 2;
+      min-height: 0;
+      min-width: 0;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      /* Десктопные :first-child/:last-child дают паддинг только с одной
+         стороны (гап на внешнем крае макета, впритык к разделителю
+         колонок) — на мобильном колонка одна, поэтому симметричный
+         паддинг по бокам + снизу (сверху заголовок/текст уже дают
+         отступ через .col-text). */
+      padding: 0 var(--space-24) var(--space-32);
+    }
+    .row > .col-media:first-child,
+    .row > .col-media:last-child { padding: 0 var(--space-24) var(--space-32); }
+    .row > .col-media:first-child .media-frame,
+    .row > .col-media:last-child .media-frame { border-radius: 0.6rem; }
+
+    /* Текст на мобильном статичен (см. JS-гвард ROW_FX_MQ) — просто
+       обычный блок над фото, а не absolute-элемент, летающий по
+       скроллу. Выравнивание по центру — как на десктопе и в референсе,
+       раньше здесь стоял text-align:left. */
+    /* display:block вместо flex-row — иначе .text-inner как flex-item
+       отказывается сжиматься уже своего max-content (текст с ручными
+       <br/> из десктоп-вёрстки) и вылезает за .row{overflow:hidden},
+       обрезаясь по краю экрана. */
+    .col-text { order: 1; display: block; padding: var(--space-32) var(--space-24) var(--space-24); }
+    .text-inner {
+      position: static;
+      width: 100%;
+      opacity: 1;
+      transform: none;
+      padding: 0;
+      gap: var(--space-16);
+    }
+    .heading { font-size: 1.9rem; }
+    .paragraph { max-width: none; }
+    .br-desktop { display: none; } /* ручные переносы под десктопную ширину строки — на мобильном мешают, текст сам переносится по ширине */
+  }
+
+  /* ===== Блок 11 (финальный). «Оставьте заявку на подбор с экспертом» =====
+     Тот же приём, что у .hero: фото фоном + тёмный градиент поверх для
+     читаемости текста. Форма — те же .leadgen-input/.leadgen-submit
+     (единая высота кнопок по всему сайту), просто в колонку вместо
+     строки. */
+  .expert-lead {
+    position: relative;
+    z-index: 7;
+    /* Внешний вертикальный отступ -20% по просьбе «у всех блоков»:
+       было var(--space-48). */
+    /* Вертикальный отступ снизу убран из margin — теперь единственный
+       источник вертикального зазора между блоками это .block-gap
+       (64px), чтобы не задваивался с margin-bottom секции (было
+       38.4+64=102.4px вместо ожидаемых 64px). */
+    margin: 0 var(--space-36);
+    border-radius: 10px;
+    overflow: hidden;
+    min-height: clamp(28rem, 34vw, 34rem);
+    display: flex;
+    align-items: center;
+  }
+
+  .expert-lead__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .expert-lead__inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-56);
+    /* По просьбе «одинаковые горизонтальные отступы у всех блоков с
+       подложками, как у "Двор без машин"» — было var(--space-27_2)
+       (27.2px), стало 2.72rem (43.52px). */
+    padding: var(--space-57_6) 2.72rem;
+  }
+
+  .expert-lead__content { max-width: 34rem; flex-shrink: 0; }
+
+  .expert-lead__heading {
+    margin: 0 0 var(--space-17_6);
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 2.8125rem;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  .expert-lead__text {
+    margin: 0 0 var(--space-25_6);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .expert-lead__contacts p {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .expert-lead__contacts a { color: inherit; text-decoration: none; }
+
+  @media (hover: hover) and (pointer: fine) {
+.expert-lead__contacts a:hover { color: #fff; }
+}
+
+  .expert-lead__form {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    width: min(29rem, 38%);
+    flex-shrink: 0;
+  }
+
+  /* .leadgen-input несёт flex: 1 1 0 из горизонтальной формы — в
+     колонке это схлопывает высоту (flex-basis: 0 по главной оси).
+     Возвращаем инпутам их фиксированную высоту через flex: none. */
+  .expert-lead__form .leadgen-input { flex: none; width: 100%; }
+  /* Текст центрируется не по всей ширине кнопки, а в зоне от левого
+     края до начала круглой иконки: иконка выведена из потока
+     (position: absolute), а padding-right резервирует под неё точно
+     её ширину + отступ — тогда justify-content: center центрирует
+     текст ровно в оставшейся зоне. */
+  .expert-lead__form .leadgen-submit {
+    position: relative;
+    justify-content: center;
+    width: 100%;
+    /* Высота не должна меняться от того, что иконка ушла в absolute —
+       фиксируем те же 5.5rem/88px, что у всех кнопок сайта. */
+    height: 5.5rem;
+    padding: 0 var(--space-80) 0 var(--space-24);
+  }
+
+  .expert-lead__form .leadgen-submit .icon-circle {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .expert-lead__disclaimer {
+    margin: 0;
+    font-size: 0.76rem;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+  }
+
+  .expert-lead__disclaimer a { color: rgba(255, 255, 255, 0.75); text-decoration: underline; }
+
+  @media (max-width: 1150px) {
+    .expert-lead__inner { flex-direction: column; align-items: stretch; padding: var(--space-38_4); }
+    .expert-lead__content { max-width: none; }
+    .expert-lead__form { width: 100%; }
+  }
+
+  /* ===== Блок «Готовая отделка — заходи и живи» (редизайн) =====
+     Фон — автоплей-видео квартиры (muted/loop/playsinline), поверх —
+     затемняющий градиент для читаемости. Заголовок сверху слева,
+     4 «стеклянные» плашки (backdrop-filter) в ряд прижаты к низу. */
+  .finish {
+    position: relative;
+    z-index: 5;
+    margin: 0 var(--space-36);
+  }
+
+  .finish-panel {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #2b2622;
+    min-height: 45rem;
+    display: flex;
+  }
+
+  .finish-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    pointer-events: none;
+  }
+
+  .finish-shade {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(180deg, rgba(14, 12, 10, 0.10) 0%, rgba(14, 12, 10, 0) 30%, rgba(14, 12, 10, 0.14) 100%);
+    pointer-events: none;
+  }
+
+  /* Десктоп: заголовок внизу слева, справа — одна стеклянная панель
+     на всю высоту блока (вплотную к краям), 4 пункта разделены линиями. */
+  .finish-inner {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 2rem;
+    padding: 0;
+  }
+
+  .finish-heading {
+    margin: 0 0 2.5rem 2.5rem;
+    max-width: 38rem;
+    align-self: flex-end;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    text-align: left;
+    color: #ffffff;
+  }
+
+  .finish-heading span { color: inherit; }
+
+  .finish-features {
+    flex: 0 0 16.5rem;
+    width: 16.5rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 1fr);
+    gap: 0;
+    background: rgba(255, 255, 255, 0.14);
+    border-left: 1px solid rgba(255, 255, 255, 0.28);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    backdrop-filter: blur(18px) saturate(140%);
+  }
+
+  /* Пункт: иконка сверху над текстом, снизу тонкая линия-разделитель. */
+  .finish-feature {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1.5rem 1.6rem;
+    transition: background 0.3s ease;
+  }
+
+  .finish-feature + .finish-feature {
+    border-top: 1px solid rgba(255, 255, 255, 0.28);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .finish-feature:hover { background: rgba(255, 255, 255, 0.1); }
+  }
+
+  .finish-feature-icon {
+    flex-shrink: 0;
+    width: 2.4rem;
+    height: 2.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--accent, #F03D3A);
+    color: #ffffff;
+  }
+
+  .finish-feature-icon svg { width: 1.0875rem; height: 1.0875rem; }
+
+  .finish-feature-text { min-width: 0; }
+
+  .finish-feature-text strong {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .finish-feature-text span {
+    display: block;
+    margin-top: var(--space-4);
+    font-size: 0.85rem;
+    line-height: 1.35;
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  /* Браузеры без backdrop-filter — чуть плотнее подложка. */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .finish-features { background: rgba(30, 27, 24, 0.55); }
+  }
+
+  /* Планшет/мобилка: заголовок сверху, панель — полоса 2×2 внизу
+     на всю ширину, пункты разделены линиями. */
+  @media (max-width: 900px) {
+    .finish { margin-left: 2.5vw; margin-right: 2.5vw; }
+    .finish-panel { min-height: 50rem; }
+    .finish-inner { flex-direction: column; gap: 2rem; }
+    .finish-heading { align-self: flex-start; margin: 1.8rem 1.8rem 0; }
+    .finish-features {
+      flex: none;
+      width: auto;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: none;
+      border-left: 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.28);
+    }
+    .finish-feature { justify-content: flex-start; }
+    .finish-feature + .finish-feature { border-top: 0; }
+    .finish-feature:nth-child(even) { border-left: 1px solid rgba(255, 255, 255, 0.28); }
+    .finish-feature:nth-child(n+3) { border-top: 1px solid rgba(255, 255, 255, 0.28); }
+  }
+
+  @media (max-width: 640px) {
+    .finish-panel { min-height: 42.5rem; }
+    .finish-heading { margin: 1.4rem 1rem 0; }
+    .finish-feature { padding: 0.9rem; gap: 0.7rem; }
+    .finish-feature-icon { width: 2rem; height: 2rem; }
+    .finish-feature-icon svg { width: 0.95rem; height: 0.95rem; }
+    .finish-feature-text strong { font-size: 0.95rem; }
+    .finish-feature-text span { font-size: 0.72rem; line-height: 1.3; }
+    .finish-feature-text span br { display: none; }
+  }
+
+  /* ===== Блок «Ипотечный калькулятор» =====
+     Компонент перенесён с a-butik.ru (механика/ставки готовы), верстка
+     под композицию из Фигмы: слева серая карточка со слайдерами (тот же
+     приём, что у карточек планировок — белые «таблетки» со значением
+     выделяются на сером), справа таблица программ прямо на белой панели.
+     --mcalc-accent берёт --accent страницы, отдельно переопределять не
+     нужно. */
+  .mcalc {
+    --mcalc-accent: var(--accent, #F03D3A);
+    position: relative;
+    z-index: 4;
+    /* По просьбе «внешние и внутренние вертикальные отступы на 20%
+       меньше» — было var(--space-48) (48px). */
+    /* Вертикальный отступ снизу убран из margin — теперь единственный
+       источник вертикального зазора между блоками это .block-gap
+       (64px), чтобы не задваивался с margin-bottom секции (было
+       38.4+64=102.4px вместо ожидаемых 64px). */
+    margin: 0 var(--space-36);
+  }
+
+  .mcalc-panel {
+    background: #ffffff;
+    border-radius: 10px;
+    /* Было var(--space-80) (80px) — тоже -20%. */
+    padding: var(--space-64) 0;
+  }
+
+  .mcalc-inner {
+    max-width: 1920px;
+    margin: 0 auto;
+    /* По просьбе «одинаковые горизонтальные отступы у всех блоков с
+       подложками, как у "Двор без машин"» — было var(--space-27_2)
+       (27.2px), стало 2.72rem (43.52px). */
+    padding: 0 2.72rem;
+  }
+
+  .mcalc-head {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: start;
+    /* По просьбе «расстояние между заголовком и подзаголовком на всех
+       блоках на 15% меньше» — было var(--space-16) (16px). */
+    gap: 0.7225rem;
+    /* Было var(--space-41_6) = 2.6rem, -20% по просьбе «везде на всех
+       заголовках» = 2.08rem. Точного токена нет — точный rem. */
+    margin: 0 0 2.08rem;
+  }
+
+  .mcalc-heading {
+    margin: 0;
+    max-width: none;
+    white-space: nowrap;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 2.8125rem;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #1c1c1a;
+  }
+
+  .mcalc-heading span { color: var(--mcalc-accent); }
+
+  .mcalc-note {
+    margin: 0;
+    max-width: none;
+    white-space: nowrap;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: #1c1c1a;
+    opacity: 0.45;
+    text-align: left;
+  }
+
+  .mcalc-body {
+    display: grid;
+    grid-template-columns: minmax(19rem, 25rem) 1fr;
+    gap: var(--space-26);
+    align-items: start;
+  }
+
+  /* --- Слайдеры: серая карточка, как у .layouts-card --- */
+  .mcalc-sliders {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-25_6);
+    background: #F6F9FB;
+    border-radius: 0.9rem;
+    padding: var(--space-28);
+  }
+
+  .mcalc-field label {
+    display: block;
+    margin: 0 0 var(--space-12_8);
+    font-size: 0.85rem;
+    color: #1c1c1a;
+    opacity: 0.55;
+  }
+
+  /* Белая «таблетка» со значением — выделяется на серой карточке тем же
+     приёмом, что планировка на сером фоне карточки в блоке 8. */
+  .mcalc-readout {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-4_8);
+    background: #ffffff;
+    border-radius: 0.7rem;
+    padding: var(--space-14_4) var(--space-17_6);
+    margin: 0 0 var(--space-16);
+    font-family: 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    font-variant-numeric: tabular-nums;
+    color: #1c1c1a;
+  }
+
+  .mcalc-readout .mcalc-unit { font-size: 0.9rem; font-weight: 500; opacity: 0.4; }
+  .mcalc-readout small { font-size: 0.85rem; font-weight: 500; opacity: 0.55; }
+
+  .mcalc-field input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: 999px;
+    outline: none;
+    margin: 0;
+    /* фон (серая дорожка + оранжевая залитая часть) выставляется inline
+       из script.js по текущему значению — см. paintTrack() */
+    background: #e4e6ea;
+  }
+
+  .mcalc-field input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 1.15rem;
+    height: 1.15rem;
+    border-radius: 50%;
+    background: var(--mcalc-accent);
+    cursor: pointer;
+    border: 3px solid #ffffff;
+    box-shadow: 0 0 0 1px rgba(28, 28, 26, 0.12);
+  }
+
+  .mcalc-field input[type="range"]::-moz-range-thumb {
+    width: 1.15rem;
+    height: 1.15rem;
+    border-radius: 50%;
+    background: var(--mcalc-accent);
+    cursor: pointer;
+    border: 3px solid #ffffff;
+    box-shadow: 0 0 0 1px rgba(28, 28, 26, 0.12);
+  }
+
+  .mcalc-field input[type="range"]::-moz-range-track {
+    height: 4px;
+    background: transparent;
+    border-radius: 999px;
+  }
+
+  /* --- Таблица программ: прямо на белой панели, как офферы/планировки --- */
+  /* Серая карточка-«близнец» .mcalc-sliders — та же высота (задаётся
+     JS-ем ниже, см. syncMcalcHeight), внутри скролл, если строк
+     больше, чем помещается. Шапка таблицы прилипает сверху при
+     скролле, чтобы заголовки колонок не убегали. */
+  /* Нативный скроллбар браузера ненадёжен: на macOS/iOS overlay-версия
+     скрыта до наведения/прокрутки и зависит от системной настройки
+     «Показывать полосы прокрутки» — ::-webkit-scrollbar её не всегда
+     переопределяет (особенно в Safari). Поэтому нативный скроллбар
+     прячем совсем и рисуем свой — простой div, всегда на экране,
+     не зависящий от браузера/ОС (см. .mcalc-scrollbar ниже и
+     updateScrollThumb() в скрипте калькулятора). */
+  .mcalc-tablebox { position: relative; }
+
+  .mcalc-tablewrap {
+    background: #F6F9FB;
+    border-radius: 0.9rem;
+    /* Верхний паддинг перенесён на саму .mcalc-row.is-head (см. ниже):
+       паддинг контейнера скролла не «прикрыт» ничем при прокрутке —
+       предыдущая строка проезжает сквозь него и видна в зазоре над
+       прилипшей шапкой. Паддинг на самой шапке — часть её непрозрачного
+       фона, зазор невозможен. */
+    padding: 0 var(--space-38_4) var(--space-8) var(--space-24);
+    overflow-y: scroll;
+    scrollbar-width: none;
+  }
+
+  .mcalc-tablewrap::-webkit-scrollbar { display: none; }
+
+  .mcalc-scrollbar {
+    position: absolute;
+    top: 0.6rem;
+    bottom: 0.6rem;
+    right: 0.9rem;
+    width: 4px;
+    border-radius: 999px;
+    background: rgba(28, 28, 26, 0.1);
+    pointer-events: none;
+  }
+
+  .mcalc-scrollbar-thumb {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    border-radius: 999px;
+    background: var(--mcalc-accent, #F03D3A);
+  }
+
+  .mcalc-row.is-head {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: #F6F9FB;
+  }
+
+  .mcalc-row {
+    display: grid;
+    grid-template-columns: 2.6fr 1fr 1.3fr 0.9fr;
+    align-items: center;
+    gap: var(--space-16);
+    padding: var(--space-17_6) 0;
+    border-bottom: 1px solid rgba(28, 28, 26, 0.08);
+  }
+
+  .mcalc-row.is-head {
+    padding: var(--space-20) 0 var(--space-14_4);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    /* Не opacity на весь элемент — это гасит и его собственный
+       непрозрачный фон (#F7F9FB), из-за чего строки, уезжающие под
+       залипшую шапку при скролле, просвечивали сквозь неё. Приглушаем
+       только цвет текста. */
+    color: rgba(28, 28, 26, 0.45);
+  }
+
+  .mcalc-row.is-head span:not(:first-child),
+  .mcalc-cell.is-num { text-align: right; }
+
+  .mcalc-bank {
+    display: flex;
+    align-items: center;
+    gap: var(--space-14_4);
+    font-family: 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #1c1c1a;
+  }
+
+  .mcalc-mono {
+    flex: none;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  .mcalc-mono img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .mcalc-cell {
+    font-family: 'Onest', sans-serif;
+    font-size: 0.95rem;
+    color: #1c1c1a;
+  }
+
+  .mcalc-cell.is-num { font-weight: 700; font-variant-numeric: tabular-nums; }
+
+  .mcalc-cell.is-payment {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--mcalc-accent);
+  }
+
+  .mcalc-foot {
+    margin: var(--space-22_4) 0 0;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: #1c1c1a;
+    opacity: 0.4;
+  }
+
+  @media (max-width: 1200px) {
+    .mcalc-body { grid-template-columns: 1fr; }
+    .mcalc-sliders { grid-template-columns: repeat(3, 1fr); display: grid; }
+    .mcalc-heading,
+    .mcalc-note {
+      white-space: normal;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .mcalc-sliders { grid-template-columns: 1fr; }
+    .mcalc-row { grid-template-columns: 2fr 0.8fr 1fr; }
+    .mcalc-row span:nth-child(4),
+    .mcalc-cell:nth-child(4) { display: none; }
+  }
+
+  @media (max-width: 640px) {
+    .mcalc-inner { padding: 0 var(--space-24); }
+
+    /* По просьбе «фильтры упаковать аккуратно на мобилке» — раньше
+       каждое поле занимало 3 «этажа» (подпись сверху, под ней крупная
+       белая таблетка со значением на всю ширину, под ней слайдер) —
+       на телефоне это растягивало всю карточку. Подпись и значение
+       теперь в одной строке (как обычный фильтр в мобильном UI),
+       слайдер — сразу под ней, на всю ширину. */
+    .mcalc-sliders { padding: var(--space-22_4); gap: var(--space-19_2); }
+
+    .mcalc-field {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      column-gap: var(--space-12);
+    }
+
+    .mcalc-field label {
+      margin: 0;
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .mcalc-readout {
+      flex: 0 0 auto;
+      margin: 0;
+      padding: var(--space-6_4) var(--space-12);
+      font-size: 1.05rem;
+    }
+
+    .mcalc-field input[type="range"] {
+      /* flex-basis 100% — переносит слайдер на новую строку под
+         подписью+значением, не занимая место рядом с ними в той же
+         строке (у flex-wrap строка с меньшим content не ломается
+         сама по себе, нужен явный базис на всю ширину). */
+      flex: 1 1 100%;
+      margin-top: var(--space-8);
+    }
+  }
+
+  /* ===== Блок «Дополнительные услуги» =====
+     Раньше был слайдером (карточка+фото отдельно, одна пара видна за
+     раз, листались стрелками/точками), потом — вертикальным списком из
+     трёх пар карточка+фото друг под другом. По просьбе переделано в
+     три полностью видимые горизонтальные карточки в ряд, вообще без
+     какой-либо галереи/переключения: фото и текст объединены в одну
+     карточку (фото на весь фон + градиент снизу + заголовок/текст/
+     кнопка поверх) — тот же приём, что уже есть на сайте у
+     .trust-photo/.trust-photo-overlay/.trust-photo-text (блок «Жить —
+     спокойно»), просто адаптирован под три равные колонки вместо одной
+     широкой фотографии. Кнопка — стандартная акцентная пилюля
+     .leadgen-submit/.icon-circle, единая для всех трёх карточек. */
+  .addl {
+    position: relative;
+    /* Внешний вертикальный отступ -20% по просьбе «у всех блоков»:
+       было var(--space-48). */
+    /* Вертикальный отступ снизу убран из margin — теперь единственный
+       источник вертикального зазора между блоками это .block-gap
+       (64px), чтобы не задваивался с margin-bottom секции (было
+       38.4+64=102.4px вместо ожидаемых 64px). */
+    margin: 0 var(--space-36);
+  }
+
+  .addl-inner {
+    max-width: 1920px;
+    margin: 0 auto;
+    padding: 0 var(--space-27_2);
+  }
+
+  .addl-head {
+    /* Было var(--space-38_4) = 2.4rem, -20% по просьбе «везде на всех
+       заголовках» = 1.92rem. Точного токена нет — точный rem. */
+    margin: 0 0 1.92rem;
+  }
+
+  .addl-heading {
+    margin: 0;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 2.8125rem;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #1c1c1a;
+  }
+
+  .addl-heading span { color: var(--accent, #F03D3A); }
+
+  .addl-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-19_2);
+  }
+
+  .addl-card {
+    position: relative;
+    min-height: 28rem;
+    border-radius: 1.44rem;
+    overflow: hidden;
+  }
+
+  .addl-card img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+  }
+
+  .addl-card-overlay {
+    position: absolute;
+    inset: 0;
+    /* Ровная полупрозрачная заливка поверх фото + градиент снизу — так карточки
+       выглядят одинаково затемнёнными независимо от того, тёмное фото само по себе
+       (фасад) или светлое (интерьер): раньше был только градиент, и на светлом фото
+       тень читалась заметно слабее, чем на тёмном. */
+    background:
+      linear-gradient(180deg, rgba(10, 14, 25, 0.25) 25%, rgba(10, 14, 25, 0.96) 100%),
+      rgba(10, 14, 25, 0.25);
+  }
+
+  .addl-card-body {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    padding: var(--space-27_2);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-14_4);
+  }
+
+  .addl-card-body h3 {
+    margin: 0;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 1.35rem;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: #ffffff;
+  }
+
+  .addl-card-body p {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .addl-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    align-self: flex-start;
+    gap: var(--space-16);
+    box-sizing: border-box;
+    padding: var(--space-8) var(--space-8) var(--space-8) var(--space-24);
+    background: var(--accent, #F03D3A);
+    border: none;
+    border-radius: 999px;
+    color: #ffffff;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+  }
+
+  /* По просьбе «расстояние от подзаголовка до кнопки больше, чем от
+     заголовка до подзаголовка, на мак и десктоп» — .addl-card-body
+     задаёт единый gap: var(--space-14_4) (14.4px) между всеми тремя
+     элементами по умолчанию (мобильная раскладка не трогается).
+     На мак/десктоп: gap между заголовком и подзаголовком уменьшен
+     трижды на 10% (14.4 → 12.96 → 11.664 → 10.4976px), а расстояние
+     подзаголовок→кнопка каждый раз пересчитывается так, чтобы остаться
+     неизменным (19.1664px): margin-top кнопки = 19.1664 − текущий gap. */
+  @media (min-width: 901px) {
+    .addl-card-body { gap: 0.6561rem; }
+    .addl-btn { margin-top: 0.5418rem; }
+  }
+
+  .addl-btn .icon-circle { width: 2.2rem; height: 2.2rem; background: #ffffff; color: var(--accent, #F03D3A); font-size: 0.9rem; }
+
+  @media (max-width: 1024px) {
+    .addl-list { grid-template-columns: 1fr; }
+    .addl-break { display: none; }
+  }
+
+  @media (max-width: 640px) {
+    .addl-inner { padding: 0 var(--space-24); }
+    .addl-heading { font-size: 2rem; }
+    .addl-card { min-height: 20rem; }
+  }
+
+  /* ===== Блок «Приезжайте — покажем на месте» (офисы продаж) =====
+     Последний блок страницы. Первая версия слишком буквально повторяла
+     референс (моноширинные ярлычки, заголовок на несвойственных сайту
+     начертаниях 300/800) — переделано на собственный язык сайта:
+     - заголовок/note — тот же приём, что у .mcalc-head/.mcalc-heading/
+       .mcalc-note (RoadRadio 700 uppercase + акцентный span, note
+       приглушённым opacity справа) — единый почерк заголовков блоков.
+     - тёмная карточка контакта — тот же #1b1c22, что у .leadgen, с той
+       же точечной текстурой (::before, radial-gradient), что у .leadgen —
+       а не голая заливка, как было.
+     - CTA — стандартная пилюля .leadgen-submit/.addl-btn (акцентная
+       заливка + белый .icon-circle со стрелкой), а не отдельная белая
+       кнопка капсом, придуманная под референс.
+     - карточки офисов — переняли интерактивный язык .offers-card:
+       нейтральный серый фон, при hover заливка акцентным цветом и
+       белый текст, круглая акцентная кнопка-стрелка внизу слева
+       (как .offers-btn) и квадратный значок-бейдж (как
+       .finish-feature-icon) вместо моноширинной технической подписи.
+       Карточка главного офиса больше не отдельный цвет-вариант —
+       отличается только текстом ярлычка, как и остальные три. */
+  .offices {
+    position: relative;
+    /* Нижний внешний вертикальный отступ -20% по просьбе: было
+       var(--space-48) = 3rem, стало var(--space-38_4) = 2.4rem. */
+    /* Вертикальный отступ снизу убран из margin — теперь единственный
+       источник вертикального зазора между блоками это .block-gap
+       (64px), чтобы не задваивался с margin-bottom секции (было
+       38.4+64=102.4px вместо ожидаемых 64px). */
+    margin: 0 var(--space-36);
+  }
+
+  .offices-panel {
+    background: #ffffff;
+    border-radius: 10px;
+    /* Внутренний вертикальный паддинг -20% по просьбе: было
+       var(--space-80) = 5rem, стало var(--space-64) = 4rem. */
+    padding: var(--space-64) 0;
+  }
+
+  .offices-inner {
+    max-width: 1920px;
+    margin: 0 auto;
+    /* По просьбе «одинаковые горизонтальные отступы у всех блоков с
+       подложками, как у "Двор без машин"» — было var(--space-27_2)
+       (27.2px), стало 2.72rem (43.52px). */
+    padding: 0 2.72rem;
+  }
+
+  .offices-head {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: start;
+    /* По просьбе «расстояние между заголовком и подзаголовком на всех
+       блоках на 15% меньше» — было var(--space-16) (16px). */
+    gap: 0.7225rem;
+    /* Было var(--space-41_6) = 2.6rem, -20% по просьбе «везде на всех
+       заголовках» = 2.08rem. Точного токена нет — точный rem. */
+    margin: 0 0 2.08rem;
+  }
+
+  .offices-heading {
+    margin: 0;
+    max-width: none;
+    white-space: nowrap;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 2.8125rem;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #1c1c1a;
+  }
+
+  .offices-heading span { color: var(--accent, #F03D3A); }
+
+  .offices-note {
+    margin: 0;
+    max-width: none;
+    white-space: nowrap;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: #1c1c1a;
+    opacity: 0.45;
+    text-align: left;
+  }
+
+  .offices-grid {
+    display: grid;
+    grid-template-columns: minmax(20rem, 34%) 1fr;
+    gap: var(--space-19_2);
+    align-items: stretch;
+  }
+
+  .offices-left {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12, 0.75rem);
+  }
+
+  .offices-contact {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-24);
+    box-sizing: border-box;
+    padding: var(--space-38_4) var(--space-27_2);
+    border-radius: 1.44rem;
+    background: #1b1c22;
+    color: #ffffff;
+  }
+
+  .offices-contact::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1px);
+    background-size: 15px 15px;
+    pointer-events: none;
+  }
+
+  .offices-contact > * { position: relative; z-index: 1; }
+
+  .offices-label {
+    margin: 0 0 var(--space-9_6);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent, #F03D3A);
+  }
+
+  .offices-phone {
+    display: block;
+    font-family: 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  .offices-desc {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .offices-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  /* Текст центрируется не по всей ширине кнопки, а в зоне от левого
+     края до начала круглой иконки: иконка выведена из потока
+     (position: absolute), а padding-right резервирует под неё точно
+     её ширину + отступ — тогда justify-content: center центрирует
+     текст ровно в оставшейся зоне (тот же приём, что у
+     .expert-lead__form .leadgen-submit). */
+  .offices-cta {
+    display: inline-flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+    /* Высота задана явно (а не через паддинг), потому что здесь иконка
+       (.icon-circle) абсолютно спозиционирована и не в потоке — в отличие от
+       .addl-btn/.news-btn, где иконка 2.2rem стоит в самой flex-строке и
+       своей высотой растягивает кнопку до 51.2px. Явная высота 3.2rem (51.2px)
+       повторяет тот же результат, чтобы кнопки в блоках «Офисы продаж»,
+       «Доп. услуги» и «Новости и статьи» были одинаковой высоты. */
+    height: 3.2rem;
+    padding: 0 var(--space-48) 0 var(--space-35_2);
+    background: var(--accent, #F03D3A);
+    border: none;
+    border-radius: 999px;
+    color: #ffffff;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+  }
+
+  .offices-cta .icon-circle {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2.6rem;
+    height: 2.6rem;
+    background: #ffffff;
+    color: var(--accent, #F03D3A);
+    font-size: 1rem;
+  }
+
+  .offices-social {
+    display: flex;
+    gap: var(--space-9_6);
+  }
+
+  .offices-social a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.75);
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .offices-social a svg {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+.offices-social a:hover {
+    background: var(--accent, #F03D3A);
+    color: #ffffff;
+  }
+}
+
+  .offices-map {
+    position: relative;
+    border-radius: 1.44rem;
+    overflow: hidden;
+    background: #e9e9e9;
+  }
+
+  .offices-map iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 20rem;
+    border: 0;
+  }
+
+  .offices-mini-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12, 0.75rem);
+  }
+
+  .offices-mini-list li {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .offices-mini-list li strong {
+    display: block;
+    margin-bottom: 0.15rem;
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  @media (max-width: 1024px) {
+    .offices-grid { grid-template-columns: 1fr; }
+    .offices-contact { flex-direction: row; flex-wrap: wrap; align-items: center; }
+    .offices-map iframe { min-height: 20rem; }
+    .offices-heading,
+    .offices-note {
+      white-space: normal;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .offices-inner { padding: 0 var(--space-24); }
+    .offices-heading { font-size: 2rem; }
+    .offices-contact { flex-direction: column; align-items: stretch; }
+    .offices-map iframe { min-height: 16rem; }
+  }
+
+  /* ===== Блок «Новости и статьи» =====
+     Последний блок страницы. Структура/состав карточек (фото + заголовок +
+     текст + кнопка) взяты из референса, но оформление — целиком на паттернах
+     сайта: белая панель + mcalc-head-заголовок, как у .offices/.mcalc,
+     карточка неакцентного серого фона, как у .offices-card, кнопка —
+     стандартная акцентная пилюля с .icon-circle, как у .addl-btn. */
+  .news {
+    position: relative;
+    /* Внешний вертикальный отступ -20% по просьбе «у всех блоков»:
+       было var(--space-48). */
+    /* Вертикальный отступ снизу убран из margin — теперь единственный
+       источник вертикального зазора между блоками это .block-gap
+       (64px), чтобы не задваивался с margin-bottom секции (было
+       38.4+64=102.4px вместо ожидаемых 64px). */
+    margin: 0 var(--space-36);
+  }
+
+  .news-panel {
+    /* Белого фона у секции больше нет (снят по просьбе), поэтому
+       собственный внутренний паддинг 80px здесь больше не «внутри
+       карточки», а просто задваивает внешние отступы секции — тот
+       же фикс, что и у .finish-panel после снятия подложки. */
+    padding: 0;
+  }
+
+  .news-inner {
+    max-width: 1920px;
+    margin: 0 auto;
+    padding: 0 var(--space-27_2);
+  }
+
+  .news-head {
+    /* Было var(--space-41_6) = 2.6rem, -20% по просьбе «везде на всех
+       заголовках» = 2.08rem. Точного токена нет — точный rem. */
+    margin: 0 0 2.08rem;
+  }
+
+  .news-heading {
+    margin: 0;
+    max-width: 34rem;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 2.8125rem;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #1c1c1a;
+  }
+
+  .news-heading span { color: var(--accent, #F03D3A); }
+
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-19_2);
+  }
+
+  .news-card {
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.9rem;
+    overflow: hidden;
+    background: #ffffff;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .news-card-photo {
+    position: relative;
+    width: 100%;
+    /* Высота уменьшена на 25% по просьбе: было 4/3 (высота = 0.75×ширины),
+       0.75×0.75 = 0.5625×ширины — это ровно соотношение 16/9. */
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+
+  .news-card-photo img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+  }
+
+  .news-card-body {
+    display: flex;
+    flex-direction: column;
+    /* По просьбе «расстояния как в блоке доп. услуг» — теперь совпадает
+       с .addl-card-body: базовый gap var(--space-14_4) (14.4px) для
+       мобильной раскладки, на мак/десктоп переопределяется ниже теми же
+       значениями, что и у .addl-card-body/.addl-btn. */
+    gap: var(--space-14_4);
+    padding: var(--space-27_2);
+    flex: 1;
+  }
+
+  .news-card-body h3 {
+    margin: 0;
+    font-family: 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    line-height: 1.3;
+    color: #1c1c1a;
+  }
+
+  .news-card-body p {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: #1c1c1a;
+    opacity: 0.6;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .news-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    align-self: flex-start;
+    gap: var(--space-16);
+    box-sizing: border-box;
+    padding: var(--space-8) var(--space-8) var(--space-8) var(--space-24);
+    background: var(--accent, #F03D3A);
+    /* Прозрачная рамка того же веса, что и на hover, — чтобы при
+       появлении красной обводки кнопка не «прыгала» в размере
+       (border учтён в box-sizing: border-box заранее). */
+    border: 1.5px solid transparent;
+    border-radius: 999px;
+    color: #ffffff;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.25s ease, border-color 0.25s ease;
+  }
+
+  .news-btn .icon-circle { width: 2.2rem; height: 2.2rem; background: #ffffff; color: var(--accent, #F03D3A); font-size: 0.9rem; }
+
+  /* По просьбе «в блоке новости расстояния как в блоке доп. услуг» —
+     те же значения gap/margin-top, что у .addl-card-body/.addl-btn. */
+  @media (min-width: 901px) {
+    .news-card-body { gap: 0.6561rem; }
+    .news-btn { margin-top: 0.5418rem; }
+  }
+
+  @media (max-width: 1024px) {
+    .news-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 640px) {
+    .news-inner { padding: 0 var(--space-24); }
+    .news-heading { font-size: 2rem; }
+  }
+
+  /* ===== Подвал (footer) =====
+     Раньше на странице не было — добавлен с нуля. Оформление на паттернах
+     сайта: нейтральный серый фон, как у .offices-card/.news-card, RoadRadio
+     для логотипа, та же типографика ярлычков (uppercase, letter-spacing),
+     что у .offices-label. */
+  .site-footer {
+    position: relative;
+    background: #1b1c22;
+    padding: var(--space-80) var(--space-36) var(--space-48);
+  }
+
+  .footer-inner {
+    max-width: 1920px;
+    margin: 0 auto;
+    padding: 0 var(--space-27_2);
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: var(--space-48);
+    padding-bottom: var(--space-48);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .footer-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-12);
+    margin: 0 0 var(--space-16);
+    text-decoration: none;
+    color: #ffffff;
+  }
+
+  .footer-logo-svg {
+    display: block;
+    /* Увеличено на 40% по просьбе: было 2.6rem, 2.6 × 1.4 = 3.64rem.
+       Затем ещё на 30% по просьбе: 3.64 × 1.3 = 4.732rem. */
+    width: 4.732rem;
+    height: auto;
+    flex-shrink: 0;
+  }
+
+  .footer-desc {
+    margin: var(--space-8) 0 0;
+    max-width: 20rem;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: #ffffff;
+    opacity: 0.55;
+  }
+
+  .footer-col-title {
+    margin: 0 0 var(--space-19_2);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .footer-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+  }
+
+  .footer-list a {
+    font-size: 0.88rem;
+    color: #ffffff;
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.2s ease, color 0.2s ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+.footer-list a:hover { opacity: 1; color: var(--accent, #F03D3A); }
+}
+
+  .footer-phone {
+    display: block;
+    margin: 0 0 var(--space-8);
+    font-family: 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+.footer-phone:hover { color: var(--accent, #F03D3A); }
+}
+
+  .footer-address {
+    margin: 0 0 var(--space-16);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: #ffffff;
+    opacity: 0.6;
+  }
+
+  .footer-social {
+    display: flex;
+    gap: var(--space-12);
+    margin-top: var(--space-8);
+  }
+
+  .footer-social a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.75);
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .footer-social a svg {
+    width: 1.05rem;
+    height: 1.05rem;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+.footer-social a:hover {
+    background: var(--accent, #F03D3A);
+    color: #ffffff;
+  }
+}
+
+  .footer-bottom {
+    padding-top: var(--space-24);
+  }
+
+  .footer-legal {
+    margin: 0;
+    width: 100%;
+    font-size: 0.72rem;
+    line-height: 1.6;
+    color: #ffffff;
+    opacity: 0.4;
+  }
+
+  .footer-legal a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  @media (max-width: 1024px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; row-gap: var(--space-36); }
+    .footer-brand { grid-column: 1 / -1; }
+  }
+
+  @media (max-width: 640px) {
+    .site-footer { padding: var(--space-56) var(--space-24) var(--space-36); }
+    .footer-inner { padding: 0; }
+    .footer-grid { grid-template-columns: 1fr; gap: var(--space-27_2); }
+  }
+
+  /* Единый заголовок блоков (45px/2.8125rem) на мобильном при таком
+     размере часто разбивается на 4-5 строк по одному-два слова —
+     не «перенос», а вырвиглазный столбик. Уменьшаем везде разом до
+     размера, при котором заголовки укладываются в 2-3 нормальные
+     строки на узких экранах. */
+  @media (max-width: 640px) {
+    .heading,
+    .scenario-mini-heading,
+    .scenarios-heading,
+    .offers-heading,
+    .layouts-heading,
+    .walk-heading,
+    .leadgen-content h2,
+    .nearby-heading,
+    .expert-lead__heading,
+    .finish-heading,
+    .mcalc-heading,
+    .addl-heading,
+    .offices-heading,
+    .news-heading {
+      font-size: 2.1rem;
+      line-height: 1.1;
+    }
+
+    .finish-heading,
+    .finish-note,
+    .mcalc-heading,
+    .mcalc-note,
+    .layouts-heading,
+    .layouts-note,
+    .offices-heading,
+    .offices-note {
+      white-space: normal;
+    }
+  }
+
+  /* ===== Модалка «Выбор квартиры» (открывается с кнопки «Выбор
+     квартиры» в блоке «Планировки») =====
+     По просьбе сделать инструмент подбора квартиры в духе референса:
+     подъезд → список этажей → план этажа с подсветкой юнита → карточка
+     выбранной квартиры справа. Данные должны тянуться из API застройщика
+     «Макро» (подтверждено пользователем), но доступ к API ещё не
+     передан — пользователь сказал «нужно время, я найду позже».
+     Поэтому сейчас вся разметка и логика работают на моковых данных
+     (см. APT_PICKER_MOCK_UNITS в <script> ниже) с понятной структурой
+     полей (подъезд/этаж/комнатность/площадь/цена/статус), чтобы потом
+     one-to-one заменить buildMockUnits() на реальный fetch() к API —
+     остальной код (рендер списка этажей, план, карточка) трогать не
+     придётся. Схематичный план этажа — сетка из юнитов, а не подлинный
+     чертёж дома (чертежей корпуса по этажам в assets нет, есть только
+     планировки отдельных квартир) — тоже временное решение до того,
+     как из Макро прилетят координаты/изображения поэтажных планов. */
+  .apt-picker-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    background: rgba(10, 14, 25, 0.55);
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-24);
+  }
+
+  .apt-picker-overlay.is-open { display: flex; }
+
+  .apt-picker {
+    position: relative;
+    display: grid;
+    grid-template-columns: 15rem 1fr 19rem;
+    grid-template-rows: auto 1fr;
+    width: min(72rem, 100%);
+    max-height: min(44rem, 90vh);
+    background: #ffffff;
+    border-radius: 1.44rem;
+    overflow: hidden;
+    box-shadow: 0 2rem 4rem rgba(10, 14, 25, 0.3);
+  }
+
+  .apt-picker__header {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: var(--space-20) var(--space-24);
+    border-bottom: 1px solid #ece9e4;
+  }
+
+  .apt-picker__title {
+    margin: 0;
+    font-family: 'Onest', sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #1c1c1a;
+  }
+
+  .apt-picker__close {
+    position: absolute;
+    top: var(--space-12);
+    right: var(--space-12);
+    width: 2.2rem;
+    height: 2.2rem;
+    border: none;
+    border-radius: 50%;
+    background: #F7F9FB;
+    color: #1c1c1a;
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+.apt-picker__close:hover { background: #ece9e4; }
+}
+
+  .apt-picker__sidebar {
+    border-right: 1px solid #ece9e4;
+    padding: var(--space-16);
+    overflow-y: auto;
+  }
+
+  .apt-picker__entrances {
+    display: flex;
+    gap: var(--space-8);
+    margin: 0 0 var(--space-16);
+  }
+
+  .apt-picker__entrance-btn {
+    flex: 1;
+    padding: var(--space-8);
+    border: 1px solid #ece9e4;
+    border-radius: 0.6rem;
+    background: #ffffff;
+    color: #1c1c1a;
+    font-family: 'Onest', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .apt-picker__entrance-btn.is-active {
+    background: var(--accent, #F03D3A);
+    border-color: var(--accent, #F03D3A);
+    color: #ffffff;
+  }
+
+  .apt-picker__floor-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .apt-picker__floor-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-8);
+    padding: 0.5rem 0.6rem;
+    border-radius: 0.5rem;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-family: 'Onest', sans-serif;
+    text-align: left;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+.apt-picker__floor-row:hover { background: #F7F9FB; }
+}
+
+  .apt-picker__floor-row.is-active { background: #E9EEFB; }
+
+  .apt-picker__floor-num {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1c1c1a;
+    flex-shrink: 0;
+  }
+
+  .apt-picker__floor-badges {
+    display: flex;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .apt-picker__badge {
+    font-size: 0.66rem;
+    font-weight: 600;
+    padding: 0.12rem 0.4rem;
+    border-radius: 999px;
+    background: #ece9e4;
+    color: #a9a49a;
+  }
+
+  .apt-picker__badge.is-available.rooms-1 { background: #DCEBFF; color: #2563EB; }
+  .apt-picker__badge.is-available.rooms-2 { background: #DFF5EC; color: #0F9D66; }
+  .apt-picker__badge.is-available.rooms-3 { background: #FDE9D8; color: #C2620B; }
+
+  .apt-picker__plan {
+    display: flex;
+    /* align-items: flex-start, не center: с center при переполнении
+       (этажи с 7-9 квартирами выше, чем видимая высота панели) сетка
+       обрезается СВЕРХУ и не прокручивается туда — это стандартный
+       баг центрирования flex-ребёнка с overflow, scrollTop физически
+       не может уйти в отрицательные значения, чтобы докрутить до
+       верхних рядов. flex-start убирает баг: сетка стартует от верха
+       и спокойно прокручивается вниз на любую высоту. */
+    align-items: flex-start;
+    justify-content: center;
+    padding: var(--space-24);
+    background: #F7F9FB;
+    overflow: auto;
+  }
+
+  /* По просьбе «везде по 3 в ряду, а не где-то 2, где-то 3» — раньше
+     сетка была 2 в ряд, и только на этажах с >6 квартирами JS добавлял
+     класс --dense (3 в ряд), из-за чего раскладка скакала между
+     этажами. Теперь всегда 3 колонки, --dense больше не используется
+     (класс в JS не трогаем — он просто не добавляет видимых отличий). */
+  .apt-picker__plan-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-12);
+    width: min(28rem, 100%);
+  }
+
+  .apt-picker__unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    aspect-ratio: 1;
+    border: 1.5px solid #d7d3c9;
+    border-radius: 0.6rem;
+    background: #ffffff;
+    color: #1c1c1a;
+    font-family: 'Onest', sans-serif;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .apt-picker__unit strong { font-size: 0.95rem; }
+  .apt-picker__unit span { font-size: 0.72rem; opacity: 0.65; }
+
+  .apt-picker__unit.is-selected {
+    background: #2563EB;
+    border-color: #2563EB;
+    color: #ffffff;
+  }
+
+  .apt-picker__unit.is-selected span { opacity: 0.85; }
+
+  .apt-picker__unit.is-booked,
+  .apt-picker__unit.is-sold {
+    background: #F1F0EC;
+    border-color: #F1F0EC;
+    color: #a9a49a;
+    cursor: not-allowed;
+  }
+
+  .apt-picker__card {
+    padding: var(--space-16);
+    border-left: 1px solid #ece9e4;
+    overflow-y: auto;
+  }
+
+  .apt-picker__card-photo {
+    position: relative;
+    border-radius: 0.6rem;
+    overflow: hidden;
+    background: #F7F9FB;
+    margin: 0 0 var(--space-12);
+  }
+
+  .apt-picker__card-photo img { display: block; width: 100%; height: auto; }
+
+  .apt-picker__card-title {
+    margin: 0 0 0.2rem;
+    font-family: 'Onest', sans-serif;
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: #1c1c1a;
+  }
+
+  .apt-picker__card-meta {
+    margin: 0 0 var(--space-12);
+    font-size: 0.8rem;
+    color: #8a8a83;
+  }
+
+  .apt-picker__card-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin: 0 0 var(--space-12);
+    padding: var(--space-12) 0;
+    border-top: 1px solid #ece9e4;
+    border-bottom: 1px solid #ece9e4;
+  }
+
+  .apt-picker__card-stat span { display: block; font-size: 0.72rem; color: #a9a49a; }
+  .apt-picker__card-stat strong { display: block; font-size: 0.88rem; color: #1c1c1a; }
+
+  .apt-picker__card-price {
+    margin: 0;
+    font-family: 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: #1c1c1a;
+  }
+
+  .apt-picker__card-price-sub {
+    margin: 0 0 var(--space-16);
+    font-size: 0.78rem;
+    color: #8a8a83;
+  }
+
+  .apt-picker__card-cta {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: var(--space-12);
+    margin: 0 0 var(--space-8);
+    border: none;
+    border-radius: 999px;
+    background: var(--accent, #F03D3A);
+    color: #ffffff;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 0.9rem;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+.apt-picker__card-cta:hover { background: #d12d2a; }
+}
+
+  .apt-picker__card-more {
+    display: block;
+    text-align: center;
+    font-size: 0.82rem;
+    color: #5a5a56;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  @media (max-width: 880px) {
+    .apt-picker {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto auto;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .apt-picker__sidebar { border-right: none; border-bottom: 1px solid #ece9e4; }
+    .apt-picker__card { border-left: none; border-top: 1px solid #ece9e4; }
+  }
+
+  /* ===== Модалка статьи (блок «Новости и статьи») — центральное окно
+     со скроллом, контент рендерится по клику из ARTICLES (см. <script>
+     ниже), карточка переиспользует .apt-picker-overlay-подход. ===== */
+  .article-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    background: rgba(10, 14, 25, 0.55);
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-24);
+  }
+
+  .article-modal-overlay.is-open { display: flex; }
+
+  .article-modal {
+    position: relative;
+    width: min(46rem, 100%);
+    max-height: min(50rem, 92vh);
+    background: #ffffff;
+    border-radius: 1.44rem;
+    overflow-y: auto;
+    box-shadow: 0 2rem 4rem rgba(10, 14, 25, 0.3);
+  }
+
+  .article-modal__close {
+    position: absolute;
+    top: var(--space-16);
+    right: var(--space-16);
+    z-index: 2;
+    width: 2.2rem;
+    height: 2.2rem;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    color: #1c1c1a;
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+.article-modal__close:hover { background: #ffffff; }
+}
+
+  .article-modal__cover {
+    width: 100%;
+    height: 16rem;
+    object-fit: cover;
+    display: block;
+  }
+
+  .article-modal__body { padding: var(--space-38_4); }
+
+  .article-modal__kicker {
+    margin: 0 0 var(--space-8);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent, #F03D3A);
+  }
+
+  .article-modal__title {
+    margin: 0 0 var(--space-24);
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 1.7rem;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: #1c1c1a;
+  }
+
+  .article-modal__lead {
+    margin: 0 0 var(--space-27_2);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #4a4a46;
+  }
+
+  .article-modal__section { margin: 0 0 var(--space-27_2); }
+
+  .article-modal__section h4 {
+    margin: 0 0 var(--space-8);
+    font-family: 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #1c1c1a;
+  }
+
+  .article-modal__section p {
+    margin: 0 0 var(--space-8);
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: #4a4a46;
+  }
+
+  .article-modal__section ul {
+    margin: 0 0 var(--space-8);
+    padding-left: 1.1rem;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: #4a4a46;
+  }
+
+  .article-modal__note {
+    margin: 0 0 var(--space-8);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: #8a8a83;
+    font-style: italic;
+  }
+
+  .article-modal__callout {
+    display: inline-block;
+    margin: 0 0 var(--space-8);
+    padding: var(--space-8) var(--space-16);
+    border-radius: 0.6rem;
+    background: rgba(240, 61, 58, 0.08);
+    color: var(--accent, #F03D3A);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  .article-modal__photo {
+    width: 100%;
+    border-radius: 0.9rem;
+    margin: var(--space-8) 0 var(--space-8);
+    display: block;
+  }
+
+  .article-modal__map {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 0.9rem;
+    overflow: hidden;
+    margin: var(--space-8) 0 var(--space-8);
+  }
+
+  .article-modal__map iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  /* Таблица сравнения сценариев (статья «Сколько стоят четыре года
+     учёбы») — идёт первым экраном сразу после лида, до остального
+     текста, поэтому вынесена отдельным блоком, а не секцией. */
+  .article-modal__table-wrap {
+    margin: 0 0 var(--space-8);
+    border: 1px solid #ece9e4;
+    border-radius: 0.9rem;
+    overflow-x: auto;
+  }
+
+  .article-modal__table { min-width: 30rem; }
+
+  .article-modal__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+  }
+
+  .article-modal__table th,
+  .article-modal__table td {
+    padding: var(--space-8) var(--space-12);
+    text-align: left;
+    border-bottom: 1px solid #ece9e4;
+  }
+
+  .article-modal__table th {
+    background: #F7F9FB;
+    font-weight: 700;
+    color: #1c1c1a;
+  }
+
+  .article-modal__table tr:last-child td { border-bottom: none; }
+
+  .article-modal__table tr.article-modal__table-highlight td {
+    background: rgba(240, 61, 58, 0.06);
+    font-weight: 700;
+    color: #1c1c1a;
+  }
+
+  .article-modal__table-note {
+    margin: var(--space-8) 0 var(--space-27_2);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: #8a8a83;
+  }
+
+  .article-modal__quote {
+    margin: 0 0 var(--space-8);
+    padding: var(--space-16) var(--space-20);
+    border-left: 3px solid var(--accent, #F03D3A);
+    background: #F7F9FB;
+    font-weight: 700;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #1c1c1a;
+  }
+
+  .article-modal__calc-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    margin: 0 0 var(--space-8);
+  }
+
+  .article-modal__calc-form .lead-modal__input { width: 100%; box-sizing: border-box; }
+
+  .article-modal__success {
+    padding: var(--space-16) 0 var(--space-8);
+    text-align: center;
+  }
+
+  .article-modal__success h4 { margin: 0 0 var(--space-8); }
+  .article-modal__success p { margin: 0; color: #4a4a46; font-size: 0.9rem; }
+
+  .article-modal__plans {
+    display: flex;
+    gap: var(--space-16);
+    margin: var(--space-8) 0 var(--space-27_2);
+  }
+
+  .article-modal__plan {
+    flex: 1;
+    text-align: center;
+  }
+
+  .article-modal__plan img {
+    width: 100%;
+    border-radius: 0.7rem;
+    background: #F7F9FB;
+    margin: 0 0 var(--space-8);
+  }
+
+  .article-modal__plan span {
+    font-size: 0.8rem;
+    color: #8a8a83;
+  }
+
+  .article-modal__cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+    padding: var(--space-16) var(--space-24);
+    background: var(--accent, #F03D3A);
+    border: none;
+    border-radius: 999px;
+    color: #ffffff;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  @media (max-width: 640px) {
+    .article-modal__cover { height: 10rem; }
+    .article-modal__body { padding: var(--space-24); }
+    .article-modal__title { font-size: 1.35rem; }
+    .article-modal__plans { flex-direction: column; }
+  }
+
+  /* ===== Модальная форма заявки (открывается с hero-кнопки «Подобрать
+     квартиру сейчас») — выезжающая справа панель, как в референсе. ===== */
+  .lead-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    background: rgba(10, 14, 25, 0.55);
+    justify-content: flex-end;
+  }
+
+  .lead-modal-overlay.is-open { display: flex; }
+
+  .lead-modal {
+    position: relative;
+    width: min(26.5rem, 100%);
+    height: 100dvh;
+    background: #ffffff;
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform 0.35s ease;
+    box-shadow: -1.2rem 0 3rem rgba(10, 14, 25, 0.25);
+  }
+
+  .lead-modal-overlay.is-open .lead-modal { transform: translateX(0); }
+
+  /* padding-top увеличен с --space-48 (48px) до --space-64 (64px) —
+     кнопка-крестик (.lead-modal__close) стоит на top: 24px, высотой
+     2.6rem (41.6px), т.е. занимает 24–65.6px по вертикали. Раньше
+     контент начинался на 48px — выше нижнего края кружка, из-за чего
+     заголовок визуально «наезжал» на крестик сбоку. 64px ≈ нижний край
+     кружка — контент теперь начинается вровень с ним. */
+  .lead-modal__body { padding: var(--space-64) var(--space-36) var(--space-36); }
+
+  .lead-modal__close {
+    position: absolute;
+    top: var(--space-24);
+    right: var(--space-24);
+    width: 2.6rem;
+    height: 2.6rem;
+    border: none;
+    border-radius: 50%;
+    background: #F7F9FB;
+    color: #1c1c1a;
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+.lead-modal__close:hover { background: #ece9e4; }
+}
+
+  .lead-modal__title {
+    /* margin: 0 auto (не "0 0 …") — при фиксированном max-width блок
+       раньше прилипал к левому краю, а на ширинах модалки шире 352px
+       (например 400–424px) справа оставался незадействованный зазор —
+       блок выглядел смещённым влево, а не отцентрованным по плашке.
+       Сам текст внутри блока остаётся по левому краю (text-align: left,
+       по умолчанию) — центруем блок целиком, а не строки текста. */
+    margin: 0 auto var(--space-12);
+    /* max-width раньше был 15rem — при ручных <br /> ("Оставьте заявку" /
+       "и мы вам перезвоним") каждая половина всё равно не влезала в
+       одну строку и текст рвался на 4 строки вместо задуманных 2-х.
+       22rem — по ширине содержимого модалки (352px = 26.5rem модалки
+       минус 2×36px паддинга), с запасом под обе строки. */
+    max-width: 22rem;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 1.7rem;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: #1c1c1a;
+  }
+
+  .lead-modal__text {
+    margin: 0 auto var(--space-24);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #5a5a56;
+  }
+
+  .lead-modal__manager {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-12);
+    margin: 0 0 var(--space-28);
+    padding: var(--space-14_4) var(--space-16);
+    background: #F7F9FB;
+    border-radius: 0.9rem;
+  }
+
+  /* Два перекрывающихся круглых фото, как в референсе — вместо одной
+     иконки-силуэта. */
+  .lead-modal__avatars {
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    width: 4.3rem;
+    height: 2.8rem;
+  }
+
+  .lead-modal__avatar-photo {
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #fff;
+    border: 2px solid #F7F9FB; /* совпадает с фоном плашки — визуально разделяет фото */
+  }
+
+  .lead-modal__avatar-photo + .lead-modal__avatar-photo { margin-left: -0.9rem; }
+
+  .lead-modal__online {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    background: #3ac569;
+    border: 2px solid #F7F9FB;
+  }
+
+  .lead-modal__manager strong { display: block; font-size: 0.92rem; color: #1c1c1a; }
+  .lead-modal__manager span { display: block; font-size: 0.8rem; color: #8a8a83; }
+
+  .lead-modal__form { display: flex; flex-direction: column; gap: var(--space-12); }
+
+  .lead-modal__input,
+  .lead-modal__select {
+    width: 100%;
+    height: 3.4rem;
+    box-sizing: border-box;
+    padding: 0 var(--space-16);
+    border: 1px solid #e2e2de;
+    border-radius: 0.7rem;
+    background: #fff;
+    color: #1c1c1a;
+    font-family: inherit;
+    font-size: 0.92rem;
+  }
+
+  .lead-modal__input:focus,
+  .lead-modal__select:focus {
+    outline: none;
+    border-color: var(--accent, #F03D3A);
+  }
+
+  .lead-modal__input::placeholder { color: #a9a49a; }
+
+  .lead-modal__select-label {
+    margin: var(--space-4) 0 calc(-1 * var(--space-4));
+    font-size: 0.82rem;
+    color: #5a5a56;
+  }
+
+  .lead-modal__select { appearance: none; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235a5a56' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--space-12) center;
+    background-size: 1.1rem;
+    padding-right: var(--space-36);
+  }
+
+  .lead-modal__submit {
+    height: 3.6rem;
+    margin-top: var(--space-8);
+    border: none;
+    border-radius: 999px;
+    background: var(--accent, #F03D3A);
+    color: #fff;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+.lead-modal__submit:hover { background: #d12d2a; }
+}
+
+  .lead-modal__consent {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-8);
+    margin-top: var(--space-4);
+    font-size: 0.76rem;
+    line-height: 1.4;
+    color: #8a8a83;
+    cursor: pointer;
+  }
+
+  .lead-modal__consent input { margin-top: 0.2rem; flex-shrink: 0; }
+  .lead-modal__consent a { color: #5a5a56; text-decoration: underline; }
+
+  .lead-modal__success {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-16);
+    padding-top: var(--space-32);
+  }
+
+  .lead-modal__success-icon {
+    width: 3.4rem;
+    height: 3.4rem;
+    border-radius: 50%;
+    background: rgba(240, 61, 58, 0.1);
+    color: var(--accent, #F03D3A);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lead-modal__success-icon svg { width: 1.7rem; height: 1.7rem; }
+
+  .lead-modal__success h3 {
+    margin: 0;
+    font-family: 'RoadRadio', 'Onest', sans-serif;
+    font-size: 1.4rem;
+    text-transform: none;
+    color: #1c1c1a;
+  }
+
+  .lead-modal__success p { margin: 0; font-size: 0.9rem; color: #5a5a56; line-height: 1.5; }
+
+  @media (max-width: 640px) {
+    .lead-modal { width: 100%; }
+    /* Та же логика, что у базового правила (см. комментарий выше по
+       файлу) — крестик тот же на всех ширинах (top: 24px + 41.6px), так
+       что padding-top тоже поднят до --space-64. */
+    .lead-modal__body { padding: var(--space-64) var(--space-24) var(--space-32); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Заголовки без капса — обычным регистром, как в исходном тексте
+     разметки, вместо text-transform: uppercase из базовых правил выше. */
+  .stat-card strong,
+  .title,
+  .heading,
+  .scenarios-heading,
+  .scenario-mini-heading,
+  .trust-mini-heading,
+  .offers-heading,
+  .layouts-heading,
+  .walk-heading,
+  .leadgen-content h2,
+  .nearby-heading,
+  .expert-lead__heading,
+  .finish-heading,
+  .mcalc-heading,
+  .addl-heading,
+  .addl-card-body h3,
+  .offices-heading,
+  .news-heading,
+  .footer-col-title {
+    text-transform: none !important;
+  }
+
+  /* Все заголовки (кроме hero) уменьшены на 15% относительно базовых
+     правил выше — по просьбе. */
+  .heading,
+  .scenarios-heading,
+  .scenario-mini-heading,
+  .trust-mini-heading,
+  .offers-heading,
+  .layouts-heading,
+  .walk-heading,
+  .leadgen-content h2,
+  .expert-lead__heading,
+  .finish-heading,
+  .mcalc-heading,
+  .addl-heading,
+  .offices-heading,
+  .news-heading {
+    font-size: 2.39062rem !important;
+  }
+  .nearby-heading { font-size: 2.86875rem !important; }
+  .addl-card-body h3 { font-size: 1.1475rem !important; }
+  .footer-col-title { font-size: 0.612rem !important; }
+
+  /* По просьбе «все блоки с подложками — 95% на ширину экрана на
+     мобилке» — горизонтальный margin в vw вместо фиксированных px,
+     чтобы подложка всегда занимала ровно 95% ширины экрана независимо
+     от размера телефона (100% - 95% = 5%, по 2.5% с каждой стороны). */
+  @media (max-width: 900px) {
+    .scenarios,
+    .scenario-mini,
+    .trust-mini,
+    .offers,
+    .layouts,
+    .leadgen,
+    .nearby,
+    .expert-lead,
+    .mcalc,
+    .offices,
+    .walk {
+      margin-left: 2.5vw;
+      margin-right: 2.5vw;
+    }
+
+    /* По просьбе «38.25px сделай 35px [на мобилке]» — было 2.39062rem. */
+    .heading,
+    .scenarios-heading,
+    .scenario-mini-heading,
+    .trust-mini-heading,
+    .offers-heading,
+    .layouts-heading,
+    .walk-heading,
+    .leadgen-content h2,
+    .expert-lead__heading,
+    .finish-heading,
+    .mcalc-heading,
+    .addl-heading,
+    .offices-heading,
+    .news-heading {
+      font-size: 2rem !important;
+    }
+  }
+
+
+  /* ===== Боковые отступы блоков сокращены на 25% =====
+     Десктоп: было var(--space-36) = 2.25rem, стало 1.6875rem.
+     Мобилка (<=900px): было 2.5vw, стало 1.875vw. Скругления и
+     внутренние паддинги не менялись. */
+  .scenarios,
+  .scenario-mini,
+  .trust-mini,
+  .offers,
+  .heat,
+  .layouts,
+  .walk,
+  .leadgen,
+  .nearby,
+  .expert-lead,
+  .finish,
+  .mcalc,
+  .addl,
+  .offices,
+  .news {
+    margin-left: 1.6875rem !important;
+    margin-right: 1.6875rem !important;
+  }
+
+  @media (max-width: 900px) {
+    .scenarios,
+    .scenario-mini,
+    .trust-mini,
+    .offers,
+    .heat,
+    .layouts,
+    .walk,
+    .leadgen,
+    .nearby,
+    .expert-lead,
+    .finish,
+    .mcalc,
+    .addl,
+    .offices,
+    .news {
+      margin-left: 1.875vw !important;
+      margin-right: 1.875vw !important;
+    }
+  }
+
+  /* ===== Тест: шрифт Involve в заголовках секций (кроме hero) ===== */
+  @font-face {
+    font-family: 'Involve';
+    src: url(assets/fonts/Involve-SemiBold.woff) format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Involve';
+    src: url(assets/fonts/Involve-Bold.woff) format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  .heading,
+  .scenarios-heading,
+  .scenario-mini-heading,
+  .trust-mini-heading,
+  .offers-heading,
+  .layouts-heading,
+  .walk-heading,
+  .leadgen-content h2,
+  .nearby-heading,
+  .expert-lead__heading,
+  .finish-heading,
+  .mcalc-heading,
+  .addl-heading,
+  .offices-heading,
+  .news-heading {
+    font-family: 'Involve', 'Onest', sans-serif !important;
+    font-weight: 600 !important;
+  }
+
+  /* Размер заголовков секций на 25% меньше: 2.39062rem -> 1.79297rem
+     (десктоп), 2rem -> 1.5rem (мобилка <=900px), «Жить — рядом»
+     2.86875rem -> 2.15156rem. */
+  .heading,
+  .scenarios-heading,
+  .scenario-mini-heading,
+  .trust-mini-heading,
+  .offers-heading,
+  .layouts-heading,
+  .walk-heading,
+  .leadgen-content h2,
+  .expert-lead__heading,
+  .finish-heading,
+  .mcalc-heading,
+  .addl-heading,
+  .offices-heading,
+  .news-heading {
+    font-size: 2.125rem !important;
+  }
+  .nearby-heading { font-size: 2.125rem !important; }
+
+  @media (max-width: 900px) {
+    .heading,
+    .scenarios-heading,
+    .scenario-mini-heading,
+    .trust-mini-heading,
+    .offers-heading,
+    .layouts-heading,
+    .walk-heading,
+    .leadgen-content h2,
+    .expert-lead__heading,
+    .finish-heading,
+    .mcalc-heading,
+    .addl-heading,
+    .offices-heading,
+    .news-heading {
+      font-size: 1.5rem !important;
+    }
+  }
+
+  /* Заголовок блока «Всё нужное» перенесён внутрь стеклянной панели
+     (вместо подписи «Что рядом с домом»). */
+  .walk-glass .walk-heading {
+    margin: 0 0 2.25rem;
+    max-width: none;
+    white-space: normal;
+    font-size: 1.75rem !important;
+    line-height: 1.15;
+  }
+  .walk-glass .walk-heading span { display: block; }
+
+  @media (max-width: 900px) {
+    .walk-glass .walk-heading { font-size: 1.5rem !important; }
+  }
+
+  /* Больше воздуха в панели: от заголовка до чипов и от чипов до списка. */
+  .walk-glass { padding-top: 2.2rem; padding-bottom: 2rem; }
+  .walk-glass .walk-chips { margin-bottom: 1.6rem; }
+  @media (min-width: 1201px) {
+    /* Высота под самый длинный список («Образование», 5 пунктов):
+       панель ~602px + по 20px сверху/снизу. */
+    .walk-scene { height: 40.5rem; }
+  }
+
+  /* Ширина блока с картой = ширина других блоков с подложкой:
+     у карты нет собственной подложки, поэтому боковой паддинг
+     .walk-inner убираем — край карты совпадает с краем подложек. */
+  .walk-inner,
+  .walk .walk-inner { padding-left: 0 !important; padding-right: 0 !important; }
+
+  /* Активный чип категории — тёмно-серый вместо красного (красный
+     сливался с красными акцентами панели). */
+  .walk-chip.is-active,
+  .walk-chip.is-active:hover {
+    background: #3a3d42;
+    border-color: #3a3d42;
+    color: #ffffff;
+  }
+  .walk-chip.is-active em { opacity: 0.6; }
+
+  /* Стеклянная панель отделки — отступ 10px от краёв блока,
+     со своим скруглением (раньше стояла вплотную к краю). */
+  .finish-features {
+    margin: 20px 20px 20px 0;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  @media (max-width: 900px) {
+    .finish-features { margin: 0 20px 20px; }
+  }
+
+  /* Иконки в панели отделки — красный круг, белая иконка. */
+  .finish-feature-icon {
+    background: var(--accent, #F03D3A);
+    border: 0;
+    color: #ffffff;
+  }
+
+  /* Подложка панели отделки — тёмное стекло вместо светлого,
+     чтобы белый текст читался на светлых кадрах видео. */
+  .finish-features { background: rgba(20, 18, 16, 0.4); }
+
+  /* Вся планировка кликабельна: курсор-лупа и лёгкое увеличение
+     картинки при наведении, лупа в углу показывается как раньше. */
+  .layouts-photo { cursor: zoom-in; }
+  .layouts-photo img { transition: transform 0.4s ease; }
+  @media (hover: hover) and (pointer: fine) {
+    .layouts-photo:hover img { transform: scale(1.05); }
+  }
+
+  /* Блок 2 («Семейный дом…»): вместо белого фона — паттерн из логотипа
+     «Жить хорошо», очень бледный (4%), со сдвигом рядов. */
+  .section {
+    background-color: #F6F9FB;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22240%22 height=%22220%22 viewBox=%220 0 240 220%22%3E%3Cdefs%3E%3Cg id=%22l%22%3E%3Cg clip-path=%22url(%23clip0_70_86)%22%3E %3Cpath d=%22M63.0277 -0.295809L56.5843 11.8468C63.7382 17.4746 68.1291 26.3747 67.5864 36.1519C66.6984 52.0792 53.0617 64.2712 37.1161 63.3841C34.6196 63.2461 32.212 62.7927 29.9326 62.0733L23.4893 74.2159C27.5053 75.7535 31.8272 76.6996 36.3563 76.9559C59.8011 78.2569 79.8614 60.3189 81.1639 36.9009C82.0125 21.6536 74.7008 7.84529 63.0179 -0.305664L63.0277 -0.295809Z%22 fill=%22white%22/%3E %3Cpath d=%22M-0.0849152 20.6499L20.972 65.5147L86.7971 17.5157L-0.0849152 20.6499Z%22 fill=%22%23F03D3A%22/%3E %3Cpath d=%22M18.4092 59.8175L27.6253 36.1334L7.04199 25.962L8.69971 25.7747L16.416 25.0059L18.6263 24.7891L21.0734 24.5427L34.2364 32.5754C34.641 32.8218 34.937 33.0583 35.4304 33.2259L32.0755 23.5768C32.3123 23.3896 32.6182 23.4093 32.9438 23.3797L34.5522 23.222L37.0881 22.9657L38.7655 22.8179L40.6206 28.4161L41.5876 31.304C41.5876 31.3335 41.6764 31.3828 41.6863 31.3532L41.7356 31.2153L42.298 29.6383L44.7945 22.5616C44.8339 22.4335 44.8734 22.2758 44.9524 22.2364C45.0313 22.197 45.1793 22.1773 45.278 22.1674L46.3733 22.059L47.8238 21.9112L48.9585 21.8224L49.1756 21.8027C49.2052 21.8027 49.2151 21.8619 49.2447 21.9506L46.6101 30.2888C46.6791 30.6042 46.9949 30.7914 47.2021 30.9886L48.3073 32.0235L54.3165 37.5231C54.5237 37.6611 54.6816 37.8188 54.7408 38.0554L51.1293 40.2533L44.8833 34.8423L43.788 38.0455L45.6233 43.5846L40.1864 46.8864L38.0353 40.7461C37.7591 40.5588 37.4729 40.411 37.167 40.2631L34.345 38.9128L30.4868 52.524C30.4079 52.7901 30.2796 52.8887 30.0625 53.0168L18.3993 59.8274L18.4092 59.8175Z%22 fill=%22white%22/%3E %3Cpath d=%22M65.3564 51.2229L67.1128 52.0508L69.4316 53.1941L72.0169 54.4557L72.8161 52.8491L67.5963 50.3063L66.1063 49.5868C66.2445 49.2812 66.1063 49.5868 66.2543 49.2714L66.8266 48.1084L66.9253 47.9112C66.9253 47.9112 67.1128 47.9901 67.1917 48.0295L69.3823 49.0841L73.6154 51.1342L74.4048 49.5473L73.4575 49.0644L67.7048 46.2751L68.514 44.5996C69.0073 44.8066 69.4415 45.0037 69.8954 45.2205L71.7307 46.1273L72.7471 46.6201L74.0594 47.2509L76.2401 48.3252L76.5164 48.4533C76.5855 48.4829 76.546 48.7096 76.5164 48.7687L74.8685 52.1395L74.2568 53.4011L73.2503 55.4905L72.6681 56.7127C72.4708 56.7915 72.1945 56.6338 71.9873 56.5451L66.3135 53.7854L64.5177 52.8984C64.7545 52.2873 65.0012 51.7945 65.3367 51.2229H65.3663H65.3564Z%22 fill=%22%23F03D3A%22/%3E %3Cpath d=%22M53.2497 72.2252C51.7005 72.4617 50.8026 71.1903 50.2401 69.9977C49.7073 68.8642 49.2041 67.7505 48.9771 66.5087C48.9278 66.2327 48.9376 65.937 48.9475 65.6413C48.9475 65.1485 49.1054 64.6656 49.3915 64.2615C49.6777 63.8574 49.6382 63.9559 49.806 63.8475C50.8618 63.0886 52.3912 62.5268 53.5556 63.473C53.9009 63.749 54.2167 64.0841 54.4337 64.4684C55.1541 65.7497 55.7066 67.0803 56.1112 68.4897C56.348 69.3472 56.3184 70.2145 55.7264 70.9537C55.1541 71.6831 54.2167 72.0773 53.2595 72.2252H53.2497ZM53.5062 70.7468C54.118 70.6285 54.4732 70.1554 54.3943 69.5936C54.3153 69.0318 54.1377 68.4404 53.9207 67.8984C53.5457 66.9719 53.2003 66.075 52.6971 65.2175C52.5096 64.912 52.2136 64.5769 51.8485 64.5374C51.4637 64.4882 50.8815 64.7641 50.7828 65.1485C50.6052 65.8582 50.8815 66.5284 51.1183 67.169C51.5031 68.194 51.8978 69.1599 52.4307 70.1061C52.6478 70.4806 53.0721 70.8355 53.5161 70.7468H53.5062Z%22 fill=%22%23F03D3A%22/%3E %3Cpath d=%22M69.364 60.6649C69.0186 61.6899 67.5681 63.2275 66.1867 63.0205C65.3282 62.9022 64.6671 62.4094 64.0159 61.8969C63.3054 61.345 62.6838 60.7635 62.0424 60.1228C61.0261 59.0978 60.2367 57.7574 61.105 56.3677C61.9043 55.0864 63.2561 54.0712 64.8349 54.7907C65.644 55.1554 66.315 55.7172 66.9662 56.3085L67.9135 57.166C68.3279 57.5307 68.6831 57.9939 68.9989 58.4276C69.4627 59.1076 69.6205 59.8961 69.364 60.655V60.6649ZM66.3544 61.2267C66.8478 61.4731 67.351 61.2858 67.6767 60.862C67.9924 60.4382 67.9135 59.9355 67.5385 59.492C66.5913 58.3684 65.5256 57.304 64.2626 56.5254C63.5422 56.0818 63.3054 56.1213 62.9009 56.4071C62.4963 56.6929 62.4272 56.9492 62.4272 57.2153C62.4075 58.0038 63.6113 59.0288 64.154 59.5216L65.0322 60.3002C65.2888 60.5171 66.0288 61.0493 66.3544 61.2168V61.2267Z%22 fill=%22%23F03D3A%22/%3E %3Cpath d=%22M78.1363 42.4131C77.9192 43.2804 77.6429 43.9704 76.7746 44.3843C76.0247 44.7588 75.2747 44.749 74.4755 44.6701C73.1434 44.5223 71.8508 44.3252 70.6075 43.8324C70.1042 43.6352 69.7688 43.3691 69.4727 43.034C68.7327 42.1963 68.8018 41.0135 69.1274 40.0181C69.9266 37.4949 72.8375 38.2144 74.7814 38.5495C75.9753 38.7664 77.5048 39.1705 78.0376 40.3828C78.3238 41.053 78.3139 41.7232 78.1461 42.4032L78.1363 42.4131ZM76.8042 41.9104C76.8436 41.3881 76.5378 40.9445 75.995 40.7869C74.7419 40.4419 73.469 40.2053 72.1468 40.0575C71.8705 40.0279 71.5548 40.0575 71.2785 40.0575C70.7654 40.0575 70.4003 40.5109 70.3509 40.984C70.3016 41.4571 70.6075 41.8612 71.0614 42.0386C72.3145 42.5215 74.4656 42.8369 75.8372 42.7975C76.3996 42.7975 76.7647 42.4821 76.8042 41.9006V41.9104Z%22 fill=%22%23F03D3A%22/%3E %3Cpath d=%22M44.4972 74.0987C44.438 74.3254 44.2505 74.4141 44.0334 74.4535C43.4808 74.5422 42.9875 74.6112 42.3856 74.6802L43.8755 69.8606L41.1719 65.7506L43.1947 65.4056L44.2209 67.1994C44.3689 67.4458 44.4676 67.6331 44.6649 67.9189C44.8623 67.2881 44.8129 67.4853 44.8623 67.2881L45.0004 66.7756L45.178 65.9674C45.2471 65.6816 45.2964 65.3366 45.405 65.041L47.3784 64.834L46.964 66.2631L46.1352 69.1608C46.0562 69.4368 46.0365 69.486 46.1944 69.7127L48.9572 73.6059L46.8949 73.9705L45.9378 72.4527L45.1879 71.2503L44.7143 73.2018L44.4873 74.1085H44.507L44.4972 74.0987Z%22 fill=%22%23F03D3A%22/%3E %3Cpath d=%22M61.2922 68.1168L59.7726 69.1714L56.546 64.5982L55.7961 63.5338L54.6218 61.8188L57.3847 59.887C58.3813 59.1872 59.6049 59.4336 60.3844 60.2714C60.9567 60.9022 61.4501 61.5921 61.4106 62.5087C61.3711 63.4253 60.8876 64.0266 60.2561 64.4799L59.2891 65.1797C59.4667 65.5148 59.6739 65.7908 59.8713 66.0865L61.2922 68.1168ZM59.5555 62.3313C59.4075 62.0455 59.2299 61.7301 59.0128 61.5133C58.3221 60.8036 57.5623 61.4541 56.9407 61.9174L58.0952 63.6028C58.184 63.7309 58.3714 63.9576 58.5194 63.9773C59.0819 63.7013 59.891 63.0015 59.5555 62.3313Z%22 fill=%22%23F03D3A%22/%3E %3Cpath d=%22M51.3352 21.5468L53.0324 21.3793C53.3087 21.3497 53.5554 21.33 53.8119 21.3793L56.3774 30.1807C56.3774 30.2103 56.4465 30.3088 56.4662 30.3286C56.486 30.3483 56.5748 30.2004 56.5748 30.1511L56.6142 28.2686L56.6932 26.7311L56.7622 24.7402L56.8412 23.4983L56.9004 21.8524L56.9596 21.0146C57.5812 20.8963 58.6568 20.8273 59.387 20.8076L62.8109 33.1277C62.209 33.5219 61.6564 33.8866 60.9756 34.2118L58.7357 26.327C58.5482 27.1253 58.6074 27.8054 58.5877 28.5545L58.5186 31.7084L58.4496 33.8373L58.3904 35.8282L55.4795 37.5728L50.7432 21.7735C50.8517 21.537 51.0787 21.5764 51.3352 21.5468Z%22 fill=%22white%22/%3E %3Cpath d=%22M65.1292 31.7074L62.6328 22.492C61.9914 22.4131 61.2908 22.8369 60.7086 22.6891L60.1758 20.6982L65.1489 20.1758C65.3364 20.4715 65.6127 21.6049 65.6028 21.9203C65.0601 21.9991 64.7345 22.0484 64.2313 22.216L66.5205 30.8597C66.0764 31.1751 65.7114 31.4018 65.1292 31.7074Z%22 fill=%22white%22/%3E %3Cpath d=%22M70.498 25.6876C70.7348 26.6831 70.9124 28.2009 69.9059 28.8416C69.3632 29.1865 68.86 29.5019 68.2186 29.8272L65.9393 21.1046C65.8505 20.7596 65.7123 20.4837 65.7814 20.1387L66.9161 20.0303L67.8141 23.4799L68.6232 23.3419C69.8171 23.1349 70.2908 24.8302 70.498 25.6975V25.6876ZM69.6593 26.555C69.5902 26.0227 69.3435 24.8696 68.7909 24.84C68.2384 24.8105 68.3469 24.9189 68.2285 25.0569L68.9192 27.7081C69.4816 27.6096 69.7481 27.1661 69.6593 26.555Z%22 fill=%22white%22/%3E %3C/g%3E %3Cdefs%3E %3CclipPath id=%22clip0_70_86%22%3E %3Crect width=%2286.9141%22 height=%2277.1484%22 fill=%22white%22/%3E %3C/clipPath%3E %3C/defs%3E%3C/g%3E%3C/defs%3E%3Cg opacity=%220.04%22%3E%3Cuse href=%22%23l%22 transform=%22translate(20 20) rotate(-8 43 39)%22/%3E%3Cuse href=%22%23l%22 transform=%22translate(140 130) rotate(-8 43 39)%22/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 240px 220px;
+  }
+
+  /* Новый текст «Семейного дома» длиннее старого — без ручных
+     переносов, ровными строками. */
+  .row--a .paragraph { max-width: 38rem; margin-left: auto; margin-right: auto; text-wrap: balance; }
+
+  /* Сценарии: лупа в правом нижнем углу планировки — открывает
+     лайтбокс-слайдер со всеми планировками сценария. */
+  .scenario-mini-plan { position: relative; cursor: zoom-in; }
+  .scenario-mini-zoom {
+    position: absolute;
+    right: 0.45rem;
+    bottom: 0.45rem;
+    width: 2.1rem;
+    height: 2.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(28, 28, 26, 0.6);
+    color: #ffffff;
+    cursor: zoom-in;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+  .scenario-mini-zoom svg { width: 0.95rem; height: 0.95rem; }
+  @media (hover: hover) and (pointer: fine) {
+    .scenario-mini-plan:hover .scenario-mini-zoom { background: var(--accent, #F03D3A); transform: scale(1.06); }
+  }
+
+  /* Стрелки и подпись слайдера в лайтбоксе планировок. */
+  .layouts-lightbox-nav {
+    position: absolute;
+    top: 50%;
+    width: 3rem;
+    height: 3rem;
+    margin-top: -1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0 0.2rem;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    font: 500 1.9rem/1 'Onest', sans-serif;
+    cursor: pointer;
+  }
+  .layouts-lightbox-nav[hidden], .layouts-lightbox-caption[hidden] { display: none; }
+  .layouts-lightbox-nav--prev { left: 1.8rem; }
+  .layouts-lightbox-nav--next { right: 1.8rem; }
+  @media (hover: hover) and (pointer: fine) {
+    .layouts-lightbox-nav:hover { background: rgba(255, 255, 255, 0.24); }
+  }
+  .layouts-lightbox-caption {
+    position: absolute;
+    left: 50%;
+    bottom: 1.6rem;
+    transform: translateX(-50%);
+    margin: 0;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  @media (max-width: 640px) {
+    .layouts-lightbox-nav { top: auto; bottom: 1.2rem; margin-top: 0; width: 2.6rem; height: 2.6rem; }
+    .layouts-lightbox-nav--prev { left: 1rem; }
+    .layouts-lightbox-nav--next { right: 1rem; }
+    .layouts-lightbox-caption { bottom: 1.45rem; font-size: 0.8rem; }
+  }
+
+  /* Вариант заголовка: C · Контур + заливка */
+  .title--c { line-height: 0.95; margin-top: 0.091em; } /* зазор от плашек-бейджей +15% и ещё +15% (20.8px -> ~27.6px) */
+  .title--c .l1, .title--c .l2 { display: block; font-family: 'Involve', 'Onest', sans-serif; font-weight: 700; letter-spacing: -0.035em; line-height: 0.95; }
+  /* «Жилой комплекс» контуром — мельче, «жить хорошо.» — крупнее. */
+  .title--c .l1 { font-size: 0.75em; margin-bottom: 0.04em; line-height: 0.85; color: transparent; -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.9); }
+  .title--c .l2 { font-size: 1.32em; line-height: 0.85; }
+  .title--c .l2 i { font-style: normal; color: var(--accent, #F03D3A); }
+  @media (max-width: 900px) {
+    .title--c .l1 { -webkit-text-stroke-width: 1px; }
+    .title--c .l2 { font-size: 1.18em; }
+  }
+
+  /* Отдельная страница только с главным экраном — на всю высоту окна. */
+  body { background: #0e1424; }
+  .hero { min-height: max(100svh, 640px); }
+</style>
+
+<body>
+<section class="hero">
+  <video class="hero__bg" src="assets/videos/hero-bg.mp4" poster="assets/images/hero-bg.jpg" autoplay muted loop playsinline disablepictureinpicture disableRemotePlayback controlsList="nodownload noplaybackrate nofullscreen"></video>
+  <div class="hero__overlay"></div>
+
+  <div class="hero__inner">
+    <header class="header">
+      <a href="/" class="logo">
+        <svg class="logo-svg" width="87" height="78" viewBox="0 0 87 78" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_70_86)">
+<path d="M63.0277 -0.295809L56.5843 11.8468C63.7382 17.4746 68.1291 26.3747 67.5864 36.1519C66.6984 52.0792 53.0617 64.2712 37.1161 63.3841C34.6196 63.2461 32.212 62.7927 29.9326 62.0733L23.4893 74.2159C27.5053 75.7535 31.8272 76.6996 36.3563 76.9559C59.8011 78.2569 79.8614 60.3189 81.1639 36.9009C82.0125 21.6536 74.7008 7.84529 63.0179 -0.305664L63.0277 -0.295809Z" fill="white"/>
+<path d="M-0.0849152 20.6499L20.972 65.5147L86.7971 17.5157L-0.0849152 20.6499Z" fill="#F03D3A"/>
+<path d="M18.4092 59.8175L27.6253 36.1334L7.04199 25.962L8.69971 25.7747L16.416 25.0059L18.6263 24.7891L21.0734 24.5427L34.2364 32.5754C34.641 32.8218 34.937 33.0583 35.4304 33.2259L32.0755 23.5768C32.3123 23.3896 32.6182 23.4093 32.9438 23.3797L34.5522 23.222L37.0881 22.9657L38.7655 22.8179L40.6206 28.4161L41.5876 31.304C41.5876 31.3335 41.6764 31.3828 41.6863 31.3532L41.7356 31.2153L42.298 29.6383L44.7945 22.5616C44.8339 22.4335 44.8734 22.2758 44.9524 22.2364C45.0313 22.197 45.1793 22.1773 45.278 22.1674L46.3733 22.059L47.8238 21.9112L48.9585 21.8224L49.1756 21.8027C49.2052 21.8027 49.2151 21.8619 49.2447 21.9506L46.6101 30.2888C46.6791 30.6042 46.9949 30.7914 47.2021 30.9886L48.3073 32.0235L54.3165 37.5231C54.5237 37.6611 54.6816 37.8188 54.7408 38.0554L51.1293 40.2533L44.8833 34.8423L43.788 38.0455L45.6233 43.5846L40.1864 46.8864L38.0353 40.7461C37.7591 40.5588 37.4729 40.411 37.167 40.2631L34.345 38.9128L30.4868 52.524C30.4079 52.7901 30.2796 52.8887 30.0625 53.0168L18.3993 59.8274L18.4092 59.8175Z" fill="white"/>
+<path d="M65.3564 51.2229L67.1128 52.0508L69.4316 53.1941L72.0169 54.4557L72.8161 52.8491L67.5963 50.3063L66.1063 49.5868C66.2445 49.2812 66.1063 49.5868 66.2543 49.2714L66.8266 48.1084L66.9253 47.9112C66.9253 47.9112 67.1128 47.9901 67.1917 48.0295L69.3823 49.0841L73.6154 51.1342L74.4048 49.5473L73.4575 49.0644L67.7048 46.2751L68.514 44.5996C69.0073 44.8066 69.4415 45.0037 69.8954 45.2205L71.7307 46.1273L72.7471 46.6201L74.0594 47.2509L76.2401 48.3252L76.5164 48.4533C76.5855 48.4829 76.546 48.7096 76.5164 48.7687L74.8685 52.1395L74.2568 53.4011L73.2503 55.4905L72.6681 56.7127C72.4708 56.7915 72.1945 56.6338 71.9873 56.5451L66.3135 53.7854L64.5177 52.8984C64.7545 52.2873 65.0012 51.7945 65.3367 51.2229H65.3663H65.3564Z" fill="#F03D3A"/>
+<path d="M53.2497 72.2252C51.7005 72.4617 50.8026 71.1903 50.2401 69.9977C49.7073 68.8642 49.2041 67.7505 48.9771 66.5087C48.9278 66.2327 48.9376 65.937 48.9475 65.6413C48.9475 65.1485 49.1054 64.6656 49.3915 64.2615C49.6777 63.8574 49.6382 63.9559 49.806 63.8475C50.8618 63.0886 52.3912 62.5268 53.5556 63.473C53.9009 63.749 54.2167 64.0841 54.4337 64.4684C55.1541 65.7497 55.7066 67.0803 56.1112 68.4897C56.348 69.3472 56.3184 70.2145 55.7264 70.9537C55.1541 71.6831 54.2167 72.0773 53.2595 72.2252H53.2497ZM53.5062 70.7468C54.118 70.6285 54.4732 70.1554 54.3943 69.5936C54.3153 69.0318 54.1377 68.4404 53.9207 67.8984C53.5457 66.9719 53.2003 66.075 52.6971 65.2175C52.5096 64.912 52.2136 64.5769 51.8485 64.5374C51.4637 64.4882 50.8815 64.7641 50.7828 65.1485C50.6052 65.8582 50.8815 66.5284 51.1183 67.169C51.5031 68.194 51.8978 69.1599 52.4307 70.1061C52.6478 70.4806 53.0721 70.8355 53.5161 70.7468H53.5062Z" fill="#F03D3A"/>
+<path d="M69.364 60.6649C69.0186 61.6899 67.5681 63.2275 66.1867 63.0205C65.3282 62.9022 64.6671 62.4094 64.0159 61.8969C63.3054 61.345 62.6838 60.7635 62.0424 60.1228C61.0261 59.0978 60.2367 57.7574 61.105 56.3677C61.9043 55.0864 63.2561 54.0712 64.8349 54.7907C65.644 55.1554 66.315 55.7172 66.9662 56.3085L67.9135 57.166C68.3279 57.5307 68.6831 57.9939 68.9989 58.4276C69.4627 59.1076 69.6205 59.8961 69.364 60.655V60.6649ZM66.3544 61.2267C66.8478 61.4731 67.351 61.2858 67.6767 60.862C67.9924 60.4382 67.9135 59.9355 67.5385 59.492C66.5913 58.3684 65.5256 57.304 64.2626 56.5254C63.5422 56.0818 63.3054 56.1213 62.9009 56.4071C62.4963 56.6929 62.4272 56.9492 62.4272 57.2153C62.4075 58.0038 63.6113 59.0288 64.154 59.5216L65.0322 60.3002C65.2888 60.5171 66.0288 61.0493 66.3544 61.2168V61.2267Z" fill="#F03D3A"/>
+<path d="M78.1363 42.4131C77.9192 43.2804 77.6429 43.9704 76.7746 44.3843C76.0247 44.7588 75.2747 44.749 74.4755 44.6701C73.1434 44.5223 71.8508 44.3252 70.6075 43.8324C70.1042 43.6352 69.7688 43.3691 69.4727 43.034C68.7327 42.1963 68.8018 41.0135 69.1274 40.0181C69.9266 37.4949 72.8375 38.2144 74.7814 38.5495C75.9753 38.7664 77.5048 39.1705 78.0376 40.3828C78.3238 41.053 78.3139 41.7232 78.1461 42.4032L78.1363 42.4131ZM76.8042 41.9104C76.8436 41.3881 76.5378 40.9445 75.995 40.7869C74.7419 40.4419 73.469 40.2053 72.1468 40.0575C71.8705 40.0279 71.5548 40.0575 71.2785 40.0575C70.7654 40.0575 70.4003 40.5109 70.3509 40.984C70.3016 41.4571 70.6075 41.8612 71.0614 42.0386C72.3145 42.5215 74.4656 42.8369 75.8372 42.7975C76.3996 42.7975 76.7647 42.4821 76.8042 41.9006V41.9104Z" fill="#F03D3A"/>
+<path d="M44.4972 74.0987C44.438 74.3254 44.2505 74.4141 44.0334 74.4535C43.4808 74.5422 42.9875 74.6112 42.3856 74.6802L43.8755 69.8606L41.1719 65.7506L43.1947 65.4056L44.2209 67.1994C44.3689 67.4458 44.4676 67.6331 44.6649 67.9189C44.8623 67.2881 44.8129 67.4853 44.8623 67.2881L45.0004 66.7756L45.178 65.9674C45.2471 65.6816 45.2964 65.3366 45.405 65.041L47.3784 64.834L46.964 66.2631L46.1352 69.1608C46.0562 69.4368 46.0365 69.486 46.1944 69.7127L48.9572 73.6059L46.8949 73.9705L45.9378 72.4527L45.1879 71.2503L44.7143 73.2018L44.4873 74.1085H44.507L44.4972 74.0987Z" fill="#F03D3A"/>
+<path d="M61.2922 68.1168L59.7726 69.1714L56.546 64.5982L55.7961 63.5338L54.6218 61.8188L57.3847 59.887C58.3813 59.1872 59.6049 59.4336 60.3844 60.2714C60.9567 60.9022 61.4501 61.5921 61.4106 62.5087C61.3711 63.4253 60.8876 64.0266 60.2561 64.4799L59.2891 65.1797C59.4667 65.5148 59.6739 65.7908 59.8713 66.0865L61.2922 68.1168ZM59.5555 62.3313C59.4075 62.0455 59.2299 61.7301 59.0128 61.5133C58.3221 60.8036 57.5623 61.4541 56.9407 61.9174L58.0952 63.6028C58.184 63.7309 58.3714 63.9576 58.5194 63.9773C59.0819 63.7013 59.891 63.0015 59.5555 62.3313Z" fill="#F03D3A"/>
+<path d="M51.3352 21.5468L53.0324 21.3793C53.3087 21.3497 53.5554 21.33 53.8119 21.3793L56.3774 30.1807C56.3774 30.2103 56.4465 30.3088 56.4662 30.3286C56.486 30.3483 56.5748 30.2004 56.5748 30.1511L56.6142 28.2686L56.6932 26.7311L56.7622 24.7402L56.8412 23.4983L56.9004 21.8524L56.9596 21.0146C57.5812 20.8963 58.6568 20.8273 59.387 20.8076L62.8109 33.1277C62.209 33.5219 61.6564 33.8866 60.9756 34.2118L58.7357 26.327C58.5482 27.1253 58.6074 27.8054 58.5877 28.5545L58.5186 31.7084L58.4496 33.8373L58.3904 35.8282L55.4795 37.5728L50.7432 21.7735C50.8517 21.537 51.0787 21.5764 51.3352 21.5468Z" fill="white"/>
+<path d="M65.1292 31.7074L62.6328 22.492C61.9914 22.4131 61.2908 22.8369 60.7086 22.6891L60.1758 20.6982L65.1489 20.1758C65.3364 20.4715 65.6127 21.6049 65.6028 21.9203C65.0601 21.9991 64.7345 22.0484 64.2313 22.216L66.5205 30.8597C66.0764 31.1751 65.7114 31.4018 65.1292 31.7074Z" fill="white"/>
+<path d="M70.498 25.6876C70.7348 26.6831 70.9124 28.2009 69.9059 28.8416C69.3632 29.1865 68.86 29.5019 68.2186 29.8272L65.9393 21.1046C65.8505 20.7596 65.7123 20.4837 65.7814 20.1387L66.9161 20.0303L67.8141 23.4799L68.6232 23.3419C69.8171 23.1349 70.2908 24.8302 70.498 25.6975V25.6876ZM69.6593 26.555C69.5902 26.0227 69.3435 24.8696 68.7909 24.84C68.2384 24.8105 68.3469 24.9189 68.2285 25.0569L68.9192 27.7081C69.4816 27.6096 69.7481 27.1661 69.6593 26.555Z" fill="white"/>
+</g>
+<defs>
+<clipPath id="clip0_70_86">
+<rect width="86.9141" height="77.1484" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+      </a>
+
+      <nav class="nav" aria-label="Основная навигация">
+        <ul>
+          <li><a href="#about-project">О проекте</a></li>
+          <li><a href="#offers">Предложения</a></li>
+          <li><a href="#who-its-for">Кому подойдёт</a></li>
+          <li><a href="#location">Локация</a></li>
+          <li><a href="#layouts">Планировки</a></li>
+          <li><a href="#contacts">Контакты</a></li>
+          <li><a href="#about-us">О нас</a></li>
+        </ul>
+      </nav>
+
+      <div class="contacts">
+        <div class="phone-block">
+          <a href="tel:+79500943392" class="phone">+7 950 094 33 92</a>
+          <a href="#" class="max-link" onclick="openLeadModal(); return false;">Написать в MAX</a>
+        </div>
+        <button type="button" class="contact-btn" onclick="openLeadModal()">
+          Связаться с нами
+          <span class="icon-circle">→</span>
+        </button>
+      </div>
+
+      <button type="button" class="burger" aria-label="Открыть меню" aria-expanded="false" onclick="toggleMobileNav()">
+        <span></span><span></span><span></span>
+      </button>
+    </header>
+
+    <div class="mobile-nav" id="mobileNav">
+      <nav aria-label="Мобильная навигация">
+        <ul>
+          <li><a href="#about-project">О проекте</a></li>
+          <li><a href="#offers">Предложения</a></li>
+          <li><a href="#who-its-for">Кому подойдёт</a></li>
+          <li><a href="#location">Локация</a></li>
+          <li><a href="#layouts">Планировки</a></li>
+          <li><a href="#contacts">Контакты</a></li>
+          <li><a href="#about-us">О нас</a></li>
+        </ul>
+      </nav>
+      <div class="mobile-nav__contacts">
+        <a href="tel:+79500943392" class="phone">+7 950 094 33 92</a>
+        <a href="#" class="max-link" onclick="openLeadModal(); return false;">Написать в MAX</a>
+        <button type="button" class="contact-btn" onclick="openLeadModal()">
+          Связаться с нами
+          <span class="icon-circle">→</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="stats-column">
+      <div class="stat-card">
+        <img class="cube" src="assets/images/cube1.svg" width="34" height="34" alt="" />
+        <strong>10 этажей</strong>
+        <p>монолитно-кирпичная технология строительства</p>
+      </div>
+      <div class="stat-card">
+        <img class="cube" src="assets/images/cube2.svg" width="34" height="34" alt="" />
+        <strong>Закрытая</strong>
+        <p>территория<br />с видеонаблюдением</p>
+      </div>
+      <div class="stat-card">
+        <img class="cube" src="assets/images/cube3.svg" width="34" height="34" alt="" />
+        <strong>1–3</strong>
+        <p>комнатные планировки, <span style="white-space: nowrap;">30,8–68,7 м²</span></p>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="badges">
+        <span class="badge">
+          <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 4l9 6.5"/><path d="M5 9.5V19a1 1 0 0 0 1 1h4v-5h4v5h4a1 1 0 0 0 1-1V9.5"/></svg>
+          Квартиры от 4 099 000 ₽
+        </span>
+        <span class="badge">
+          <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="7.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+          Ипотека от 4.4%
+        </span>
+        <span class="badge">
+          <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2l6.5 2.6v4.7c0 4.1-2.7 7.4-6.5 8.5-3.8-1.1-6.5-4.4-6.5-8.5V5.8L12 3.2z"/><path d="M9 11.6l2 2 4-4.2"/></svg>
+          Класс «Комфорт»
+        </span>
+      </div>
+
+      <h1 class="title title--c"><span class="l1">Жилой комплекс</span><span class="l2">жить хорошо<i>.</i></span></h1>
+    </div>
+
+    <button type="button" class="cta" onclick="openApartmentPicker()">
+      Подобрать квартиру сейчас
+      <span class="icon-circle">→</span>
+    </button>
+  </div>
+</section>
+<script>
+  // Мобильное меню: открыть/закрыть по гамбургеру, закрыть по клику
+  // на ссылку или клавише Esc, блокировать скролл страницы за панелью.
+  function toggleMobileNav(forceClose) {
+    const nav = document.getElementById('mobileNav');
+    const burger = document.querySelector('.burger');
+    if (!nav || !burger) return;
+    const willOpen = forceClose === true ? false : !nav.classList.contains('is-open');
+    nav.classList.toggle('is-open', willOpen);
+    burger.classList.toggle('is-open', willOpen);
+    burger.setAttribute('aria-expanded', String(willOpen));
+    document.body.classList.toggle('nav-open', willOpen);
+  }
+
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('#mobileNav a')) toggleMobileNav(true);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') toggleMobileNav(true);
+  });
+</script>
+<script>
+  // Центрирует .stats-column строго между низом шапки и верхом CTA —
+  // считает реальные отрисованные границы вместо подобранного числа,
+  // поэтому отступы сверху и снизу гарантированно равны на любой ширине
+  // и при любых изменениях контента карточек.
+  (function () {
+    function centerStats() {
+      const header = document.querySelector('.header');
+      const cta = document.querySelector('.cta');
+      const stats = document.querySelector('.stats-column');
+      const heroInner = document.querySelector('.hero__inner');
+      if (!header || !cta || !stats || !heroInner) return;
+
+      const heroTop = heroInner.getBoundingClientRect().top;
+      const headerBottom = header.getBoundingClientRect().bottom - heroTop;
+      const ctaTop = cta.getBoundingClientRect().top - heroTop;
+      const statsHeight = stats.getBoundingClientRect().height;
+
+      const available = ctaTop - headerBottom;
+      const top = headerBottom + (available - statsHeight) / 2;
+      stats.style.top = Math.max(0, top) + 'px';
+    }
+
+    window.addEventListener('resize', centerStats);
+    window.addEventListener('load', centerStats);
+    document.fonts && document.fonts.ready.then(centerStats);
+    centerStats();
+  })();
+</script>
+</body>
+</html>
