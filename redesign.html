@@ -5584,6 +5584,139 @@
   @media (hover: hover) and (pointer: fine) {
     .layouts-photo:hover img { transform: scale(1.05); }
   }
+
+
+  /* Сценарии: лупа в правом нижнем углу планировки — открывает
+     лайтбокс-слайдер со всеми планировками сценария. */
+  .scenario-mini-plan { position: relative; cursor: zoom-in; }
+  .scenario-mini-zoom {
+    position: absolute;
+    right: 0.45rem;
+    bottom: 0.45rem;
+    width: 2.1rem;
+    height: 2.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(28, 28, 26, 0.6);
+    color: #ffffff;
+    cursor: zoom-in;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+  .scenario-mini-zoom svg { width: 0.95rem; height: 0.95rem; }
+  @media (hover: hover) and (pointer: fine) {
+    .scenario-mini-plan:hover .scenario-mini-zoom { background: var(--accent, #F03D3A); transform: scale(1.06); }
+  }
+
+  /* Стрелки и подпись слайдера в лайтбоксе планировок. */
+  .layouts-lightbox-nav {
+    position: absolute;
+    top: 50%;
+    width: 3rem;
+    height: 3rem;
+    margin-top: -1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0 0.2rem;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    font: 500 1.9rem/1 'Onest', sans-serif;
+    cursor: pointer;
+  }
+  .layouts-lightbox-nav[hidden], .layouts-lightbox-caption[hidden] { display: none; }
+  .layouts-lightbox-nav--prev { left: 1.8rem; }
+  .layouts-lightbox-nav--next { right: 1.8rem; }
+  @media (hover: hover) and (pointer: fine) {
+    .layouts-lightbox-nav:hover { background: rgba(255, 255, 255, 0.24); }
+  }
+  .layouts-lightbox-caption {
+    position: absolute;
+    left: 50%;
+    bottom: 1.6rem;
+    transform: translateX(-50%);
+    margin: 0;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  @media (max-width: 640px) {
+    .layouts-lightbox-nav { top: auto; bottom: 1.2rem; margin-top: 0; width: 2.6rem; height: 2.6rem; }
+    .layouts-lightbox-nav--prev { left: 1rem; }
+    .layouts-lightbox-nav--next { right: 1rem; }
+    .layouts-lightbox-caption { bottom: 1.45rem; font-size: 0.8rem; }
+  }
+
+  /* Заголовок первого экрана — точно по макету из Figma: «Жилой
+     комплекс» с отступом слева, «ЖИТЬ ХОРОШО» капсом на
+     красной плашке-параллелограмме (наклон с обеих сторон, до края
+     экрана не доходит). Размеры сняты с макета, всё в em — масштаб
+     следует за базовым размером .title. */
+  /* Заголовок теперь над плашками-бейджами: отступ снизу вместо сверху. */
+  .title--plate { margin: 0 0 0.33em; line-height: 1; }
+  .title--plate .l1 {
+    display: block;
+    margin-left: 1.232em;
+    font-family: 'Involve', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 0.62em;
+    letter-spacing: -0.037em;
+    line-height: 1;
+  }
+  .title--plate .l2 {
+    position: relative;
+    isolation: isolate;
+    display: inline-block;
+    margin: 0.369em 0 0 0.617em;
+    font-family: 'Involve', 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 1.028em;
+    letter-spacing: 0;
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .title--plate .l2::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: -0.172em;
+    bottom: 0;
+    left: -0.576em;
+    right: -0.54em;
+    background: var(--accent, #F03D3A);
+    clip-path: polygon(0.492em 0, 100% 0, calc(100% - 0.492em) 100%, 0 100%);
+  }
+  @media (max-width: 900px) {
+    .title--plate .l1 { margin-left: 0.707em; }
+    .title--plate .l2 { margin-left: 0.32em; font-size: 0.86em; letter-spacing: 0; }
+  }
+
+  /* Первая фраза абзаца второго блока — жирность на ступень выше
+     (400 -> 700), внутри того же текста, одной строкой. */
+  .paragraph-lead { font-weight: 700; color: #1c1c1a; }
+
+
+  /* 4 бейджа на первом экране (добавлен срок сдачи) — на широких
+     экранах в одну строку: ряд может выходить за 62% ширины колонки,
+     до карточек статистики справа места хватает. */
+  @media (min-width: 1400px) {
+    .badges { flex-wrap: nowrap; width: max-content; }
+  }
+
+  /* Низ ряда плашек-бейджей — на одной линии с низом кнопки
+     «Подобрать квартиру»: нижний паддинг колонки = отступ CTA снизу. */
+  @media (min-width: 901px) {
+    .hero__inner { padding-bottom: clamp(2.3rem, 2.83vw, 3.4rem); }
+  }
 </style>
 
 <body>
@@ -5689,6 +5822,8 @@
     </div>
 
     <div class="content">
+      <h1 class="title title--plate"><span class="l1">Жилой комплекс</span><span class="l2">Жить хорошо</span></h1>
+
       <div class="badges">
         <span class="badge">
           <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 4l9 6.5"/><path d="M5 9.5V19a1 1 0 0 0 1 1h4v-5h4v5h4a1 1 0 0 0 1-1V9.5"/></svg>
@@ -5702,12 +5837,14 @@
           <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2l6.5 2.6v4.7c0 4.1-2.7 7.4-6.5 8.5-3.8-1.1-6.5-4.4-6.5-8.5V5.8L12 3.2z"/><path d="M9 11.6l2 2 4-4.2"/></svg>
           Класс «Комфорт»
         </span>
+        <span class="badge">
+          <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 9.5h17"/><path d="M8 3v4M16 3v4"/></svg>
+          Сдача — март 2028*
+        </span>
       </div>
-
-      <h1 class="title">Жилой комплекс<br />жить хорошо</h1>
     </div>
 
-    <button type="button" class="cta" onclick="openApartmentPicker()">
+    <button type="button" class="cta" onclick="window.open('https://a-butik.ru/#/macrocatalog/houses/7280109/bigGrid?studio=null&amp;category=flat&amp;activity=sell','_blank','noopener')">
       Подобрать квартиру сейчас
       <span class="icon-circle">→</span>
     </button>
@@ -5728,11 +5865,13 @@
     <div class="col"></div>
     <div class="col col-text">
       <div class="text-inner">
-        <h2 class="heading">Семейный дом<br /><span class="accent">в комфортном районе</span></h2>
+        <h2 class="heading">Редкость<br /><span class="accent">для Советского района</span></h2>
         <p class="paragraph">
-          В Советском районе редко строят монолит-кирпич малым объёмом.<br class="br-desktop" />
-          «Жить хорошо» — камерный дом на 162 квартиры: без длинных коридоров,<br class="br-desktop" />
-          без сотен машин во дворе и без очереди у лифта в восемь утра.
+          <strong class="paragraph-lead">Камерный монолитно-кирпичный дом на 162 квартиры.</strong><br />
+          Здесь не придется толкаться в длинных коридорах,<br class="br-desktop" />
+          искать парковку во дворе и ждать лифт по утрам.<br class="br-desktop" />
+          «Жить хорошо» — это не просто название, это образ жизни.<br class="br-desktop" />
+          Позвольте себе больше, чем просто квартиру.
         </p>
       </div>
     </div>
@@ -5769,11 +5908,15 @@
     <div class="col col-text">
       <div class="text-inner">
         <h2 class="heading"><span class="accent">Собственная котельная</span><br />на территории ЖК</h2>
+        <p class="paragraph">
+          Тепло в квартирах не зависит от графика городских сетей —<br class="br-desktop" />
+          дома уютно и тепло в любую погоду.
+        </p>
       </div>
     </div>
     <div class="col col-media">
       <div class="media-frame">
-        <img src="assets/images/boiler-room.jpg" alt="Собственная котельная" />
+        <img src="assets/images/boiler-cozy.webp" alt="Уютная тёплая гостиная в квартире ЖК «Жить хорошо»" />
       </div>
     </div>
   </div>
@@ -5806,9 +5949,9 @@
   <img class="scenario-mini-bg" src="assets/images/scenario-mini-family-bg.jpg" alt="Семья с детьми в квартире ЖК «Жить хорошо»" />
   <div class="scenario-mini-inner">
     <h2 class="scenario-mini-heading">Семье с детьми</h2>
-    <p class="scenario-mini-text">Школа № 54, детский сад и больница № 7 — в пешей доступности.<br />Двор без машин — безопасное место для прогулок.</p>
+    <p class="scenario-mini-text">Школа № 54, детский сад и больница № 7 — в пешей доступности.<br />Закрытый двор с видеонаблюдением — безопасно для прогулок.</p>
     <div class="scenario-mini-panel">
-      <div class="scenario-mini-plan"><img src="assets/images/plan-2k-51.jpg" alt="Планировка: семья с детьми, 2 комнаты 51,83 м²" /></div>
+      <div class="scenario-mini-plan" data-plans="[{&quot;src&quot;: &quot;assets/images/plan-2k-51.jpg&quot;, &quot;caption&quot;: &quot;2-комнатная · 51,83 м²&quot;}, {&quot;src&quot;: &quot;assets/images/plan-3k-68.jpg&quot;, &quot;caption&quot;: &quot;3-комнатная · 68,71 м²&quot;}]"><img src="assets/images/plan-2k-51.jpg" alt="Планировка: семья с детьми, 2 комнаты 51,83 м²" /><button type="button" class="scenario-mini-zoom" aria-label="Смотреть планировки крупно"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
       <div class="scenario-mini-content">
         <ul class="scenario-mini-stats">
           <li><strong>Формат:</strong> 2–3 комнаты</li>
@@ -5829,12 +5972,12 @@
      карточки .scenario-card ниже (теперь удалённой оттуда), фон — фото
      присланное для этого сценария. ЛОКАЛЬНО, НЕ ЗАПУШЕНО. -->
 <section class="scenario-mini scenario-mini--2">
-  <img class="scenario-mini-bg" src="assets/images/scenario-mini-student-bg.jpg" alt="Родителям студента — комната для учёбы в квартире ЖК «Жить хорошо»" />
+  <img class="scenario-mini-bg" src="assets/images/scenario-mini-student-bg-v2.jpg" alt="Родителям студента — комната для учёбы в квартире ЖК «Жить хорошо»" />
   <div class="scenario-mini-inner">
     <h2 class="scenario-mini-heading">Родителям студента</h2>
     <p class="scenario-mini-text">Аграрный, Кооперативный институт и Медколледж — рядом.<br />Четыре года аренды стоят дороже первоначального взноса.</p>
     <div class="scenario-mini-panel">
-      <div class="scenario-mini-plan"><img src="assets/images/plan-1k-40.jpg" alt="Планировка: родителям студента, 1 комната 40,08 м²" /></div>
+      <div class="scenario-mini-plan" data-plans="[{&quot;src&quot;: &quot;assets/images/plan-1k-40.jpg&quot;, &quot;caption&quot;: &quot;1-комнатная · 40,08 м²&quot;}, {&quot;src&quot;: &quot;assets/images/plan-1k-32.jpg&quot;, &quot;caption&quot;: &quot;1-комнатная · 32,71 м²&quot;}]"><img src="assets/images/plan-1k-40.jpg" alt="Планировка: родителям студента, 1 комната 40,08 м²" /><button type="button" class="scenario-mini-zoom" aria-label="Смотреть планировки крупно"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
       <div class="scenario-mini-content">
         <ul class="scenario-mini-stats">
           <li><strong>Формат:</strong> 1 комната</li>
@@ -5858,12 +6001,12 @@
      просьбе «фото тоже оставь, которые с интерьером у действующей 3-й
      плашки». ЛОКАЛЬНО, НЕ ЗАПУШЕНО. -->
 <section class="scenario-mini scenario-mini--3">
-  <img class="scenario-mini-bg" src="assets/images/scenarios-bg.jpg" alt="Под аренду и инвестицию — интерьер квартиры ЖК «Жить хорошо»" />
+  <img class="scenario-mini-bg" src="assets/images/scenario-mini-invest-bg.jpg" alt="Под аренду и инвестицию — передача ключей от квартиры арендатору" />
   <div class="scenario-mini-inner">
     <h2 class="scenario-mini-heading">Под аренду<br />и инвестицию</h2>
     <p class="scenario-mini-text">Три учебных заведения в шаге ходьбы дают арендный спрос круглый год.<br />Компактные площади сдаются быстрее и ликвиднее при перепродаже.</p>
     <div class="scenario-mini-panel">
-      <div class="scenario-mini-plan"><img src="assets/images/plan-1k-32.jpg" alt="Планировка: под аренду и инвестицию, 1 комната 32,71 м²" /></div>
+      <div class="scenario-mini-plan" data-plans="[{&quot;src&quot;: &quot;assets/images/plan-1k-32.jpg&quot;, &quot;caption&quot;: &quot;1-комнатная · 32,71 м²&quot;}, {&quot;src&quot;: &quot;assets/images/plan-1k-40.jpg&quot;, &quot;caption&quot;: &quot;1-комнатная · 40,08 м²&quot;}]"><img src="assets/images/plan-1k-32.jpg" alt="Планировка: под аренду и инвестицию, 1 комната 32,71 м²" /><button type="button" class="scenario-mini-zoom" aria-label="Смотреть планировки крупно"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
       <div class="scenario-mini-content">
         <ul class="scenario-mini-stats">
           <li><strong>Формат:</strong> 1 комната</li>
@@ -5956,7 +6099,7 @@
         <div class="offers-card-body">
           <h3>Рассрочка до ключей</h3>
           <p class="offers-price">— без переплаты банку</p>
-          <p class="offers-note">Подробности уточняйте<br />в отделе продаж</p>
+          <p class="offers-note">Ключи — март 2028*</p>
         </div>
         <div class="offers-icon">
           <img class="offers-icon-default" src="assets/images/icon-percent-stack-red.webp" alt="Процентная ставка">
@@ -6180,19 +6323,18 @@
 <div class="sticky-stack">
 
 <section class="trust-mini">
-  <img class="trust-mini-bg" src="assets/images/trust-photo-yard.jpg" alt="Двор без машин, закрытая территория ЖК «Жить хорошо»" />
+  <img class="trust-mini-bg" src="assets/images/trust-photo-yard.jpg" alt="Огороженный двор для детей и отдыха в ЖК «Жить хорошо»" />
   <div class="trust-mini-inner">
     <div class="trust-mini-icon">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round">
-        <path d="M5 11l1.4-4.2A2 2 0 0 1 8.3 5.4h7.4a2 2 0 0 1 1.9 1.4L19 11"/>
-        <path d="M3.5 11h17a1 1 0 0 1 1 1v3.6a1 1 0 0 1-1 1H18v1.3a1 1 0 0 1-1 1h-.8a1 1 0 0 1-1-1v-1.3H8.8v1.3a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-1.3H3.5a1 1 0 0 1-1-1V12a1 1 0 0 1 1-1z"/>
-        <circle cx="7.2" cy="14.4" r="0.7"/>
-        <circle cx="16.8" cy="14.4" r="0.7"/>
-        <line x1="3" y1="3" x2="21" y2="21"/>
+        <path d="M12 3.5c-2.6 0-4.5 2-4.5 4.4 0 1.4.6 2.5 1.6 3.3-.9.6-1.4 1.5-1.4 2.6 0 1.9 1.6 3.3 3.6 3.3h1.4c2 0 3.6-1.4 3.6-3.3 0-1.1-.5-2-1.4-2.6 1-.8 1.6-1.9 1.6-3.3 0-2.4-1.9-4.4-4.5-4.4z"/>
+        <line x1="12" y1="17.1" x2="12" y2="21"/>
+        <line x1="12" y1="14" x2="14" y2="12.2"/>
+        <line x1="3" y1="21" x2="21" y2="21"/>
       </svg>
     </div>
-    <h2 class="trust-mini-heading">Двор без машин</h2>
-    <p class="trust-mini-text">Парковка вынесена за периметр. Внутри —<br class="br-mac" /> детская площадка, зелень и пешеходные маршруты.</p>
+    <h2 class="trust-mini-heading">Двор для детей и отдыха</h2>
+    <p class="trust-mini-text">Огороженная территория с детской площадкой и зеленью —<br class="br-mac" /> безопасно гулять и проводить время вместе.</p>
   </div>
 </section>
 
@@ -6436,7 +6578,7 @@
           </div>
           <div class="finish-feature-text">
             <strong>Окна</strong>
-            <span>двухкамерные стеклопакеты <br />с москитной сеткой</span>
+            <span>двухкамерные стеклопакеты</span>
           </div>
         </div>
 
@@ -6513,6 +6655,16 @@
     <div class="addl-list">
 
       <article class="addl-card">
+        <img src="assets/images/storage-room.jpg" alt="Кладовая со стеллажами, коляской и велосипедом" loading="lazy" />
+        <div class="addl-card-overlay"></div>
+        <div class="addl-card-body">
+          <h3>Кладовые от 312 000 ₽</h3>
+          <p>Место для сезонных вещей, коляски<br class="br-desktop" /> и велосипеда — квартира остаётся<br class="br-desktop" /> свободной, а нужное всегда под рукой.</p>
+          <a href="#" class="addl-btn" onclick="openLeadModal(); return false;">Узнать подробнее<span class="icon-circle">→</span></a>
+        </div>
+      </article>
+
+      <article class="addl-card">
         <img src="assets/images/commercial-storefront.webp" alt="Коммерческая недвижимость" loading="lazy" />
         <div class="addl-card-overlay"></div>
         <div class="addl-card-body">
@@ -6523,22 +6675,12 @@
       </article>
 
       <article class="addl-card">
-        <img src="assets/images/interior-dining.webp" alt="Дизайн-проект интерьера" loading="lazy" />
-        <div class="addl-card-overlay"></div>
-        <div class="addl-card-body">
-          <h3>Дизайн-проект интерьера</h3>
-          <p>Подбираем готовую концепцию отделки<br class="br-mac" /> и меблировки под планировку<br class="addl-break" />вашей квартиры<br class="br-mac" /> — с 3D-визуализацией перед началом работ.</p>
-          <a href="#" class="addl-btn" onclick="openLeadModal(); return false;">Смотреть подробнее<span class="icon-circle">→</span></a>
-        </div>
-      </article>
-
-      <article class="addl-card">
         <img src="assets/images/resale-night.jpg" alt="Вторичная продажа" loading="lazy" />
         <div class="addl-card-overlay"></div>
         <div class="addl-card-body">
           <h3>Вторичная продажа</h3>
-          <p>Поможем продать имеющуюся квартиру<br class="br-mac" /> и оформить сделку так, <br class="addl-break" />чтобы деньги вовремя<br class="br-mac" /> вышли на покупку новой.</p>
-          <a href="#" class="addl-btn" onclick="openLeadModal(); return false;">Смотреть подробнее<span class="icon-circle">→</span></a>
+          <p>Поможем продать имеющуюся квартиру<br class="br-desktop" /> и оформить сделку так, чтобы деньги<br class="br-desktop" /> вовремя вышли на покупку новой.</p>
+          <a href="#" class="addl-btn" onclick="openLeadModal(); return false;">Узнать подробнее<span class="icon-circle">→</span></a>
         </div>
       </article>
 
@@ -6617,7 +6759,7 @@
           </div>
           <div class="news-card-body">
             <h3>ЖК «Жить хорошо»:<br class="br-mac" /> всё включено</h3>
-            <p>Монолит-кирпич, своя котельная, двор без машин:<br />что из этого действительно меняет жизнь.</p>
+            <p>Монолит-кирпич, своя котельная, закрытая территория:<br />что из этого действительно меняет жизнь.</p>
             <span class="news-btn">Читать статью<span class="icon-circle">→</span></span>
           </div>
         </a>
@@ -6635,7 +6777,7 @@
 
         <a href="#" class="news-card" onclick="openArticleModal('student-costs'); return false;">
           <div class="news-card-photo">
-            <img src="assets/images/news-students.jpg" alt="Сколько стоят четыре года учёбы студента" loading="lazy" />
+            <img src="assets/images/news-students-v3.jpg" alt="Сколько стоят четыре года учёбы студента" loading="lazy" />
           </div>
           <div class="news-card-body">
             <h3>Сколько стоят четыре<br class="br-mac" /> года учёбы студента</h3>
@@ -6717,7 +6859,7 @@
     </div>
 
     <div class="footer-bottom">
-      <p class="footer-legal">Информация, представленная на сайте, носит исключительно информационный характер, предложение ограничено и не является офертой или публичной офертой в соответствии со ст. 435, п. 2 ст. 437 Гражданского Кодекса Российской Федерации. Представленные цены, планировки, площади, а также варианты визуализации квартир, дома, прилегающего к нему благоустройства и района в целом не обладают признаками абсолютной идентичности проектной и рабочей документации на строительство объекта, схеме планировочной организации земельного участка. Часть информации, размещенной на сайте, возможно, устарела, и уже не является актуальной и требует уточнения в отделе продаж или оказывающего Вам услуги риелтора.</p>
+      <p class="footer-legal">* Плановый срок ввода дома в эксплуатацию — март 2028 г. Срок может быть изменён застройщиком в установленном законом порядке.<br />Информация, представленная на сайте, носит исключительно информационный характер, предложение ограничено и не является офертой или публичной офертой в соответствии со ст. 435, п. 2 ст. 437 Гражданского Кодекса Российской Федерации. Представленные цены, планировки, площади, а также варианты визуализации квартир, дома, прилегающего к нему благоустройства и района в целом не обладают признаками абсолютной идентичности проектной и рабочей документации на строительство объекта, схеме планировочной организации земельного участка. Часть информации, размещенной на сайте, возможно, устарела, и уже не является актуальной и требует уточнения в отделе продаж или оказывающего Вам услуги риелтора.</p>
     </div>
   </div>
 </footer>
@@ -6725,6 +6867,9 @@
 <div class="layouts-lightbox" id="layoutsLightbox" onclick="closeLayoutZoom(event)">
   <button type="button" class="layouts-lightbox-close" aria-label="Закрыть" onclick="closeLayoutZoom(event)">&times;</button>
   <img id="layoutsLightboxImg" src="" alt="" onclick="event.stopPropagation()" />
+  <button type="button" class="layouts-lightbox-nav layouts-lightbox-nav--prev" aria-label="Предыдущая планировка" hidden>‹</button>
+  <button type="button" class="layouts-lightbox-nav layouts-lightbox-nav--next" aria-label="Следующая планировка" hidden>›</button>
+  <p class="layouts-lightbox-caption" hidden></p>
 </div>
 
 <!-- Модалка «Выбор квартиры». Данные — моковые (APT_PICKER_MOCK_UNITS
@@ -7359,11 +7504,6 @@
           photo: 'assets/images/boiler-room.jpg'
         },
         {
-          heading: 'Двор без машин',
-          paragraphs: ['Что меняется для ребёнка: выходит гулять, а не переходит парковку — двор становится безопасным пространством, а не проездом.'],
-          note: 'Честная оговорка: парковка по периметру, не у подъезда.'
-        },
-        {
           heading: 'Закрытая территория',
           paragraphs: ['Что реально работает: ограждение и видеонаблюдение на входных группах и по периметру двора. Чего не ждать: это не консьерж-сервис и не пропускной пункт с охраной у каждого подъезда.']
         },
@@ -7375,7 +7515,7 @@
         },
         {
           heading: 'Итог',
-          paragraphs: ['Рейтинг по силе бытового эффекта: своя котельная → масштаб дома (10 этажей, 2 подъезда) → двор без машин.']
+          paragraphs: ['Рейтинг по силе бытового эффекта: своя котельная → масштаб дома (10 этажей, 2 подъезда) → закрытая территория.']
         }
       ],
       plans: [
@@ -7435,14 +7575,14 @@
         },
         {
           heading: 'Что строится сейчас',
-          paragraphs: ['В районе строится ЖК «Жить хорошо» — монолит-кирпичный дом на 162 квартиры со своей котельной и двором без машин. <a href="#" onclick="openArticleModal(\'all-included\'); return false;">Подробный разбор дома — в отдельной статье</a>.']
+          paragraphs: ['В районе строится ЖК «Жить хорошо» — монолит-кирпичный дом на 162 квартиры со своей котельной и закрытой территорией. <a href="#" onclick="openArticleModal(\'all-included\'); return false;">Подробный разбор дома — в отдельной статье</a>.']
         }
       ],
       cta: 'Пришлём подборку новостроек в Советском районе'
     },
     'student-costs': {
       kicker: 'Калькулятор-аргумент',
-      cover: 'assets/images/news-students.jpg',
+      cover: 'assets/images/news-students-v3.jpg',
       title: 'Сколько стоят четыре года учёбы студента',
       lead: '«Всего на четыре года» — это 48 месяцев и сумма, сопоставимая с первоначальным взносом на квартиру.',
       table: {
@@ -8171,5 +8311,67 @@
   });
 </script>
 
+
+
+<script>
+  // Слайдер планировок в лайтбоксе: открывается лупой (или кликом по
+  // планировке) в сценариях, листается стрелками, клавишами ← → и свайпом.
+  (function () {
+    var lb = document.getElementById('layoutsLightbox');
+    var img = document.getElementById('layoutsLightboxImg');
+    if (!lb || !img) return;
+    var prev = lb.querySelector('.layouts-lightbox-nav--prev');
+    var next = lb.querySelector('.layouts-lightbox-nav--next');
+    var cap = lb.querySelector('.layouts-lightbox-caption');
+    var list = [], idx = 0;
+
+    function setGallery(on) {
+      prev.hidden = next.hidden = !on || list.length < 2;
+      cap.hidden = !on;
+    }
+    function show(i) {
+      idx = (i + list.length) % list.length;
+      img.src = list[idx].src;
+      img.alt = 'Планировка: ' + list[idx].caption;
+      cap.textContent = list[idx].caption + (list.length > 1 ? '  ·  ' + (idx + 1) + ' / ' + list.length : '');
+    }
+    function open(plans) {
+      list = plans; setGallery(true); show(0);
+      lb.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    document.querySelectorAll('.scenario-mini-plan[data-plans]').forEach(function (box) {
+      var plans;
+      try { plans = JSON.parse(box.getAttribute('data-plans')); } catch (e) { return; }
+      box.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); open(plans); });
+    });
+
+    [prev, next].forEach(function (btn, n) {
+      btn.addEventListener('click', function (e) { e.stopPropagation(); show(idx + (n ? 1 : -1)); });
+    });
+    cap.addEventListener('click', function (e) { e.stopPropagation(); });
+
+    document.addEventListener('keydown', function (e) {
+      if (!lb.classList.contains('is-open') || cap.hidden || list.length < 2) return;
+      if (e.key === 'ArrowLeft') show(idx - 1);
+      if (e.key === 'ArrowRight') show(idx + 1);
+    });
+
+    var x0 = null;
+    lb.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+    lb.addEventListener('touchend', function (e) {
+      if (x0 === null || cap.hidden || list.length < 2) { x0 = null; return; }
+      var dx = e.changedTouches[0].clientX - x0; x0 = null;
+      if (Math.abs(dx) > 40) show(idx + (dx < 0 ? 1 : -1));
+    });
+
+    // Обычные одиночные открытия (карточки планировок, модалка) —
+    // без стрелок и подписи.
+    new MutationObserver(function () {
+      if (!lb.classList.contains('is-open')) { list = []; setGallery(false); }
+    }).observe(lb, { attributes: true, attributeFilter: ['class'] });
+  })();
+</script>
 </body>
 </html>
