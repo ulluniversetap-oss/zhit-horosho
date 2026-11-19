@@ -87,6 +87,11 @@ jobs:
             test ! -L redesign.html
             cp redesign.html .publish/redesign.html
           fi
+          # Превью вариантов фона 2 экрана (временная страница)
+          if [[ -f bg-variants.html ]]; then
+            test ! -L bg-variants.html
+            cp bg-variants.html .publish/bg-variants.html
+          fi
           rsync -rlt \
             --exclude='.git/' \
             --exclude='.env*' \
