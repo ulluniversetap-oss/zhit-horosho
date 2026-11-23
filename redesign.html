@@ -5821,6 +5821,14 @@
   @media (prefers-reduced-motion: reduce) {
     .buy-card, .buy-chips, .buy-desc, .buy-link { transition: none; }
   }
+
+  /* Заплатка поверх подписи «ЖК Сиберия» на тайлах OSM (цвет заливки участка). */
+  .walk-scene .walk-label-patch {
+    background: rgb(202, 201, 181);
+    border: 0;
+    border-radius: 5px;
+    pointer-events: none;
+  }
 </style>
 
 <body>
@@ -5943,7 +5951,7 @@
         </span>
         <span class="badge">
           <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 9.5h17"/><path d="M8 3v4M16 3v4"/></svg>
-          Сдача — март 2028*
+          Сдача — март 2028
         </span>
       </div>
     </div>
@@ -6053,7 +6061,7 @@
   <img class="scenario-mini-bg" src="assets/images/scenario-mini-family-bg.jpg" alt="Семья с детьми в квартире ЖК «Жить хорошо»" />
   <div class="scenario-mini-inner">
     <h2 class="scenario-mini-heading">Семье с детьми</h2>
-    <p class="scenario-mini-text">Школа № 54, детский сад и больница № 7 — в пешей доступности.<br />Закрытый двор с видеонаблюдением — безопасно для прогулок.</p>
+    <p class="scenario-mini-text">Школа № 54, детский сад и больница № 7 — в пешей доступности.<br />Закрытый двор с видеонаблюдением и детской площадкой.</p>
     <div class="scenario-mini-panel">
       <div class="scenario-mini-plan" data-plans="[{&quot;src&quot;: &quot;assets/images/plan-2k-51.jpg&quot;, &quot;caption&quot;: &quot;2-комнатная · 51,83 м²&quot;}, {&quot;src&quot;: &quot;assets/images/plan-3k-68.jpg&quot;, &quot;caption&quot;: &quot;3-комнатная · 68,71 м²&quot;}]"><img src="assets/images/plan-2k-51.jpg" alt="Планировка: семья с детьми, 2 комнаты 51,83 м²" /><button type="button" class="scenario-mini-zoom" aria-label="Смотреть планировки крупно"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
       <div class="scenario-mini-content">
@@ -6203,7 +6211,7 @@
         <div class="offers-card-body">
           <h3>Рассрочка до ключей</h3>
           <p class="offers-price">— без переплаты банку</p>
-          <p class="offers-note">Ключи — март 2028*</p>
+          <p class="offers-note">Ключи — март 2028</p>
         </div>
         <div class="offers-icon">
           <img class="offers-icon-default" src="assets/images/icon-percent-stack-red.webp" alt="Процентная ставка">
@@ -7073,7 +7081,7 @@
     </div>
 
     <div class="footer-bottom">
-      <p class="footer-legal">* Плановый срок ввода дома в эксплуатацию — март 2028 г. Срок может быть изменён застройщиком в установленном законом порядке.<br />Информация, представленная на сайте, носит исключительно информационный характер, предложение ограничено и не является офертой или публичной офертой в соответствии со ст. 435, п. 2 ст. 437 Гражданского Кодекса Российской Федерации. Представленные цены, планировки, площади, а также варианты визуализации квартир, дома, прилегающего к нему благоустройства и района в целом не обладают признаками абсолютной идентичности проектной и рабочей документации на строительство объекта, схеме планировочной организации земельного участка. Часть информации, размещенной на сайте, возможно, устарела, и уже не является актуальной и требует уточнения в отделе продаж или оказывающего Вам услуги риелтора.</p>
+      <p class="footer-legal">Информация, представленная на сайте, носит исключительно информационный характер, предложение ограничено и не является офертой или публичной офертой в соответствии со ст. 435, п. 2 ст. 437 Гражданского Кодекса Российской Федерации. Представленные цены, планировки, площади, а также варианты визуализации квартир, дома, прилегающего к нему благоустройства и района в целом не обладают признаками абсолютной идентичности проектной и рабочей документации на строительство объекта, схеме планировочной организации земельного участка. Часть информации, размещенной на сайте, возможно, устарела, и уже не является актуальной и требует уточнения в отделе продаж или оказывающего Вам услуги риелтора.</p>
     </div>
   </div>
 </footer>
@@ -8407,6 +8415,32 @@
         maxZoom: 19,
         attribution: '&copy; OpenStreetMap'
       }).addTo(map);
+
+      /* Подпись «ЖК Сиберия» вшита в растровые тайлы OSM — стереть её из
+         данных карты нельзя. Закрываем плашкой цвета заливки этого
+         участка (строительная площадка, polygon way/1524131339 в OSM):
+         подпись лежит внутри плоской заливки, поэтому заплатка не видна.
+         Показываем только на зумах, где подпись ещё поместилась бы в
+         контур (15–19), и без реакции на мышь. */
+      const SIBERIA_PATCH = L.marker([48.67347, 44.45136], {
+        interactive: false,
+        keyboard: false,
+        zIndexOffset: -1000,
+        icon: L.divIcon({
+          className: 'walk-label-patch',
+          iconSize: [78, 24],
+          iconAnchor: [39, 12],
+          html: ''
+        })
+      });
+      function toggleSiberiaPatch() {
+        const z = map.getZoom();
+        const show = z >= 15 && z <= 19;
+        if (show && !map.hasLayer(SIBERIA_PATCH)) SIBERIA_PATCH.addTo(map);
+        if (!show && map.hasLayer(SIBERIA_PATCH)) map.removeLayer(SIBERIA_PATCH);
+      }
+      map.on('zoomend', toggleSiberiaPatch);
+      toggleSiberiaPatch();
 
       L.marker(HOME, {
         zIndexOffset: 1000,
