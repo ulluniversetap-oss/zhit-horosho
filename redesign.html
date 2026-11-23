@@ -5443,6 +5443,11 @@
   @font-face {
     font-family: 'Involve';
     src: url(assets/fonts/Involve-SemiBold.woff) format('woff');
+    /* Единые метрики на Mac и Windows: у файла разные hhea и win-метрики,
+       из-за чего на Windows текст в плашке уезжал вниз. */
+    ascent-override: 80%;
+    descent-override: 20%;
+    line-gap-override: 0%;
     font-weight: 600;
     font-style: normal;
     font-display: swap;
@@ -5450,6 +5455,11 @@
   @font-face {
     font-family: 'Involve';
     src: url(assets/fonts/Involve-Bold.woff) format('woff');
+    /* Единые метрики на Mac и Windows: у файла разные hhea и win-метрики,
+       из-за чего на Windows текст в плашке уезжал вниз. */
+    ascent-override: 80%;
+    descent-override: 20%;
+    line-gap-override: 0%;
     font-weight: 700;
     font-style: normal;
     font-display: swap;
@@ -5716,6 +5726,88 @@
      «Подобрать квартиру»: нижний паддинг колонки = отступ CTA снизу. */
   @media (min-width: 901px) {
     .hero__inner { padding-bottom: clamp(2.3rem, 2.83vw, 3.4rem); }
+  }
+
+  /* ===== Блок «Способы покупки» (на месте удалённого калькулятора) =====
+     Горизонтальный аккордеон: карточки внахлёст, активная раскрывается
+     (наведение/фокус/клик), остальные сжаты и показывают край заголовка. */
+  .buy { position: relative; z-index: 4; margin: 0 1.6875rem; }
+  .buy-panel { background: #ffffff; border-radius: 10px; padding: var(--space-64) 0; }
+  .buy-inner { max-width: 1920px; margin: 0 auto; padding: 0 2.72rem; }
+  .buy-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem; margin-bottom: 1.92rem; }
+  .buy-head .buy-heading { margin: 0 !important; }
+  .buy-head .buy-more { flex: none; margin-top: .35rem; }
+  .buy-track { display: flex; height: 27rem; }
+  .buy-card {
+    --pad: 1.5rem;
+    position: relative;
+    z-index: calc(1 + var(--i));
+    flex: 1 1 0; min-width: 0;
+    margin-left: -1.1rem;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: var(--pad);
+    border-radius: 1rem;
+    background: #F3F6F9; color: #1c1c1a;
+    box-shadow: -14px 0 28px -12px rgba(20, 22, 28, .18);
+    overflow: hidden; cursor: pointer; outline: none;
+    transition: flex-grow .55s cubic-bezier(.22,.8,.25,1), background-color .35s ease, color .35s ease;
+  }
+  .buy-card:first-child { margin-left: 0; }
+  .buy-card--dark { background: #23252a; color: #ffffff; }
+  .buy-card--photo { background: #1d1f24; color: #ffffff; }
+  .buy-card-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; opacity: .8; transition: opacity .4s ease; }
+  .buy-card--photo::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(20,22,28,.45) 0%, rgba(20,22,28,.55) 45%, rgba(20,22,28,.88) 100%); }
+  .buy-card.is-active {
+    flex-grow: 5.2;
+    background: linear-gradient(150deg, #F45A57 0%, #F03D3A 45%, #c92522 100%);
+    color: #ffffff;
+  }
+  .buy-card--photo.is-active .buy-card-bg { opacity: .14; }
+  .buy-card--photo.is-active::after { opacity: 0; }
+
+  .buy-card-top, .buy-card-bottom { position: relative; width: 24rem; max-width: calc(100vw - 6rem); }
+  .buy-card-top { display: flex; align-items: flex-start; gap: .75rem; }
+  .buy-num { flex: none; font: 600 .8rem/1 'Onest', sans-serif; letter-spacing: .04em; opacity: .55; padding-top: .55rem; }
+  .buy-chips { display: flex; flex-wrap: wrap; gap: .4rem; opacity: 0; transform: translateY(-6px); transition: opacity .3s ease, transform .3s ease; }
+  .buy-chip { padding: .45rem .8rem; border-radius: 999px; background: rgba(255,255,255,.18); font: 600 .78rem/1 'Onest', sans-serif; white-space: nowrap; }
+  .buy-title { margin: 0; font-family: 'Involve', 'Onest', sans-serif; font-weight: 600; font-size: 1.6rem; line-height: 1.12; color: inherit; }
+  .buy-desc { margin: .7rem 0 0; white-space: nowrap; font: 400 .95rem/1.45 'Onest', sans-serif; opacity: 0; transition: opacity .3s ease; }
+  .buy-link { all: unset; display: inline-flex; gap: .4rem; margin-top: 1rem; font: 700 .85rem/1 'Onest', sans-serif; cursor: pointer; opacity: 0; transition: opacity .3s ease; border-bottom: 1px solid currentColor; padding-bottom: .2rem; }
+  .buy-card.is-active .buy-chips { opacity: 1; transform: none; transition-delay: .18s; }
+  .buy-card.is-active .buy-desc, .buy-card.is-active .buy-link { opacity: 1; transition-delay: .22s; }
+  /* Свёрнутые карточки: описание и ссылка не занимают места — заголовки
+     всех карточек стоят на одной линии снизу. */
+  .buy-desc, .buy-link { max-height: 0; overflow: hidden; margin-top: 0; padding-bottom: 0; border-bottom-width: 0; }
+  .buy-card.is-active .buy-desc { max-height: 7rem; margin-top: .7rem; }
+  .buy-card.is-active .buy-link { max-height: 2rem; margin-top: 1rem; padding-bottom: .2rem; border-bottom-width: 1px; }
+
+  @media (min-width: 901px) and (max-width: 1280px) {
+    .buy-track { height: 24rem; }
+    .buy-title { font-size: 1.35rem; }
+    .buy-card { --pad: 1.2rem; }
+  }
+  @media (max-width: 900px) {
+    .buy { margin-left: 1.875vw !important; margin-right: 1.875vw !important; }
+    .buy-inner { padding: 0 var(--space-24); }
+    .buy-panel { padding: 2.5rem 0; }
+    .buy-head { flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; }
+    .buy-head .buy-more { margin-top: 0; }
+    .buy-track { flex-direction: column; height: auto; gap: .5rem; }
+    .buy-card { margin-left: 0; flex: none; box-shadow: none; padding: 1.1rem 1.2rem; min-height: 4.2rem; justify-content: flex-start; }
+    .buy-card-top, .buy-card-bottom { width: auto; max-width: none; }
+    .buy-card-top { order: 2; }
+    .buy-card-bottom { order: 1; }
+    .buy-title { font-size: 1.2rem; }
+    .buy-desc { white-space: normal; }
+    .buy-chips, .buy-desc, .buy-link { display: none; }
+    .buy-num { display: none; }
+    .buy-card.is-active { min-height: 0; }
+    .buy-card.is-active .buy-chips, .buy-card.is-active .buy-desc, .buy-card.is-active .buy-link { display: flex; }
+    .buy-card.is-active .buy-desc { display: block; }
+    .buy-card.is-active .buy-card-top { margin-top: 1rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .buy-card, .buy-chips, .buy-desc, .buy-link { transition: none; }
   }
 </style>
 
@@ -6618,6 +6710,116 @@
 
 <div class="block-gap"></div>
 
+<section class="buy" id="purchase">
+  <div class="buy-panel">
+  <div class="buy-inner">
+    <div class="buy-head">
+      <h2 class="offers-heading buy-heading">Способы покупки<span>выберите удобный для вас</span></h2>
+      <button type="button" class="addl-btn buy-more" onclick="openLeadModal()"><span class="addl-btn-label">Узнать подробнее</span><span class="icon-circle">→</span></button>
+    </div>
+    <div class="buy-track" role="list">
+      <div class="buy-card buy-card--photo is-active" role="listitem" tabindex="0" style="--i:0">
+        <img class="buy-card-bg" src="assets/images/buy-mortgage.webp" alt="" aria-hidden="true" loading="lazy" style="object-position:37% 40%" />
+        <div class="buy-card-top">
+          <span class="buy-num">01</span>
+          <div class="buy-chips"><span class="buy-chip">от 4.4%</span><span class="buy-chip">Подбор банка</span><span class="buy-chip">Одобрение</span></div>
+        </div>
+        <div class="buy-card-bottom">
+          <h3 class="buy-title">Ипотека</h3>
+          <p class="buy-desc">Подберём программу и банк, поможем<br class="br-desktop" /> собрать документы и получить одобрение.</p>
+          <button type="button" class="buy-link" onclick="openLeadModal()">Оставить заявку <span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+      <div class="buy-card buy-card--photo" role="listitem" tabindex="0" style="--i:1">
+        <img class="buy-card-bg" src="assets/images/buy-matcap.webp" alt="" aria-hidden="true" loading="lazy" style="object-position:35% 40%" />
+        <div class="buy-card-top">
+          <span class="buy-num">02</span>
+          <div class="buy-chips"><span class="buy-chip">Первый взнос</span><span class="buy-chip">Погашение ипотеки</span></div>
+        </div>
+        <div class="buy-card-bottom">
+          <h3 class="buy-title">Материнский капитал</h3>
+          <p class="buy-desc">Сертификат можно внести как первый<br class="br-desktop" /> взнос или направить на погашение ипотеки.</p>
+          <button type="button" class="buy-link" onclick="openLeadModal()">Оставить заявку <span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+      <div class="buy-card buy-card--photo" role="listitem" tabindex="0" style="--i:2">
+        <img class="buy-card-bg" src="assets/images/buy-military.webp" alt="" aria-hidden="true" loading="lazy" style="object-position:70% 40%" />
+        <div class="buy-card-top">
+          <span class="buy-num">03</span>
+          <div class="buy-chips"><span class="buy-chip">НИС</span><span class="buy-chip">Для военнослужащих</span></div>
+        </div>
+        <div class="buy-card-bottom">
+          <h3 class="buy-title">Военная ипотека</h3>
+          <p class="buy-desc">Покупка по накопительно-ипотечной<br class="br-desktop" /> системе — оформим сделку под ключ.</p>
+          <button type="button" class="buy-link" onclick="openLeadModal()">Оставить заявку <span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+      <div class="buy-card buy-card--photo" role="listitem" tabindex="0" style="--i:3">
+        <img class="buy-card-bg" src="assets/images/buy-full.webp" alt="" aria-hidden="true" loading="lazy" style="object-position:68% 50%" />
+        <div class="buy-card-top">
+          <span class="buy-num">04</span>
+          <div class="buy-chips"><span class="buy-chip">Без переплат</span><span class="buy-chip">Быстрая сделка</span></div>
+        </div>
+        <div class="buy-card-bottom">
+          <h3 class="buy-title">Оплата 100%</h3>
+          <p class="buy-desc">Единовременная оплата — самый<br class="br-desktop" /> короткий путь к ключам от квартиры.</p>
+          <button type="button" class="buy-link" onclick="openLeadModal()">Оставить заявку <span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+      <div class="buy-card buy-card--photo" role="listitem" tabindex="0" style="--i:4">
+        <img class="buy-card-bg" src="assets/images/buy-installment.webp" alt="" aria-hidden="true" loading="lazy" style="object-position:28% 55%" />
+        <div class="buy-card-top">
+          <span class="buy-num">05</span>
+          <div class="buy-chips"><span class="buy-chip">Оплата частями</span><span class="buy-chip">Без банка</span></div>
+        </div>
+        <div class="buy-card-bottom">
+          <h3 class="buy-title">Рассрочка</h3>
+          <p class="buy-desc">Оплата частями по согласованному<br class="br-desktop" /> графику — условия в отделе продаж.</p>
+          <button type="button" class="buy-link" onclick="openLeadModal()">Оставить заявку <span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+      <div class="buy-card buy-card--photo" role="listitem" tabindex="0" style="--i:5">
+        <img class="buy-card-bg" src="assets/images/buy-tranche.webp" alt="" aria-hidden="true" loading="lazy" style="object-position:55% 50%" />
+        <div class="buy-card-top">
+          <span class="buy-num">06</span>
+          <div class="buy-chips"><span class="buy-chip">Платёж ниже</span><span class="buy-chip">Деньги частями</span></div>
+        </div>
+        <div class="buy-card-bottom">
+          <h3 class="buy-title">Траншевая ипотека</h3>
+          <p class="buy-desc">Банк перечисляет деньги частями —<br class="br-desktop" /> до сдачи дома платёж заметно ниже.</p>
+          <button type="button" class="buy-link" onclick="openLeadModal()">Оставить заявку <span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+      <div class="buy-card buy-card--photo" role="listitem" tabindex="0" style="--i:6">
+        <img class="buy-card-bg" src="assets/images/buy-family.webp" alt="" aria-hidden="true" loading="lazy" style="object-position:50% 50%" />
+        <div class="buy-card-top">
+          <span class="buy-num">07</span>
+          <div class="buy-chips"><span class="buy-chip">от 4.0%</span><span class="buy-chip">Семьи с детьми</span></div>
+        </div>
+        <div class="buy-card-bottom">
+          <h3 class="buy-title">Семейная ипотека</h3>
+          <p class="buy-desc">Льготная ставка для семей с детьми —<br class="br-desktop" /> подберём программу под вашу ситуацию.</p>
+          <button type="button" class="buy-link" onclick="openLeadModal()">Оставить заявку <span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+      <div class="buy-card buy-card--photo" role="listitem" tabindex="0" style="--i:7">
+        <img class="buy-card-bg" src="assets/images/buy-certificate.webp" alt="" aria-hidden="true" loading="lazy" style="object-position:50% 55%" />
+        <div class="buy-card-top">
+          <span class="buy-num">08</span>
+          <div class="buy-chips"><span class="buy-chip">Жилищный сертификат</span><span class="buy-chip">Субсидии</span></div>
+        </div>
+        <div class="buy-card-bottom">
+          <h3 class="buy-title">Сертификат</h3>
+          <p class="buy-desc">Оплата жилищным сертификатом или<br class="br-desktop" /> субсидией — проверим и оформим сделку.</p>
+          <button type="button" class="buy-link" onclick="openLeadModal()">Оставить заявку <span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<div class="block-gap"></div>
 <section class="expert-lead">
   <img class="expert-lead__bg" src="assets/images/family-lead-bg.webp" alt="" />
   <div class="expert-lead__inner">
@@ -8371,6 +8573,30 @@
     new MutationObserver(function () {
       if (!lb.classList.contains('is-open')) { list = []; setGallery(false); }
     }).observe(lb, { attributes: true, attributeFilter: ['class'] });
+  })();
+</script>
+<script>
+  /* «Способы покупки»: активная карточка аккордеона. На десктопе —
+     наведение/фокус, на тач-устройствах и мобилке — тап. */
+  (function () {
+    var track = document.querySelector('.buy-track');
+    if (!track) return;
+    var cards = [].slice.call(track.querySelectorAll('.buy-card'));
+    var finePointer = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    function activate(card) {
+      cards.forEach(function (c) { c.classList.toggle('is-active', c === card); });
+    }
+    cards.forEach(function (card) {
+      if (finePointer) card.addEventListener('mouseenter', function () { activate(card); });
+      card.addEventListener('focus', function () { activate(card); });
+      card.addEventListener('click', function (e) {
+        if (e.target.closest('.buy-link')) return;
+        activate(card);
+      });
+      card.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(card); }
+      });
+    });
   })();
 </script>
 </body>

@@ -5443,6 +5443,11 @@
   @font-face {
     font-family: 'Involve';
     src: url(assets/fonts/Involve-SemiBold.woff) format('woff');
+    /* Единые метрики на Mac и Windows: у файла разные hhea и win-метрики,
+       из-за чего на Windows текст в плашке уезжал вниз. */
+    ascent-override: 80%;
+    descent-override: 20%;
+    line-gap-override: 0%;
     font-weight: 600;
     font-style: normal;
     font-display: swap;
@@ -5450,6 +5455,11 @@
   @font-face {
     font-family: 'Involve';
     src: url(assets/fonts/Involve-Bold.woff) format('woff');
+    /* Единые метрики на Mac и Windows: у файла разные hhea и win-метрики,
+       из-за чего на Windows текст в плашке уезжал вниз. */
+    ascent-override: 80%;
+    descent-override: 20%;
+    line-gap-override: 0%;
     font-weight: 700;
     font-style: normal;
     font-display: swap;
