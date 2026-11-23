@@ -5835,6 +5835,84 @@
     pointer-events: none;
   }
 
+  /* ===== «Выгодные условия» v2: крупные цифры + разные поверхности =====
+     Ритм карточек: красная (главное предложение) / светлая / графитовая /
+     светлая. Цифра — главный акцент, подпись — над ней, примечание — под.
+     Мягкое свечение за 3D-иконкой; hover — красная заливка через ::before
+     (градиенты не анимируются, поэтому слой с opacity). */
+  .offers .offers-card {
+    isolation: isolate;
+    display: flex; flex-direction: column;
+    box-shadow: inset 0 0 0 1px rgba(28,28,26,.04);
+    transition: transform .5s cubic-bezier(.2,.8,.2,1), box-shadow .5s ease, color .35s ease;
+  }
+  .offers .offers-card::before {
+    content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background: var(--accent, #F03D3A);
+    opacity: 0; transition: opacity .4s ease;
+  }
+  .offers .oc--light {
+    background: radial-gradient(75% 60% at 100% 100%, rgba(240,61,58,.16) 0%, rgba(240,61,58,0) 70%), #F3F6F9;
+    color: #1c1c1a;
+  }
+  .offers .oc--accent {
+    background: var(--accent, #F03D3A);
+    color: #ffffff;
+  }
+  .offers .oc--accent::before { background: #E5352F; }
+  .offers .oc--dark {
+    background: radial-gradient(80% 65% at 100% 100%, rgba(240,61,58,.5) 0%, rgba(240,61,58,0) 65%), radial-gradient(70% 50% at 0% 0%, rgba(255,255,255,.07) 0%, rgba(255,255,255,0) 70%), #1A1C21;
+    color: #ffffff;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+  }
+  .offers .offers-card-body { position: relative; z-index: 2; max-width: none; }
+  .offers .offers-icon { z-index: 1; transform-origin: 100% 100%; transition: transform .7s cubic-bezier(.2,.8,.2,1); }
+  .offers .offers-btn { z-index: 3; transition: transform .45s cubic-bezier(.2,.8,.2,1), background-color .35s ease, color .35s ease; }
+  .offers .oc--light .offers-btn { box-shadow: 0 .4rem 1rem rgba(28,28,26,.07); }
+
+  .offers .oc-title {
+    margin: 0 0 .9rem;
+    font: 600 1.05rem/1.3 'Onest', sans-serif !important;
+    letter-spacing: 0; text-transform: none;
+    color: inherit; opacity: .78;
+  }
+  .offers .oc-figure {
+    display: flex; flex-wrap: wrap; align-items: flex-end; column-gap: .55rem; row-gap: .1rem;
+    margin: 0;
+    font-family: 'Involve', 'Onest', sans-serif; font-weight: 600;
+    font-size: clamp(1.8rem, 2.25vw, 3.3rem); line-height: .95; letter-spacing: -.035em;
+    white-space: nowrap; color: inherit;
+  }
+  .offers .oc--light .oc-figure span { color: var(--accent, #F03D3A); }
+  .offers .oc-figure small {
+    font: 500 .82rem/1.15 'Onest', sans-serif; letter-spacing: 0;
+    padding-bottom: .2em; opacity: .7; white-space: nowrap;
+  }
+  .offers .offers-card .offers-note { margin-top: 1rem; font-size: .85rem; opacity: .6; }
+
+  @media (hover: hover) and (pointer: fine) {
+    .offers .offers-card:hover { color: #ffffff; transform: translateY(-.25rem); box-shadow: 0 1.2rem 2rem -1.4rem rgba(28,28,26,.28); }
+    /* фон под ::before не меняем на hover — иначе мигает белая подложка до появления заливки */
+    .offers .oc--light:hover { background-color: #F3F6F9; }
+    .offers .oc--accent:hover { background-color: var(--accent, #F03D3A); }
+    .offers .offers-card:hover::before { opacity: 1; }
+    .offers .offers-card:hover .oc-figure span { color: #ffffff; }
+    .offers .offers-card:hover .offers-icon { transform: scale(1.07); }
+    .offers .offers-card:hover .offers-btn { transform: translateX(.3rem); }
+  }
+  .offers .offers-card:focus-visible { outline: 3px solid #1c1c1a; outline-offset: 3px; }
+
+  @media (max-width: 1600px) and (min-width: 901px) {
+    .offers .oc-title { font-size: .95rem !important; margin-bottom: .75rem; }
+    .offers .offers-card .offers-note { margin-top: .8rem; }
+  }
+  @media (max-width: 640px) {
+    .offers .oc-figure { font-size: 2.6rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .offers .offers-card, .offers .offers-icon, .offers .offers-btn, .offers .offers-card::before { transition: none; }
+  }
+
   /* Адрес дома под заголовком блока «в пешей доступности» */
   .walk-glass .walk-heading { margin-bottom: .85rem; }
   .walk-address { display: flex; align-items: center; gap: .5rem; margin: 0 0 1.6rem; font: 500 .95rem/1.2 'Onest', sans-serif; color: #7a7f87; }
@@ -6261,23 +6339,23 @@
     </span>
     <div class="offers-grid">
 
-      <div class="offers-card offers-card--1" onclick="openLeadModal()">
+      <div class="offers-card offers-card--1 oc--accent" onclick="openLeadModal()" role="button" tabindex="0">
         <div class="offers-card-body">
-          <h3>1-комнатные квартиры</h3>
-          <p class="offers-price">— от 4 099 000 ₽</p>
+          <h3 class="oc-title">1-комнатные квартиры</h3>
+          <p class="oc-figure"><small>от</small><span>4&nbsp;099&nbsp;000&nbsp;₽</span></p>
           <p class="offers-note">Подробности уточняйте<br />в отделе продаж</p>
         </div>
         <div class="offers-icon">
-          <img class="offers-icon-default" src="assets/images/icon-key-red.webp" alt="Ключ от квартиры">
+          <img class="offers-icon-default" src="assets/images/icon-key-gray.webp" alt="Ключ от квартиры">
           <img class="offers-icon-hover" src="assets/images/icon-key-gray.webp" alt="" aria-hidden="true">
         </div>
         <span class="offers-btn">→</span>
       </div>
 
-      <div class="offers-card offers-card--2" onclick="openLeadModal()">
+      <div class="offers-card offers-card--2 oc--light" onclick="openLeadModal()" role="button" tabindex="0">
         <div class="offers-card-body">
-          <h3>Семейная ипотека</h3>
-          <p class="offers-price">— от 4.0%</p>
+          <h3 class="oc-title">Семейная ипотека</h3>
+          <p class="oc-figure"><small>от</small><span>4,0%</span></p>
           <p class="offers-note">Подробности уточняйте<br />в отделе продаж</p>
         </div>
         <div class="offers-icon">
@@ -6287,10 +6365,10 @@
         <span class="offers-btn">→</span>
       </div>
 
-      <div class="offers-card offers-card--3" onclick="openLeadModal()">
+      <div class="offers-card offers-card--3 oc--light" onclick="openLeadModal()" role="button" tabindex="0">
         <div class="offers-card-body">
-          <h3>Рассрочка до ключей</h3>
-          <p class="offers-price">— без переплаты банку</p>
+          <h3 class="oc-title">Рассрочка до ключей</h3>
+          <p class="oc-figure"><span>0&nbsp;₽</span><small>переплаты<br />банку</small></p>
           <p class="offers-note">Ключи — март 2028</p>
         </div>
         <div class="offers-icon">
@@ -6300,9 +6378,10 @@
         <span class="offers-btn">→</span>
       </div>
 
-      <div class="offers-card offers-card--4" onclick="openLeadModal()">
+      <div class="offers-card offers-card--4 oc--light" onclick="openLeadModal()" role="button" tabindex="0">
         <div class="offers-card-body">
-          <h3><strong>1% скидка</strong> за быстрый<br />выход на сделку</h3>
+          <h3 class="oc-title">За быстрый выход на сделку</h3>
+          <p class="oc-figure"><span>−1%</span><small>скидка<br />на квартиру</small></p>
           <p class="offers-note">В течение недели<br />с момента обращения</p>
         </div>
         <div class="offers-icon">
