@@ -170,13 +170,18 @@
     position: absolute;
     inset: 0;
     z-index: 1;
-    background: linear-gradient(
-      180deg,
-      rgba(10, 14, 25, 0.35) 0%,
-      rgba(10, 14, 25, 0) 30%,
-      rgba(10, 14, 25, 0.15) 65%,
-      rgba(10, 14, 25, 0.55) 100%
-    );
+    /* Верхний слой — ровная лёгкая подложка поверх всего видео (светлый
+       фасад/небо без неё «пересвечивает» белый текст и красные акценты),
+       ниже — прежний вертикальный градиент. */
+    background:
+      linear-gradient(rgba(10, 14, 25, 0.32), rgba(10, 14, 25, 0.32)),
+      linear-gradient(
+        180deg,
+        rgba(10, 14, 25, 0.35) 0%,
+        rgba(10, 14, 25, 0) 30%,
+        rgba(10, 14, 25, 0.15) 65%,
+        rgba(10, 14, 25, 0.55) 100%
+      );
   }
 
   .hero__inner {
@@ -5829,6 +5834,81 @@
     border-radius: 5px;
     pointer-events: none;
   }
+
+  /* Адрес дома под заголовком блока «в пешей доступности» */
+  .walk-glass .walk-heading { margin-bottom: .85rem; }
+  .walk-address { display: flex; align-items: center; gap: .5rem; margin: 0 0 1.6rem; font: 500 .95rem/1.2 'Onest', sans-serif; color: #1c1c1a; }
+  .walk-address svg { width: 1.15rem; height: 1.15rem; flex: none; color: var(--accent, #F03D3A); }
+  .walk-address span { display: inline; color: inherit; }
+
+  /* ===== Блок «Галерея рендеров» (после «Способов покупки») ===== */
+  .gal { position: relative; z-index: 4; margin: 0 1.6875rem; }
+  .gal-panel { background: none; padding: 0; }
+  .gal-inner { max-width: none; margin: 0; padding: 0; }
+  .gal-head { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; margin-bottom: 1.92rem; }
+  .gal-head .gal-heading { margin: 0 !important; }
+  .gal-ctrl { display: flex; align-items: center; gap: .6rem; margin-top: 0; flex: none; }
+  .gal-count { margin-right: .5rem; font: 500 .95rem/1 'Onest', sans-serif; color: #8a8f98; letter-spacing: .02em; }
+  .gal-count b { font-weight: 700; color: #1c1c1a; }
+  .gal-arrow {
+    all: unset; box-sizing: border-box; width: 2.9rem; height: 2.9rem; display: grid; place-items: center;
+    border-radius: 50%; background: #ffffff; color: #1c1c1a; font: 400 1.7rem/1 'Onest', sans-serif; padding-bottom: .15rem;
+    cursor: pointer; transition: background-color .25s ease, color .25s ease;
+  }
+  .gal-arrow:hover, .gal-arrow:focus-visible { background: var(--accent, #F03D3A); color: #ffffff; }
+  .gal-body { display: block; }
+  .gal-stage {
+    position: relative; aspect-ratio: 16 / 9; border-radius: .9rem; overflow: hidden;
+    background: #dfe4ea; cursor: zoom-in; outline: none;
+  }
+  .gal-stage:focus-visible { box-shadow: 0 0 0 3px var(--accent, #F03D3A); }
+  .gal-main { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .22s ease, transform .9s cubic-bezier(.22,.8,.25,1); }
+  .gal-main.is-fading { opacity: 0; }
+  .gal-stage:hover .gal-main { transform: scale(1.025); }
+  .gal-tag {
+    position: absolute; left: 1.1rem; top: 1.1rem; padding: .5rem .95rem; border-radius: 999px;
+    background: rgba(20, 22, 28, .55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    color: #ffffff; font: 600 .8rem/1 'Onest', sans-serif;
+  }
+  .gal-zoom {
+    position: absolute; right: 1.1rem; bottom: 1.1rem; width: 2.6rem; height: 2.6rem; border-radius: 50%;
+    display: grid; place-items: center; background: rgba(255, 255, 255, .92); color: #1c1c1a;
+    box-shadow: 0 .3rem .9rem rgba(16, 22, 30, .25);
+  }
+  .gal-zoom svg { width: 1.3rem; height: 1.3rem; }
+
+  .gal-lightbox { position: fixed; inset: 0; z-index: 10000; display: none; align-items: center; justify-content: center; background: rgba(10, 12, 16, .94); }
+  .gal-lightbox.is-open { display: flex; }
+  .gal-lb-img { max-width: min(92vw, 1700px); max-height: 84vh; border-radius: .6rem; box-shadow: 0 1.5rem 4rem rgba(0,0,0,.5); user-select: none; -webkit-user-drag: none; }
+  .gal-lb-close, .gal-lb-nav {
+    all: unset; box-sizing: border-box; position: absolute; display: grid; place-items: center; cursor: pointer;
+    color: #ffffff; background: rgba(255, 255, 255, .12); border-radius: 50%; transition: background-color .25s ease;
+  }
+  .gal-lb-close:hover, .gal-lb-nav:hover, .gal-lb-close:focus-visible, .gal-lb-nav:focus-visible { background: var(--accent, #F03D3A); }
+  .gal-lb-close { top: 1.4rem; right: 1.4rem; width: 3rem; height: 3rem; font: 300 2rem/1 'Onest', sans-serif; padding-bottom: .15rem; }
+  .gal-lb-nav { top: 50%; width: 3.4rem; height: 3.4rem; margin-top: -1.7rem; font: 300 2.2rem/1 'Onest', sans-serif; padding-bottom: .2rem; }
+  .gal-lb-nav--prev { left: 1.6rem; }
+  .gal-lb-nav--next { right: 1.6rem; }
+  .gal-lb-cap { position: absolute; left: 0; right: 0; bottom: 1.5rem; margin: 0; text-align: center; color: rgba(255,255,255,.8); font: 500 .9rem/1 'Onest', sans-serif; letter-spacing: .02em; }
+
+  @media (max-width: 900px) {
+    .gal { margin-left: 1.875vw !important; margin-right: 1.875vw !important; }
+    .gal-inner { padding: 0; }
+    .gal-panel { padding: 0; }
+    .gal-head { flex-wrap: wrap; gap: 1rem; margin-bottom: 1.4rem; }
+    .gal-ctrl { width: 100%; justify-content: space-between; margin-top: 0; }
+    .gal-count { margin-right: auto; }
+    .gal-arrow { width: 2.6rem; height: 2.6rem; }
+    .gal-stage { border-radius: .7rem; }
+    .gal-tag { left: .7rem; top: .7rem; padding: .4rem .75rem; font-size: .72rem; }
+    .gal-zoom { right: .7rem; bottom: .7rem; width: 2.2rem; height: 2.2rem; }
+    .gal-lb-nav { top: auto; bottom: 1rem; margin-top: 0; width: 2.8rem; height: 2.8rem; }
+    .gal-lb-nav--prev { left: 1rem; }
+    .gal-lb-nav--next { right: 1rem; }
+    .gal-lb-cap { bottom: 1.5rem; }
+    .gal-lb-img { max-width: 96vw; max-height: 70vh; }
+  }
+  @media (prefers-reduced-motion: reduce) { .gal-main, .gal-arrow { transition: none; } }
 </style>
 
 <body>
@@ -5836,7 +5916,7 @@
 <div class="custom-scrollbar" aria-hidden="true"><div class="custom-scrollbar-thumb"></div></div>
 
 <section class="hero">
-  <video class="hero__bg" src="assets/videos/hero-bg.mp4" poster="assets/images/hero-bg.jpg" autoplay muted loop playsinline disablepictureinpicture disableRemotePlayback controlsList="nodownload noplaybackrate nofullscreen"></video>
+  <video class="hero__bg" src="assets/videos/videozhit.mp4" poster="assets/images/hero-poster.jpg" autoplay muted loop playsinline disablepictureinpicture disableRemotePlayback controlsList="nodownload noplaybackrate nofullscreen"></video>
   <div class="hero__overlay"></div>
 
   <div class="hero__inner">
@@ -6344,6 +6424,7 @@
 
       <div class="walk-glass">
         <h2 class="walk-heading">Всё нужное <span>— в пешей доступности</span></h2>
+        <p class="walk-address"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><span>г. Волгоград, ул. Новосибирская, 37</span></p>
 
         <div class="walk-chips" id="walkChips">
           <button type="button" class="walk-chip is-active" data-cat="edu">
@@ -6840,6 +6921,39 @@
 </section>
 
 <div class="block-gap"></div>
+
+<section class="gal" id="gallery">
+  <div class="gal-panel">
+  <div class="gal-inner">
+    <div class="gal-head">
+      <h2 class="offers-heading gal-heading">Галерея рендеров<span>дом с разных ракурсов</span></h2>
+      <div class="gal-ctrl">
+        <span class="gal-count" aria-live="polite"><b>01</b> / 08</span>
+        <button type="button" class="gal-arrow gal-arrow--prev" aria-label="Предыдущий рендер">‹</button>
+        <button type="button" class="gal-arrow gal-arrow--next" aria-label="Следующий рендер">›</button>
+      </div>
+    </div>
+    <div class="gal-body">
+      <div class="gal-stage" tabindex="0" role="button" aria-label="Открыть рендер на весь экран">
+        <img class="gal-main" src="assets/images/gal-01.webp" alt="Рендер ЖК «Жить хорошо»: День" decoding="async" />
+        <span class="gal-tag">День</span>
+        <span class="gal-zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/><path d="M11 8.5v5M8.5 11h5"/></svg></span>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<div class="gal-lightbox" id="galLightbox" role="dialog" aria-modal="true" aria-label="Галерея рендеров" hidden>
+  <button type="button" class="gal-lb-close" aria-label="Закрыть">&times;</button>
+  <button type="button" class="gal-lb-nav gal-lb-nav--prev" aria-label="Предыдущий рендер">‹</button>
+  <img class="gal-lb-img" src="" alt="" />
+  <button type="button" class="gal-lb-nav gal-lb-nav--next" aria-label="Следующий рендер">›</button>
+  <p class="gal-lb-cap"></p>
+</div>
+
+<div class="block-gap"></div>
+
 <section class="expert-lead">
   <img class="expert-lead__bg" src="assets/images/family-lead-bg.webp" alt="" />
   <div class="expert-lead__inner">
@@ -8643,6 +8757,76 @@
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(card); }
       });
     });
+  })();
+</script>
+<script>
+  /* «Галерея рендеров»: главный кадр + превью, стрелки, клавиши ← →, свайп,
+     полноэкранный просмотр по клику. */
+  (function () {
+    var root = document.getElementById('gallery');
+    if (!root) return;
+    var labels = ['День', 'День', 'День', 'Вечер', 'Вечер', 'Вечер', 'С высоты', 'С высоты'];
+    var total = labels.length;
+    var main = root.querySelector('.gal-main'), tag = root.querySelector('.gal-tag');
+    var count = root.querySelector('.gal-count'), stage = root.querySelector('.gal-stage');
+    var thumbs = [].slice.call(root.querySelectorAll('.gal-thumb'));
+    var lb = document.getElementById('galLightbox');
+    var lbImg = lb.querySelector('.gal-lb-img'), lbCap = lb.querySelector('.gal-lb-cap');
+    var idx = 0, fadeTimer = null;
+    function src(i) { return 'assets/images/gal-' + ('0' + (i + 1)).slice(-2) + '.webp'; }
+    function pad(n) { return ('0' + n).slice(-2); }
+    function show(i, instant) {
+      idx = (i + total) % total;
+      thumbs.forEach(function (t, k) { t.classList.toggle('is-active', k === idx); });
+      count.innerHTML = '<b>' + pad(idx + 1) + '</b> / ' + pad(total);
+      tag.textContent = labels[idx];
+      var apply = function () {
+        main.src = src(idx);
+        main.alt = 'Рендер ЖК «Жить хорошо»: ' + labels[idx];
+        main.classList.remove('is-fading');
+      };
+      clearTimeout(fadeTimer);
+      if (instant) apply(); else { main.classList.add('is-fading'); fadeTimer = setTimeout(apply, 180); }
+      var act = thumbs[idx];
+      if (act && act.parentNode.scrollWidth > act.parentNode.clientWidth) {
+        act.parentNode.scrollTo({ left: act.offsetLeft - 8, behavior: 'smooth' });
+      }
+      [idx + 1, idx - 1].forEach(function (k) { new Image().src = src((k + total) % total); });
+      if (lb.classList.contains('is-open')) fillLb();
+    }
+    function fillLb() { lbImg.src = src(idx); lbImg.alt = 'Рендер: ' + labels[idx]; lbCap.textContent = labels[idx] + '  ·  ' + pad(idx + 1) + ' / ' + pad(total); }
+    function openLb() { fillLb(); lb.hidden = false; lb.classList.add('is-open'); document.body.style.overflow = 'hidden'; }
+    function closeLb() { lb.classList.remove('is-open'); lb.hidden = true; document.body.style.overflow = ''; }
+
+    root.querySelector('.gal-arrow--prev').addEventListener('click', function () { show(idx - 1); });
+    root.querySelector('.gal-arrow--next').addEventListener('click', function () { show(idx + 1); });
+    thumbs.forEach(function (t, k) { t.addEventListener('click', function () { show(k); }); });
+    stage.addEventListener('click', openLb);
+    stage.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLb(); }
+      if (e.key === 'ArrowLeft') show(idx - 1);
+      if (e.key === 'ArrowRight') show(idx + 1);
+    });
+    lb.querySelector('.gal-lb-close').addEventListener('click', closeLb);
+    lb.querySelector('.gal-lb-nav--prev').addEventListener('click', function (e) { e.stopPropagation(); show(idx - 1, true); });
+    lb.querySelector('.gal-lb-nav--next').addEventListener('click', function (e) { e.stopPropagation(); show(idx + 1, true); });
+    lb.addEventListener('click', function (e) { if (e.target === lb) closeLb(); });
+    document.addEventListener('keydown', function (e) {
+      if (!lb.classList.contains('is-open')) return;
+      if (e.key === 'Escape') closeLb();
+      if (e.key === 'ArrowLeft') show(idx - 1, true);
+      if (e.key === 'ArrowRight') show(idx + 1, true);
+    });
+    function swipe(el) {
+      var x0 = null;
+      el.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+      el.addEventListener('touchend', function (e) {
+        if (x0 === null) return;
+        var dx = e.changedTouches[0].clientX - x0; x0 = null;
+        if (Math.abs(dx) > 40) show(idx + (dx < 0 ? 1 : -1), el === lb);
+      });
+    }
+    swipe(stage); swipe(lb);
   })();
 </script>
 </body>
