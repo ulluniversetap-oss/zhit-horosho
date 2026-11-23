@@ -5913,11 +5913,65 @@
     .offers .offers-card, .offers .offers-icon, .offers .offers-btn, .offers .offers-card::before { transition: none; }
   }
 
-  /* Адрес дома под заголовком блока «в пешей доступности» */
-  .walk-glass .walk-heading { margin-bottom: .85rem; }
-  .walk-address { display: flex; align-items: center; gap: .5rem; margin: 0 0 1.6rem; font: 500 .95rem/1.2 'Onest', sans-serif; color: #7a7f87; }
-  .walk-address svg { width: 1.15rem; height: 1.15rem; flex: none; color: var(--accent, #F03D3A); }
-  .walk-address span { display: inline; color: inherit; }
+  /* ===== Панель «Всё нужное — в пешей доступности» v2 =====
+     Иерархия: заголовок → адрес (иконка в круге + подпись) → тонкий
+     разделитель → сегментированный переключатель 2×2 → список. */
+  .walk-glass .walk-heading { margin-bottom: 1.15rem; }
+  .walk-address {
+    display: flex; align-items: center; gap: .8rem;
+    margin: 0; padding: 0;
+  }
+  .walk-address-ico {
+    flex: none; width: 2.4rem; height: 2.4rem; border-radius: 50%;
+    display: grid; place-items: center;
+    background: rgba(240,61,58,.1); color: var(--accent, #F03D3A);
+  }
+  .walk-address-ico svg { width: 1.15rem; height: 1.15rem; display: block; }
+  .walk-address-txt { display: flex; flex-direction: column; gap: .2rem; min-width: 0; }
+  .walk-address-txt small { font: 500 .7rem/1 'Onest', sans-serif; letter-spacing: .06em; text-transform: uppercase; color: rgba(28,28,26,.45); }
+  .walk-address-txt b { font: 600 .95rem/1.25 'Onest', sans-serif; color: #1c1c1a; }
+
+  .walk-glass .walk-chips {
+    display: grid !important; grid-template-columns: 1fr 1fr; gap: 4px;
+    margin: 1.3rem 0 .7rem !important; padding: 4px !important;
+    border-radius: 12px; background: rgba(28,28,26,.03);
+    overflow: visible !important; flex-wrap: initial;
+  }
+  .walk-glass .walk-chip,
+  .walk-glass .walk-chip:hover {
+    display: flex; align-items: center; gap: .55rem; justify-content: flex-start;
+    min-width: 0; padding: .62rem .8rem;
+    border: 0; border-radius: 9px; background: transparent;
+    font: 600 .84rem/1 'Onest', sans-serif; color: rgba(28,28,26,.62);
+    box-shadow: none; white-space: nowrap;
+    transition: background-color .2s ease, color .2s ease, box-shadow .2s ease;
+  }
+  .walk-glass .walk-chip svg { width: 1rem; height: 1rem; flex: none; opacity: .8; }
+  .walk-glass .walk-chip em {
+    margin-left: auto; font-style: normal; font-size: .72rem; font-weight: 600;
+    min-width: 1.25rem; height: 1.25rem; padding: 0 .3rem; border-radius: 999px;
+    display: inline-grid; place-items: center;
+    background: rgba(28,28,26,.07); color: rgba(28,28,26,.55); opacity: 1;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .walk-glass .walk-chip:hover { background: rgba(255,255,255,.55); color: #1c1c1a; }
+  }
+  .walk-glass .walk-chip.is-active,
+  .walk-glass .walk-chip.is-active:hover {
+    background: #ffffff; color: #1c1c1a; border: 0;
+    box-shadow: none;
+  }
+  .walk-glass .walk-chip.is-active svg { color: var(--accent, #F03D3A); opacity: 1; }
+  .walk-glass .walk-chip.is-active em { background: var(--accent, #F03D3A); color: #ffffff; }
+
+  .walk-glass .walk-item { padding: .8rem .75rem; }
+  @media (min-width: 1201px) { .walk-scene { height: 42.5rem; } }
+  .walk-glass .walk-item-name { font-size: .93rem; }
+  .walk-glass .walk-item-time b { font-size: 1.25rem; }
+
+  @media (max-width: 1200px) {
+    .walk-glass .walk-chips { margin-left: 0 !important; margin-right: 0 !important; }
+  }
 
   /* ===== Блок «Галерея рендеров» (после «Способов покупки») ===== */
   .gal { position: relative; z-index: 4; margin: 0 1.6875rem; }
@@ -6503,7 +6557,10 @@
 
       <div class="walk-glass">
         <h2 class="walk-heading">Всё нужное <span>— в пешей доступности</span></h2>
-        <p class="walk-address"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><span>г. Волгоград, ул. Новосибирская, 37</span></p>
+        <div class="walk-address">
+          <span class="walk-address-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+          <span class="walk-address-txt"><small>Адрес дома</small><b>Волгоград, ул. Новосибирская, 37</b></span>
+        </div>
 
         <div class="walk-chips" id="walkChips">
           <button type="button" class="walk-chip is-active" data-cat="edu">
