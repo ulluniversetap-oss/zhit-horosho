@@ -5760,14 +5760,14 @@
   .buy-card:first-child { margin-left: 0; }
   .buy-card--dark { background: #23252a; color: #ffffff; }
   .buy-card--photo { background: #1d1f24; color: #ffffff; }
-  .buy-card-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; opacity: .8; transition: opacity .4s ease; }
+  .buy-card-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; opacity: .8; transition: opacity .4s ease, filter .5s ease, transform .6s ease; }
   .buy-card--photo::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(20,22,28,.45) 0%, rgba(20,22,28,.55) 45%, rgba(20,22,28,.88) 100%); }
   .buy-card.is-active {
     flex-grow: 5.2;
-    background: linear-gradient(150deg, #F45A57 0%, #F03D3A 45%, #c92522 100%);
+    background: linear-gradient(150deg, #D9403D 0%, #C42B28 45%, #96181A 100%);
     color: #ffffff;
   }
-  .buy-card--photo.is-active .buy-card-bg { opacity: .14; }
+  .buy-card--photo.is-active .buy-card-bg { opacity: .14; filter: blur(1.2px); transform: scale(1.02); }
   .buy-card--photo.is-active::after { opacity: 0; }
 
   .buy-card-top, .buy-card-bottom { position: relative; width: 24rem; max-width: calc(100vw - 6rem); }
@@ -5788,15 +5788,15 @@
       line-height: 1.1;
     }
   }
-  .buy-desc { margin: .7rem 0 0; white-space: nowrap; font: 400 .95rem/1.45 'Onest', sans-serif; opacity: 0; transition: opacity .3s ease; }
-  .buy-link { all: unset; display: inline-flex; gap: .4rem; margin-top: 1rem; font: 700 .85rem/1 'Onest', sans-serif; cursor: pointer; opacity: 0; transition: opacity .3s ease; border-bottom: 1px solid currentColor; padding-bottom: .2rem; }
+  .buy-desc { margin: .7rem 0 0; white-space: nowrap; font: 300 .95rem/1.5 'Onest', sans-serif; opacity: 0; transition: opacity .3s ease; }
+  .buy-link { all: unset; display: inline-flex; gap: .4rem; margin-top: 1rem; font: 600 .85rem/1 'Onest', sans-serif; cursor: pointer; opacity: 0; transition: opacity .3s ease; border-bottom: 1px solid currentColor; padding-bottom: .2rem; }
   .buy-card.is-active .buy-chips { opacity: 1; transform: none; transition-delay: .18s; }
   .buy-card.is-active .buy-desc, .buy-card.is-active .buy-link { opacity: 1; transition-delay: .22s; }
   /* Свёрнутые карточки: описание и ссылка не занимают места — заголовки
      всех карточек стоят на одной линии снизу. */
   .buy-desc, .buy-link { max-height: 0; overflow: hidden; margin-top: 0; padding-bottom: 0; border-bottom-width: 0; }
-  .buy-card.is-active .buy-desc { max-height: 7rem; margin-top: .7rem; }
-  .buy-card.is-active .buy-link { max-height: 2rem; margin-top: 1rem; padding-bottom: .2rem; border-bottom-width: 1px; }
+  .buy-card.is-active .buy-desc { max-height: 7rem; margin-top: 1.05rem; }
+  .buy-card.is-active .buy-link { max-height: 2rem; margin-top: 1.55rem; padding-bottom: .2rem; border-bottom-width: 1px; }
 
   @media (min-width: 901px) and (max-width: 1280px) {
     .buy-track { height: 24rem; }
@@ -5971,30 +5971,6 @@
 
   @media (max-width: 1200px) {
     .walk-glass .walk-chips { margin-left: 0 !important; margin-right: 0 !important; }
-  }
-
-  /* ===== «Способы покупки»: активная карточка — лёгкое «стекло» =====
-     Тёмно-красная плотная тонировка поверх слегка размытого фото:
-     фото едва просвечивает, плюс мягкий блик и светлая кромка. */
-  .buy-card--photo::before {
-    content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-    background:
-      linear-gradient(120deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,.03) 30%, rgba(255,255,255,0) 48%),
-      linear-gradient(160deg, rgba(214,48,44,.8) 0%, rgba(196,36,32,.84) 50%, rgba(150,22,19,.92) 100%);
-    opacity: 0; transition: opacity .45s ease;
-  }
-  .buy-card--photo.is-active { background: #8f1a17; }
-  .buy-card--photo.is-active::before { opacity: 1; }
-  .buy-card--photo.is-active::after { opacity: 0; }
-  .buy-card--photo .buy-card-bg { z-index: -2; transition: opacity .4s ease, filter .5s ease, transform .6s ease; }
-  .buy-card--photo.is-active .buy-card-bg { opacity: 1; filter: blur(4px) saturate(1.1); transform: scale(1.05); }
-  .buy-card.is-active {
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,.16), inset 0 1px 0 rgba(255,255,255,.3), -14px 0 28px -12px rgba(20,22,28,.18);
-  }
-  .buy-card.is-active .buy-chip {
-    background: rgba(255,255,255,.14);
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,.22);
-    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
   }
 
   /* ===== Блок «Галерея рендеров» (после «Способов покупки») ===== */
