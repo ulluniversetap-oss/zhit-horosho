@@ -5771,6 +5771,18 @@
   .buy-chips { display: flex; flex-wrap: wrap; gap: .4rem; opacity: 0; transform: translateY(-6px); transition: opacity .3s ease, transform .3s ease; }
   .buy-chip { padding: .45rem .8rem; border-radius: 999px; background: rgba(255,255,255,.18); font: 600 .78rem/1 'Onest', sans-serif; white-space: nowrap; }
   .buy-title { margin: 0; font-family: 'Involve', 'Onest', sans-serif; font-weight: 600; font-size: 1.6rem; line-height: 1.12; color: inherit; }
+  /* Свёрнутые карточки: название читается целиком — вертикально, снизу вверх,
+     вместо обрезанного края горизонтальной строки. */
+  @media (min-width: 901px) {
+    .buy-card:not(.is-active) .buy-card-bottom { width: auto; }
+    .buy-card:not(.is-active) .buy-title {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      white-space: nowrap;
+      font-size: 1.45rem;
+      line-height: 1.1;
+    }
+  }
   .buy-desc { margin: .7rem 0 0; white-space: nowrap; font: 400 .95rem/1.45 'Onest', sans-serif; opacity: 0; transition: opacity .3s ease; }
   .buy-link { all: unset; display: inline-flex; gap: .4rem; margin-top: 1rem; font: 700 .85rem/1 'Onest', sans-serif; cursor: pointer; opacity: 0; transition: opacity .3s ease; border-bottom: 1px solid currentColor; padding-bottom: .2rem; }
   .buy-card.is-active .buy-chips { opacity: 1; transform: none; transition-delay: .18s; }
