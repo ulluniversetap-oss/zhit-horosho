@@ -5736,52 +5736,104 @@
   #about-project .row { border-top-color: rgba(28,28,26,.08); }
   #about-project .col + .col { border-left-color: rgba(28,28,26,.08); }
 
-  /* V1 — «Утренний свет»: мягкие тёплые и холодные пятна света на светлом градиенте */
-  #about-project[data-v="1"]::before {
-    background:
-      radial-gradient(60% 40% at 88% 6%, rgba(255,205,150,.55), transparent 70%),
-      radial-gradient(55% 45% at 6% 48%, rgba(188,216,244,.65), transparent 70%),
-      radial-gradient(50% 40% at 92% 96%, rgba(255,190,180,.42), transparent 70%),
-      linear-gradient(180deg, #fcf9f4 0%, #f3f6fa 100%);
-  }
-  /* V2 — «Mesh + зерно»: сетка размытых цветных пятен с акцентом бренда и плёночным зерном */
-  #about-project[data-v="2"]::before {
-    background:
-      radial-gradient(38% 26% at 15% 12%, rgba(240,61,58,.16), transparent 70%),
-      radial-gradient(40% 28% at 85% 30%, rgba(120,170,235,.30), transparent 70%),
-      radial-gradient(42% 30% at 20% 70%, rgba(255,198,160,.40), transparent 70%),
-      radial-gradient(40% 28% at 85% 92%, rgba(240,61,58,.12), transparent 70%),
-      linear-gradient(160deg, #f8f5f1 0%, #eef3f8 100%);
-    filter: blur(18px); transform: scale(1.08);
-  }
-  #about-project[data-v="2"]::after {
-    opacity: .5; mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .33 0 0 0 0 .3 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-  /* V3 — «Лучи света сквозь окна»: диагональные световые полосы, затухающие вниз */
-  #about-project[data-v="3"]::before {
-    background:
-      radial-gradient(70% 35% at 100% 0%, rgba(255,222,180,.65), transparent 70%),
-      linear-gradient(180deg, #f9f6f0 0%, #edf2f7 100%);
-  }
-  #about-project[data-v="3"]::after {
-    background: repeating-linear-gradient(118deg, transparent 0 9vw, rgba(255,255,255,.7) 9vw 17vw, transparent 17vw 22vw);
-    -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.55) 45%, transparent 90%);
-    mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.55) 45%, transparent 90%);
-  }
-
-  /* V4 — «Паттерн логотипа»: лёгкий узор из элементов логотипа (дуга и красная лента) */
+  /* V4 — «Закат над Волгой»: сочный вертикальный закат (персик → коралл →
+     сирень → небо) и солнечное свечение в правом верхнем углу, лёгкое зерно */
   #about-project[data-v="4"]::before {
     background:
-      radial-gradient(60% 40% at 90% 5%, rgba(255,214,175,.45), transparent 70%),
-      radial-gradient(55% 45% at 5% 60%, rgba(196,221,245,.5), transparent 70%),
-      linear-gradient(180deg, #fcfaf6 0%, #f4f7fa 100%);
+      radial-gradient(42% 26% at 88% 3%, rgba(255,160,96,.78), rgba(255,160,96,0) 70%),
+      radial-gradient(55% 30% at 6% 26%, rgba(255,138,150,.38), rgba(255,138,150,0) 70%),
+      radial-gradient(60% 30% at 95% 70%, rgba(176,156,255,.30), rgba(176,156,255,0) 70%),
+      linear-gradient(180deg, #FFE6D2 0%, #FFE1DE 26%, #F1E4F8 58%, #DDECFB 100%);
   }
-  #about-project[data-v="4"]::after {
-    background-image: url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%27300%27%20height=%27300%27%20viewBox=%270%200%20300%20300%27%3E%3Cg%20fill=%27%23F03D3A%27%3E%3Cpath%20fill-opacity=%27.04%27%20transform=%27translate%2826%2030%29%20scale%281.15%29%27%20d=%27M63.0277%20-0.295809L56.5843%2011.8468C63.7382%2017.4746%2068.1291%2026.3747%2067.5864%2036.1519C66.6984%2052.0792%2053.0617%2064.2712%2037.1161%2063.3841C34.6196%2063.2461%2032.212%2062.7927%2029.9326%2062.0733L23.4893%2074.2159C27.5053%2075.7535%2031.8272%2076.6996%2036.3563%2076.9559C59.8011%2078.2569%2079.8614%2060.3189%2081.1639%2036.9009C82.0125%2021.6536%2074.7008%207.84529%2063.0179%20-0.305664L63.0277%20-0.295809Z%27/%3E%3Cpath%20fill-opacity=%27.045%27%20transform=%27translate%28176%20168%29%20rotate%28-14%2043%2040%29%20scale%28.85%29%27%20d=%27M-0.0849152%2020.6499L20.972%2065.5147L86.7971%2017.5157L-0.0849152%2020.6499Z%27/%3E%3C/g%3E%3C/svg%3E");
-    background-size: 300px 300px;
-    -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.7) 60%, rgba(0,0,0,.35) 100%);
-    mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.7) 60%, rgba(0,0,0,.35) 100%);
+  #about-project[data-v="4"]::after { opacity: .4; mix-blend-mode: multiply; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .33 0 0 0 0 .3 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  /* V5 — «Живой градиент»: крупные размытые пятна бренд-палитры
+     (коралл, абрикос, сирень, лазурь) медленно дрейфуют; плёночное зерно */
+  #about-project[data-v="5"]::before {
+    inset: -12%;
+    background:
+      radial-gradient(34% 18% at 20% 12%, rgba(255,112,96,.5), rgba(255,112,96,0) 72%),
+      radial-gradient(36% 20% at 82% 20%, rgba(255,182,98,.58), rgba(255,182,98,0) 72%),
+      radial-gradient(38% 20% at 18% 42%, rgba(120,196,244,.48), rgba(120,196,244,0) 72%),
+      radial-gradient(38% 20% at 62% 50%, rgba(170,148,255,.42), rgba(170,148,255,0) 72%),
+      radial-gradient(36% 20% at 26% 76%, rgba(255,150,120,.46), rgba(255,150,120,0) 72%),
+      radial-gradient(38% 20% at 80% 88%, rgba(120,200,244,.5), rgba(120,200,244,0) 72%),
+      linear-gradient(180deg, #FDF2EA 0%, #F4F0FA 55%, #EEF5FB 100%);
+    filter: blur(34px);
+    animation: bgvDrift 28s ease-in-out infinite alternate;
+  }
+  #about-project[data-v="5"]::after { opacity: .5; mix-blend-mode: multiply; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .33 0 0 0 0 .3 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  @keyframes bgvDrift {
+    0%   { transform: translate3d(0,0,0) rotate(0deg) scale(1); }
+    50%  { transform: translate3d(3%, -2%, 0) rotate(4deg) scale(1.05); }
+    100% { transform: translate3d(-3%, 2%, 0) rotate(-3deg) scale(1.02); }
+  }
+
+  /* V6 — «Солнечные лучи»: веер мягких тёплых лучей из правого верхнего
+     угла, яркое солнечное ядро, тёплый верх → прохладный низ */
+  #about-project[data-v="6"]::before {
+    background:
+      radial-gradient(30% 20% at 100% 0%, rgba(255,150,80,.85), rgba(255,150,80,0) 70%),
+      radial-gradient(70% 45% at 100% 0%, rgba(255,205,150,.65), rgba(255,205,150,0) 72%),
+      radial-gradient(50% 30% at 0% 100%, rgba(150,190,240,.35), rgba(150,190,240,0) 70%),
+      linear-gradient(180deg, #FFF1E2 0%, #FCF3EC 45%, #EEF2F8 100%);
+  }
+  #about-project[data-v="6"]::after {
+    background: repeating-conic-gradient(from 180deg at 100% 0%,
+      rgba(255,140,70,0) 0deg, rgba(255,140,70,.22) 2deg, rgba(255,140,70,0) 4deg, rgba(255,140,70,0) 9deg);
+    -webkit-mask-image: radial-gradient(circle 1100px at 100% 0%, #000 0%, rgba(0,0,0,.55) 38%, transparent 100%);
+    mask-image: radial-gradient(circle 1100px at 100% 0%, #000 0%, rgba(0,0,0,.55) 38%, transparent 100%);
+  }
+
+  /* V3 — «Растр»: полутоновые точки (halftone) коралл → абрикос, растут к
+     краям секции и сходят на нет к центральной колонке с текстом */
+  #about-project[data-v="3"]::before {
+    background:
+      linear-gradient(180deg, #FCF6F1 0%, #F7F3F2 100%);
+  }
+  #about-project[data-v="3"]::after {
+    opacity: .4;
+    background: url("assets/images/bgv/halftone.webp") center / cover no-repeat;
+    -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 24%, rgba(0,0,0,.06) 38%, rgba(0,0,0,.06) 62%, #000 76%, #000 100%);
+    mask-image: linear-gradient(90deg, #000 0%, #000 24%, rgba(0,0,0,.06) 38%, rgba(0,0,0,.06) 62%, #000 76%, #000 100%);
+  }
+
+  /* V2 — «Топография»: коралловые изолинии рельефа на тёплой бумаге;
+     к центральной колонке с текстом линии растворяются */
+  #about-project[data-v="2"]::before { background: #FAF6F1; }
+  #about-project[data-v="2"]::after {
+    opacity: .13;
+    background: url("assets/images/bgv/topo.webp") center / cover no-repeat;
+    -webkit-mask-image: radial-gradient(ellipse 26% 60% at 50% 45%, rgba(0,0,0,.18) 0%, #000 100%);
+    mask-image: radial-gradient(ellipse 26% 60% at 50% 45%, rgba(0,0,0,.18) 0%, #000 100%);
+  }
+
+  @media (prefers-reduced-motion: reduce) { #about-project[data-v="5"]::before { animation: none; } }
+
+  /* V1 — «Чертёж»: тонкая архитектурная сетка (миллиметровка 24px + красная
+     основная сетка 120px), видна только в углах и растворяется к тексту */
+  #about-project[data-v="1"]::before { background: #F9F7F3; }
+  #about-project[data-v="1"]::after {
+    /* Сетка строится скриптом от реальной раскладки (см. buildBlueprint):
+       основные красные линии совпадают с границами колонок и рядов секции. */
+    background-image: var(--bgv-grid, none);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    -webkit-mask-image: radial-gradient(ellipse 70% 50% at 100% 0%, #000 0%, rgba(0,0,0,.55) 45%, transparent 100%), radial-gradient(ellipse 55% 40% at 0% 40%, #000 0%, rgba(0,0,0,.5) 45%, transparent 100%), radial-gradient(ellipse 46% 26% at 100% 50%, #000 0%, #000 25%, rgba(0,0,0,.55) 55%, transparent 100%);
+    mask-image: radial-gradient(ellipse 70% 50% at 100% 0%, #000 0%, rgba(0,0,0,.55) 45%, transparent 100%), radial-gradient(ellipse 55% 40% at 0% 40%, #000 0%, rgba(0,0,0,.5) 45%, transparent 100%), radial-gradient(ellipse 46% 26% at 100% 50%, #000 0%, #000 25%, rgba(0,0,0,.55) 55%, transparent 100%);
+  }
+
+  /* Основные линии секции (границы колонок и рядов) в «Чертеже» — тёмные, чуть плотнее обычных */
+  #about-project[data-v="1"] .row { border-top-color: rgba(28,28,26,.2); }
+  #about-project[data-v="1"] .col + .col { border-left-color: rgba(28,28,26,.2); }
+
+  /* V7 — «Орбиты»: тонкие концентрические окружности из правого верхнего
+     угла — как расходящиеся круги, без заливок; к низу растворяются */
+  #about-project[data-v="7"]::before { background: #FAF6F1; }
+  #about-project[data-v="7"]::after {
+    background: repeating-radial-gradient(circle at 100% 0%, rgba(240,61,58,0) 0 54.5px, rgba(240,61,58,.4) 55.5px, rgba(240,61,58,0) 56.5px 58px);
+    -webkit-mask-image: radial-gradient(circle 1500px at 100% 0%, #000 0%, rgba(0,0,0,.55) 40%, transparent 100%);
+    mask-image: radial-gradient(circle 1500px at 100% 0%, #000 0%, rgba(0,0,0,.55) 40%, transparent 100%);
   }
 
   #about-project[data-v="0"]::before, #about-project[data-v="0"]::after { display: none; }
@@ -7523,12 +7575,45 @@
 <script>
 (function(){
   var s=document.getElementById('about-project');
-  var names={0:'Без фона',1:'1 · Утренний свет',2:'2 · Mesh + зерно',3:'3 · Лучи света',4:'4 · Паттерн логотипа'};
+  var names={0:'Без фона',1:'1 · Чертёж',2:'2 · Топография',3:'3 · Растр',4:'4 · Закат',5:'5 · Живой градиент',6:'6 · Солнечные лучи',7:'7 · Орбиты'};
   var bar=document.createElement('div');bar.className='bgsw';
   function set(v){s.setAttribute('data-v',v);[].forEach.call(bar.children,function(b){b.classList.toggle('on',b.dataset.v==v)});history.replaceState(null,'','#v'+v);}
   Object.keys(names).forEach(function(k){var b=document.createElement('button');b.textContent=names[k];b.dataset.v=k;b.onclick=function(){set(k)};bar.appendChild(b)});
   document.body.appendChild(bar);
   var m=/#v(\d)/.exec(location.hash);set(m?m[1]:1);
+})();
+</script>
+<script>
+/* «Чертёж» (вариант 1): сетка от реальной раскладки секции — каждая колонка
+   и каждый ряд делятся на равные ячейки ~125px, поэтому основные линии
+   ложатся ровно на границы колонок/рядов; внутри — мелкая клетка 1/5. */
+(function(){
+  var sec=document.getElementById('about-project'); if(!sec) return;
+  var STEP=125, SUB=5, raf=0;
+  function split(a0,len,major,minor){
+    var n=Math.max(1,Math.round(len/STEP)), c=len/n;
+    for(var i=0;i<n;i++){ major.push(a0+i*c); for(var j=1;j<SUB;j++) minor.push(a0+(i+j/SUB)*c); }
+  }
+  function build(){
+    raf=0;
+    var W=sec.clientWidth, H=sec.offsetHeight; if(!W||!H) return;
+    var rows=[].filter.call(sec.children,function(r){return r.classList.contains('row')&&r.offsetHeight>0;});
+    if(!rows.length) return;
+    var xM=[],xm=[],yM=[],ym=[];
+    [].forEach.call(rows[0].children,function(c){ if(c.offsetWidth) split(c.offsetLeft,c.offsetWidth,xM,xm); });
+    xM.push(W);
+    rows.forEach(function(r){ split(r.offsetTop,r.offsetHeight,yM,ym); });
+    var lastRow=rows[rows.length-1], yEnd=lastRow.offsetTop+lastRow.offsetHeight;
+    if(yEnd<H) split(yEnd,H-yEnd,yM,ym);
+    function path(xs,ys){ var d=''; xs.forEach(function(x){ x=Math.round(x)+.5; d+='M'+x+' 0V'+H; }); ys.forEach(function(y){ y=Math.round(y)+.5; d+='M0 '+y+'H'+W; }); return d; }
+    var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" shape-rendering="crispEdges">'+
+      '<path d="'+path(xm,ym)+'" stroke="rgba(28,28,26,.075)" stroke-width="1" fill="none"/>'+
+      '<path d="'+path(xM,yM)+'" stroke="rgba(240,61,58,.24)" stroke-width="1" fill="none"/></svg>';
+    sec.style.setProperty('--bgv-grid','url("data:image/svg+xml,'+encodeURIComponent(svg)+'")');
+  }
+  function schedule(){ if(!raf) raf=requestAnimationFrame(build); }
+  build(); addEventListener('load',schedule); addEventListener('resize',schedule);
+  if(window.ResizeObserver) new ResizeObserver(schedule).observe(sec);
 })();
 </script>
 </body>
