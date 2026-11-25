@@ -5837,38 +5837,40 @@
   }
 
   /* ===== Варианты 8–11: первая итерация фонов, усиленная ===== */
-  /* V8 — «Утренний свет» (светлее): мягкие тёплые и холодные пятна света на светлом градиенте */
+  /* V8 — «Утренний свет»: насыщенные тёплые и холодные пятна света */
   #about-project[data-v="8"]::before {
     background:
-      radial-gradient(60% 40% at 88% 6%, rgba(255,190,125,.72), transparent 70%),
-      radial-gradient(55% 45% at 6% 48%, rgba(160,200,242,.8), transparent 70%),
-      radial-gradient(50% 40% at 92% 96%, rgba(255,170,160,.6), transparent 70%),
-      linear-gradient(180deg, #fdf8f1 0%, #f0f5fb 100%);
+      radial-gradient(62% 42% at 88% 6%, rgba(255,168,92,.95), transparent 70%),
+      radial-gradient(58% 46% at 6% 48%, rgba(122,176,240,.9), transparent 70%),
+      radial-gradient(52% 40% at 92% 96%, rgba(255,136,126,.8), transparent 70%),
+      linear-gradient(180deg, #fbf0e3 0%, #e6eef9 100%);
   }
-  /* V9 — «Mesh + зерно»: сетка размытых цветных пятен с акцентом бренда и плёночным зерном */
+  /* V9 — «Mesh + зерно»: крупные цветные пятна с акцентом бренда и плёночным зерном */
   #about-project[data-v="9"]::before {
     background:
-      radial-gradient(38% 26% at 15% 12%, rgba(240,61,58,.3), transparent 70%),
-      radial-gradient(40% 28% at 85% 30%, rgba(110,165,240,.5), transparent 70%),
-      radial-gradient(42% 30% at 20% 70%, rgba(255,180,130,.62), transparent 70%),
-      radial-gradient(40% 28% at 85% 92%, rgba(240,61,58,.24), transparent 70%),
-      linear-gradient(160deg, #f9f3ec 0%, #ebf1f9 100%);
+      radial-gradient(40% 28% at 15% 12%, rgba(240,61,58,.55), transparent 70%),
+      radial-gradient(42% 30% at 85% 30%, rgba(96,156,240,.75), transparent 70%),
+      radial-gradient(44% 32% at 20% 70%, rgba(255,166,108,.85), transparent 70%),
+      radial-gradient(42% 30% at 85% 92%, rgba(240,61,58,.45), transparent 70%),
+      linear-gradient(160deg, #f6ece2 0%, #e2ebf7 100%);
     filter: blur(18px); transform: scale(1.08);
   }
   #about-project[data-v="9"]::after {
-    opacity: .45; mix-blend-mode: multiply;
+    opacity: .55; mix-blend-mode: multiply;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .33 0 0 0 0 .3 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
-  /* V10 — «Лучи света сквозь окна»: диагональные световые полосы, затухающие вниз */
+  /* V10 — «Лучи света сквозь окна»: белые диагональные полосы на тёплом
+     персиково-голубом фоне, яркое свечение в правом верхнем углу */
   #about-project[data-v="10"]::before {
     background:
-      radial-gradient(70% 35% at 100% 0%, rgba(255,196,140,.85), transparent 70%),
-      linear-gradient(180deg, #fbefe2 0%, #e9f0f8 100%);
+      radial-gradient(70% 38% at 100% 0%, rgba(255,166,96,.95), transparent 70%),
+      radial-gradient(50% 30% at 0% 100%, rgba(130,176,236,.6), transparent 70%),
+      linear-gradient(180deg, #f9dfc6 0%, #f3e6dc 45%, #dce7f5 100%);
   }
   #about-project[data-v="10"]::after {
-    background: repeating-linear-gradient(118deg, transparent 0 9vw, rgba(255,255,255,.85) 9vw 17vw, transparent 17vw 22vw);
-    -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.55) 45%, transparent 90%);
-    mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.55) 45%, transparent 90%);
+    background: repeating-linear-gradient(118deg, transparent 0 9vw, rgba(255,255,255,.78) 9vw 17vw, transparent 17vw 22vw);
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.75) 50%, rgba(0,0,0,.35) 100%);
+    mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.75) 50%, rgba(0,0,0,.35) 100%);
   }
 
   /* V11 — «Паттерн логотипа»: лёгкий узор из элементов логотипа (дуга и красная лента) */
