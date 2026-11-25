@@ -5836,37 +5836,37 @@
     mask-image: radial-gradient(circle 1500px at 100% 0%, #000 0%, rgba(0,0,0,.55) 40%, transparent 100%);
   }
 
-  /* ===== Варианты 8–11: первая итерация фонов, осветлённая ===== */
+  /* ===== Варианты 8–11: первая итерация фонов, усиленная ===== */
   /* V8 — «Утренний свет» (светлее): мягкие тёплые и холодные пятна света на светлом градиенте */
   #about-project[data-v="8"]::before {
     background:
-      radial-gradient(60% 40% at 88% 6%, rgba(255,205,150,.38), transparent 70%),
-      radial-gradient(55% 45% at 6% 48%, rgba(188,216,244,.45), transparent 70%),
-      radial-gradient(50% 40% at 92% 96%, rgba(255,190,180,.3), transparent 70%),
-      linear-gradient(180deg, #fffdfa 0%, #f8fafc 100%);
+      radial-gradient(60% 40% at 88% 6%, rgba(255,190,125,.72), transparent 70%),
+      radial-gradient(55% 45% at 6% 48%, rgba(160,200,242,.8), transparent 70%),
+      radial-gradient(50% 40% at 92% 96%, rgba(255,170,160,.6), transparent 70%),
+      linear-gradient(180deg, #fdf8f1 0%, #f0f5fb 100%);
   }
   /* V9 — «Mesh + зерно»: сетка размытых цветных пятен с акцентом бренда и плёночным зерном */
   #about-project[data-v="9"]::before {
     background:
-      radial-gradient(38% 26% at 15% 12%, rgba(240,61,58,.11), transparent 70%),
-      radial-gradient(40% 28% at 85% 30%, rgba(120,170,235,.2), transparent 70%),
-      radial-gradient(42% 30% at 20% 70%, rgba(255,198,160,.28), transparent 70%),
-      radial-gradient(40% 28% at 85% 92%, rgba(240,61,58,.08), transparent 70%),
-      linear-gradient(160deg, #fdfbf8 0%, #f5f8fb 100%);
+      radial-gradient(38% 26% at 15% 12%, rgba(240,61,58,.3), transparent 70%),
+      radial-gradient(40% 28% at 85% 30%, rgba(110,165,240,.5), transparent 70%),
+      radial-gradient(42% 30% at 20% 70%, rgba(255,180,130,.62), transparent 70%),
+      radial-gradient(40% 28% at 85% 92%, rgba(240,61,58,.24), transparent 70%),
+      linear-gradient(160deg, #f9f3ec 0%, #ebf1f9 100%);
     filter: blur(18px); transform: scale(1.08);
   }
   #about-project[data-v="9"]::after {
-    opacity: .28; mix-blend-mode: multiply;
+    opacity: .45; mix-blend-mode: multiply;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .33 0 0 0 0 .3 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
   /* V10 — «Лучи света сквозь окна»: диагональные световые полосы, затухающие вниз */
   #about-project[data-v="10"]::before {
     background:
-      radial-gradient(70% 35% at 100% 0%, rgba(255,222,180,.48), transparent 70%),
-      linear-gradient(180deg, #fdfbf7 0%, #f5f8fb 100%);
+      radial-gradient(70% 35% at 100% 0%, rgba(255,196,140,.85), transparent 70%),
+      linear-gradient(180deg, #fbefe2 0%, #e9f0f8 100%);
   }
   #about-project[data-v="10"]::after {
-    background: repeating-linear-gradient(118deg, transparent 0 9vw, rgba(255,255,255,.7) 9vw 17vw, transparent 17vw 22vw);
+    background: repeating-linear-gradient(118deg, transparent 0 9vw, rgba(255,255,255,.85) 9vw 17vw, transparent 17vw 22vw);
     -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.55) 45%, transparent 90%);
     mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.55) 45%, transparent 90%);
   }
@@ -5874,12 +5874,12 @@
   /* V11 — «Паттерн логотипа»: лёгкий узор из элементов логотипа (дуга и красная лента) */
   #about-project[data-v="11"]::before {
     background:
-      radial-gradient(60% 40% at 90% 5%, rgba(255,214,175,.3), transparent 70%),
-      radial-gradient(55% 45% at 5% 60%, rgba(196,221,245,.34), transparent 70%),
-      linear-gradient(180deg, #fffdfb 0%, #f8fafc 100%);
+      radial-gradient(60% 40% at 90% 5%, rgba(255,200,150,.6), transparent 70%),
+      radial-gradient(55% 45% at 5% 60%, rgba(176,208,244,.66), transparent 70%),
+      linear-gradient(180deg, #fcf6ef 0%, #f1f5fa 100%);
   }
   #about-project[data-v="11"]::after {
-    background-image: url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%27300%27%20height=%27300%27%20viewBox=%270%200%20300%20300%27%3E%3Cg%20fill=%27%23F03D3A%27%3E%3Cpath%20fill-opacity=%27.04%27%20transform=%27translate%2826%2030%29%20scale%281.15%29%27%20d=%27M63.0277%20-0.295809L56.5843%2011.8468C63.7382%2017.4746%2068.1291%2026.3747%2067.5864%2036.1519C66.6984%2052.0792%2053.0617%2064.2712%2037.1161%2063.3841C34.6196%2063.2461%2032.212%2062.7927%2029.9326%2062.0733L23.4893%2074.2159C27.5053%2075.7535%2031.8272%2076.6996%2036.3563%2076.9559C59.8011%2078.2569%2079.8614%2060.3189%2081.1639%2036.9009C82.0125%2021.6536%2074.7008%207.84529%2063.0179%20-0.305664L63.0277%20-0.295809Z%27/%3E%3Cpath%20fill-opacity=%27.045%27%20transform=%27translate%28176%20168%29%20rotate%28-14%2043%2040%29%20scale%28.85%29%27%20d=%27M-0.0849152%2020.6499L20.972%2065.5147L86.7971%2017.5157L-0.0849152%2020.6499Z%27/%3E%3C/g%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%27300%27%20height=%27300%27%20viewBox=%270%200%20300%20300%27%3E%3Cg%20fill=%27%23F03D3A%27%3E%3Cpath%20fill-opacity=%27.11%27%20transform=%27translate%2826%2030%29%20scale%281.15%29%27%20d=%27M63.0277%20-0.295809L56.5843%2011.8468C63.7382%2017.4746%2068.1291%2026.3747%2067.5864%2036.1519C66.6984%2052.0792%2053.0617%2064.2712%2037.1161%2063.3841C34.6196%2063.2461%2032.212%2062.7927%2029.9326%2062.0733L23.4893%2074.2159C27.5053%2075.7535%2031.8272%2076.6996%2036.3563%2076.9559C59.8011%2078.2569%2079.8614%2060.3189%2081.1639%2036.9009C82.0125%2021.6536%2074.7008%207.84529%2063.0179%20-0.305664L63.0277%20-0.295809Z%27/%3E%3Cpath%20fill-opacity=%27.12%27%20transform=%27translate%28176%20168%29%20rotate%28-14%2043%2040%29%20scale%28.85%29%27%20d=%27M-0.0849152%2020.6499L20.972%2065.5147L86.7971%2017.5157L-0.0849152%2020.6499Z%27/%3E%3C/g%3E%3C/svg%3E");
     background-size: 300px 300px;
     -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.7) 60%, rgba(0,0,0,.35) 100%);
     mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.7) 60%, rgba(0,0,0,.35) 100%);
