@@ -6159,6 +6159,7 @@
   /* ===== Блок 2 — вариант 3: четыре высокие карточки ===== */
   .b3 { padding: 5.5rem 1.6875rem 1rem; }
   .b3-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  .b3-heading { margin: 0 auto 1.92rem !important; max-width: none !important; text-align: center; }
   .b3-card {
     position: relative; overflow: hidden; isolation: isolate;
     display: flex; flex-direction: column; justify-content: space-between;
@@ -6201,6 +6202,7 @@
   }
   @media (max-width: 900px) {
     .b3 { padding: 2.5rem 1.875vw .5rem; }
+    .b3-heading { margin-bottom: 1.5rem !important; }
     .b3-grid { grid-template-columns: 1fr; gap: .75rem; }
     .b3-card { min-height: 26rem; padding: 1.6rem 1.5rem 1.8rem; }
     .b3-card--solid { min-height: 0; gap: 3rem; }
@@ -6350,6 +6352,7 @@
        круглая «стеклянная» иконка, заголовок и текст внизу; последняя —
        однотонная светлая). -->
   <div class="b3">
+    <h2 class="offers-heading b3-heading">Больше, чем<span>просто квартира</span></h2>
     <div class="b3-grid">
       <article class="b3-card">
         <img class="b3-bg" src="assets/images/family-house.jpg" alt="Дом «Жить хорошо»" loading="lazy" style="object-position:50% 30%" />
