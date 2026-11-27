@@ -96,6 +96,10 @@ jobs:
             test ! -L bg-variants-light.html
             cp bg-variants-light.html .publish/bg-variants-light.html
           fi
+          if [[ -f block2.html ]]; then
+            test ! -L block2.html
+            cp block2.html .publish/block2.html
+          fi
           rsync -rlt \
             --exclude='.git/' \
             --exclude='.env*' \
