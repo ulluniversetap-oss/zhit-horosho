@@ -6067,7 +6067,7 @@
     box-shadow: 0 1.6rem 3rem -1.4rem rgba(16,22,30,.35);
   }
   .b2-pill {
-    position: absolute; z-index: 1; right: 2.6rem; top: 6.2rem; width: min(30rem, 62%); height: 15.5rem;
+    position: absolute; z-index: 1; right: 2.6rem; top: 6.2rem; width: min(25rem, 52%); height: 13rem;
     border-radius: 999px; overflow: hidden;
   }
   .b2-orb img, .b2-pill img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .8s cubic-bezier(.2,.8,.2,1); }
@@ -6100,8 +6100,9 @@
     font-size: clamp(9rem, 17vw, 21rem); line-height: .82; letter-spacing: -.06em; color: #ffffff;
   }
   .b2-house {
-    position: absolute; z-index: 1; left: 9%; bottom: 0; height: 86%; width: auto;
+    position: absolute; z-index: 1; left: 6%; bottom: -3.5rem; height: 86%; width: auto;
     filter: drop-shadow(0 2rem 2.5rem rgba(90,10,8,.35));
+    transform: translate3d(0, var(--b2-rise, 0px), 0); will-change: transform;
   }
   .b2-hero-copy { grid-column: 2; position: relative; z-index: 2; display: flex; flex-direction: column; justify-content: space-between; gap: 2.5rem; }
   .b2-big {
@@ -6129,7 +6130,7 @@
   @media (max-width: 1280px) and (min-width: 901px) {
     .b2-title { font-size: 1.9rem; }
     .b2-orb { width: 14rem; right: 8%; }
-    .b2-pill { height: 13rem; }
+    .b2-pill { height: 11rem; }
     .b2-card { min-height: 27rem; }
     .b2-hero { min-height: 32rem; }
   }
@@ -9064,6 +9065,31 @@
     var el = e.target;
     if (el && el.matches && el.matches('input[type="tel"]') && el.value.replace(/\D/g, '').length <= 1) el.value = '';
   });
+})();
+</script>
+<script>
+/* Блок 2: дом в большой карточке «выезжает» снизу из края карточки по мере
+   скролла вниз. Прогресс 0 → 1, пока верх карточки идёт от низа экрана до
+   ~25% высоты экрана; на обратном скролле дом так же опускается. */
+(function () {
+  var card = document.querySelector('.b2-hero'), house = card && card.querySelector('.b2-house');
+  if (!house) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var ticking = false;
+  function ease(p) { return 1 - Math.pow(1 - p, 3); }
+  function update() {
+    ticking = false;
+    var r = card.getBoundingClientRect(), vh = window.innerHeight;
+    var p = (vh - r.top) / (vh * 0.75);
+    p = Math.max(0, Math.min(1, p));
+    var travel = house.offsetHeight * 0.55;
+    house.style.setProperty('--b2-rise', ((1 - ease(p)) * travel).toFixed(1) + 'px');
+  }
+  function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll);
+  addEventListener('load', update);
+  update();
 })();
 </script>
 </body>

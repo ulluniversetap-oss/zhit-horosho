@@ -100,6 +100,14 @@ jobs:
             test ! -L block2.html
             cp block2.html .publish/block2.html
           fi
+          if [[ -f block2-v2.html ]]; then
+            test ! -L block2-v2.html
+            cp block2-v2.html .publish/block2-v2.html
+          fi
+          if [[ -f block2-v3.html ]]; then
+            test ! -L block2-v3.html
+            cp block2-v3.html .publish/block2-v3.html
+          fi
           rsync -rlt \
             --exclude='.git/' \
             --exclude='.env*' \
