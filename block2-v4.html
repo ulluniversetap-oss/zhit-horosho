@@ -6226,23 +6226,24 @@
   .b4-card--accent {
     color: #ffffff; padding-bottom: 0;
     background:
-      radial-gradient(38% 30% at 74% 4%, rgba(255,170,150,.55), rgba(255,170,150,0) 70%),
-      radial-gradient(45% 40% at 28% 62%, rgba(150,14,12,.45), rgba(150,14,12,0) 70%),
-      linear-gradient(135deg, #F4554B 0%, #F03D3A 45%, #DA2B27 100%);
+      radial-gradient(90% 75% at 100% 0%, rgba(255,150,128,.38), rgba(255,150,128,0) 62%),
+      radial-gradient(80% 70% at 0% 100%, rgba(170,20,18,.28), rgba(170,20,18,0) 65%),
+      linear-gradient(135deg, #F24A42 0%, #F03D3A 50%, #DD2E2A 100%);
   }
+  .b4-card.b4-card--accent { padding-bottom: 0; }
   .b4-card--accent::before {
     content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-    background: linear-gradient(115deg, rgba(255,255,255,0) 52%, rgba(255,255,255,.16) 60%, rgba(255,255,255,0) 68%);
+    background: linear-gradient(115deg, rgba(255,255,255,0) 30%, rgba(255,255,255,.07) 50%, rgba(255,255,255,0) 70%);
   }
   .b4-title {
     margin: 0; font-family: 'Involve', 'Onest', sans-serif; font-weight: 600;
     font-size: 2.35rem; line-height: 1.1; letter-spacing: -.02em; text-transform: none; color: inherit;
   }
-  .b4-text { margin: 1.1rem 0 0; max-width: 32rem; font: 400 1.02rem/1.55 'Onest', sans-serif; color: inherit; opacity: .62; }
+  .b4-text { margin: 1.1rem 0 0; max-width: none; font: 400 1.02rem/1.55 'Onest', sans-serif; color: inherit; opacity: .62; }
   .b4-card--accent .b4-text { opacity: .86; }
 
   .b4-marquee {
-    position: relative; display: flex; gap: 1rem; margin: 0 -2.6rem -2.2rem; overflow: hidden;
+    position: relative; display: flex; gap: 1rem; margin: 0 -2.6rem 1rem; overflow: hidden;
     -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
     mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
   }
@@ -6250,7 +6251,7 @@
   .b4-marquee:hover .b4-track { animation-play-state: paused; }
   @keyframes b4Scroll { to { transform: translateX(calc(-100% - 1rem)); } }
   .b4-tile {
-    flex: none; width: 17rem; height: 13.5rem; padding: .55rem; border-radius: 1.3rem;
+    flex: none; width: 19.5rem; height: 15.5rem; padding: .55rem; border-radius: 1.3rem;
     background: rgba(255,255,255,.16); box-shadow: inset 0 0 0 1px rgba(255,255,255,.22);
     -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
   }
@@ -6285,10 +6286,14 @@
   @media (max-width: 1500px) and (min-width: 901px) {
     .b4-title { font-size: 1.9rem; }
     .b4-card { padding: 2.2rem 2.2rem 2.4rem; min-height: 33rem; }
-    .b4-marquee { margin: 0 -2.2rem -2rem; }
-    .b4-tile { width: 14.5rem; height: 11.5rem; }
+    .b4-marquee { margin: 0 -2.2rem 1rem; }
+    .b4-tile { width: 16.5rem; height: 13rem; }
     .b4-ava, .b4-ava--go { width: 4.6rem; height: 4.6rem; }
     .b4-chip { padding: .8rem 1.1rem; font-size: .88rem; }
+  }
+  @media (max-width: 1366px) and (min-width: 1201px) {
+    .b4-title { font-size: 1.6rem; }
+    .b4-text { font-size: .95rem; }
   }
   @media (max-width: 1200px) {
     .b4-grid { grid-template-columns: 1fr 1fr; }
@@ -6302,8 +6307,8 @@
     .b4-card--accent { padding-bottom: 0; }
     .b4-title { font-size: 1.6rem; }
     .b4-text { font-size: .95rem; }
-    .b4-marquee { margin: 0 -1.5rem -1.4rem; }
-    .b4-tile { width: 12.5rem; height: 9.5rem; }
+    .b4-marquee { margin: 0 -1.5rem 1rem; }
+    .b4-tile { width: 14rem; height: 10.8rem; }
     .b4-ava, .b4-ava--go { width: 4.2rem; height: 4.2rem; }
     .b4-chip { padding: .75rem 1rem; font-size: .88rem; }
   }
@@ -6457,7 +6462,7 @@
       <article class="b4-card b4-card--accent">
         <div class="b4-copy">
           <h3 class="b4-title">Редкость для Советского района</h3>
-          <p class="b4-text">Камерный монолитно-кирпичный дом на 162 квартиры — без длинных коридоров, поиска парковки во дворе и очередей к лифту по утрам.</p>
+          <p class="b4-text">Камерный монолитно-кирпичный дом на 162 квартиры —<br class="br-desktop" /> без длинных коридоров, поиска парковки во дворе<br class="br-desktop" /> и очередей к лифту по утрам.</p>
         </div>
         <div class="b4-marquee" aria-label="Рендеры дома">
           <ul class="b4-track"><li class="b4-tile"><img src="assets/images/gal-01.webp" alt="" loading="lazy" decoding="async" /></li><li class="b4-tile"><img src="assets/images/gal-02.webp" alt="" loading="lazy" decoding="async" /></li><li class="b4-tile"><img src="assets/images/gal-03.webp" alt="" loading="lazy" decoding="async" /></li><li class="b4-tile"><img src="assets/images/gal-04.webp" alt="" loading="lazy" decoding="async" /></li><li class="b4-tile"><img src="assets/images/gal-05.webp" alt="" loading="lazy" decoding="async" /></li><li class="b4-tile"><img src="assets/images/gal-06.webp" alt="" loading="lazy" decoding="async" /></li><li class="b4-tile"><img src="assets/images/gal-07.webp" alt="" loading="lazy" decoding="async" /></li><li class="b4-tile"><img src="assets/images/gal-08.webp" alt="" loading="lazy" decoding="async" /></li></ul>
@@ -6473,8 +6478,8 @@
           <button type="button" class="b4-ava b4-ava--go" onclick="openLeadModal()" aria-label="Узнать подробнее"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></button>
         </div>
         <div class="b4-copy">
-          <h3 class="b4-title">Своя котельная на территории ЖК</h3>
-          <p class="b4-text">Тепло в квартирах не зависит от графика городских сетей — дома уютно в любую погоду.</p>
+          <h3 class="b4-title">Своя котельная<br class="br-desktop" /> на территории ЖК</h3>
+          <p class="b4-text">Тепло в квартирах не зависит<br class="br-desktop" /> от графика городских сетей —<br class="br-desktop" /> дома уютно в любую погоду.</p>
         </div>
       </article>
 
